@@ -7,7 +7,7 @@ export default class SystemStore {
         Store.register('system', this);
     }
 
-    init() {
-
-    }
+    init = () => new Promise((resolve, reject) => {
+        resolve();
+    })
 }

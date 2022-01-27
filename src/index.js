@@ -8,16 +8,18 @@ import {languagePacks} from "./static/strings";
 import DataStore from "./store/data";
 import SystemStore from "./store/system";
 import Store from "./store/store";
+import AnalysisStore from "./store/analysis";
 
 const systemStore = new SystemStore();
 const dataStore = new DataStore();
+const analysisStore = new AnalysisStore();
 Store.init();
 
 i18n
   .use(initReactI18next)
   .init({
       resources: languagePacks,
-      lng: 'cn', // if you're using a language detector, do not define the lng option
+      lng: 'en', // if you're using a language detector, do not define the lng option
       fallbackLng: 'cn',
 
       interpolation: {
@@ -27,7 +29,7 @@ i18n
 
 ReactDOM.render(
   <React.StrictMode>
-      <Provider data={dataStore} system={systemStore}>
+      <Provider data={dataStore} system={systemStore} analysis={analysisStore}>
           <App/>
       </Provider>
   </React.StrictMode>,

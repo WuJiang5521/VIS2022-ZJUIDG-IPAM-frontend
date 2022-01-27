@@ -1,11 +1,11 @@
-import {ThemeProvider} from "@mui/styles";
-import {createTheme, CssBaseline} from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import React from "react";
 import {inject, observer} from "mobx-react";
 import TitleBar from "./TitleBar/TitleBar";
+import theme from "../static/theme";
 
 function App() {
-    return <ThemeProvider theme={createTheme()}>
+    return <ThemeProvider theme={createTheme(theme)}>
         <CssBaseline/>
         <TitleBar/>
     </ThemeProvider>;

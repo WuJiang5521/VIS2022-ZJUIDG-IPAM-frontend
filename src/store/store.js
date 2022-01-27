@@ -6,7 +6,10 @@ export default class Store {
     }
 
     static init() {
-        Object.values(stores).forEach(store => store.init());
+        return Promise.all(
+            Object.values(stores)
+                .map(store => store.init())
+        );
     }
 
     static getStores() {
