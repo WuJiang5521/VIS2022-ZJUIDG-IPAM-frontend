@@ -9,7 +9,10 @@ function TitleBar({data, analysis}) {
 
     return <AppBar sx={{height: 40}}>
         <Toolbar sx={{height: 40, minHeight: '0 !important'}}>
-            <Typography sx={{flexGrow: 1}}>{t(strings.SystemName)}</Typography>
+            <Typography variant={'h5'}
+                        sx={{flexGrow: 1}}>
+                {t(strings.SystemName)}
+            </Typography>
             <TitleBarSelect label={t(strings.Dataset)}
                             options={data.datasets.map(ds => ({
                                 value: ds.name,

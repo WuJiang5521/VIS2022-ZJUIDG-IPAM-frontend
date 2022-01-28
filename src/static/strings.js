@@ -4,6 +4,12 @@ const dict = {
     Player: {cn: '球员', en: 'Player'},
     Opponents: {cn: '对手', en: 'Opponents'},
     SeqCount: {cn: '回合数', en: 'Sequence Count'},
+
+    QueryView: {cn: '查询视图', en: 'Query View'},
+    PreviewView: {cn: '预览视图', en: 'Preview View'},
+    TacticView: {cn: '战术视图', en: 'Tactic View'},
+    RallyView: {cn: '回合视图', en: 'Rally View'},
+    ProjectView: {cn: '投影视图', en: 'Project View'},
 }
 
 const words = Object.keys(dict);
