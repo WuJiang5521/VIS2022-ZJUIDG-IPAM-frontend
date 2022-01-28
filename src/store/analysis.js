@@ -1,5 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import Store from "./store";
+import api from "./api";
 
 export default class AnalysisStore {
     dataset = 'Badminton (Female)';
@@ -16,22 +17,13 @@ export default class AnalysisStore {
             this.opponents = this.opponents.filter(op => op !== p);
     }
     setOpponents = ops => this.opponents = ops;
-    get players() {
-        const dataStore = Store.getStores().data;
-        return dataStore.getPlayers(this.dataset);
-    }
-    get availableOpponents() {
-        const dataStore = Store.getStores().data;
-        return dataStore.getPlayers(this.dataset)
-            .filter(player => player !== this.player);
-    }
-    get sequenceCount() {
-        const dataStore = Store.getStores().data;
-        return dataStore.getMatches(this.dataset, this.player, this.opponents)
-            .reduce((p, c) => c.sequenceCount + p, 0);
-    }
 
-
+    restart = () => {
+        api.setDataset(this.dataset, this.player, this.opponents)
+            .then(res => {
+                console.log(res);
+            });
+    }
 
     constructor() {
         makeAutoObservable(this);

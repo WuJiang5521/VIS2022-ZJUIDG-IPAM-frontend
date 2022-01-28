@@ -135,7 +135,6 @@ function LayoutManager({
                            size = [12, 12],
                            padding = 1
                        }) {
-    console.log(panels);
     const grids = useGridLayout(size, panels);
 
     const containerRef = useRef(null);

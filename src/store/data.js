@@ -46,7 +46,5 @@ export default class DataStore {
         api.getDatasets()
             .then(this.setDatasets)
             .then(resolve)
-
-        api.getDataset()
     })
 }
