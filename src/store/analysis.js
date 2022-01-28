@@ -3,7 +3,7 @@ import Store from "./store";
 import api from "./api";
 
 export default class AnalysisStore {
-    dataset = 'Badminton (Female)';
+    dataset = '';
     player = '';
     opponents = [];
     setDataset = ds => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {inject, observer, useLocalStore} from "mobx-react";
+import {inject, observer, useLocalObservable} from "mobx-react";
 import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import strings from "../../static/strings";
@@ -9,7 +9,7 @@ import Store from "../../store/store";
 
 function TitleBar({data, analysis}) {
     const {t} = useTranslation();
-    const cache = useLocalStore(() => ({
+    const cache = useLocalObservable(() => ({
         cacheDataset: null,
         get dataset() {
             return this.cacheDataset || analysis.dataset;
@@ -85,7 +85,7 @@ function TitleBar({data, analysis}) {
         },
     }));
 
-    return <AppBar sx={{height: 40}}>
+    return <AppBar sx={{height: 40, boxShadow: 'none'}}>
         <Toolbar sx={{height: 40, minHeight: '0 !important'}}>
             <Typography variant={'h5'}
                         sx={{flexGrow: 1}}>
