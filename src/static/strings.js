@@ -6,6 +6,10 @@ const dict = {
     SeqCount: {cn: '回合数', en: 'Sequence Count'},
 
     QueryView: {cn: '查询视图', en: 'Query View'},
+    PreviewChange: {cn: '预览', en: 'Preview'},
+    ApplyChange: {cn: '确认', en: 'Apply'},
+    EmptyType: {cn: '选择修改类型', en: 'Select Query Type'},
+
     PreviewView: {cn: '预览视图', en: 'Preview View'},
     TacticView: {cn: '战术视图', en: 'Tactic View'},
     RallyView: {cn: '回合视图', en: 'Rally View'},
