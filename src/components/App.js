@@ -5,7 +5,6 @@ import TitleBar from "./TitleBar/TitleBar";
 import theme from "../static/theme";
 import LayoutManager from "./Common/LayoutManager";
 import useQueryView from "./QueryView";
-import usePreviewView from "./PreviewView";
 import useTacticView from "./TacticView";
 import useRallyView from "./RallyView";
 import useProjectView from "./ProjectView";
@@ -14,7 +13,6 @@ import strings from "../static/strings";
 
 function App() {
     const queryView = useQueryView();
-    const previewView = usePreviewView();
     const tacticView = useTacticView();
     const rallyView = useRallyView();
     const projectView = useProjectView();
@@ -36,19 +34,14 @@ function App() {
                                        ...queryView,
                                    },
                                    {
-                                       size: [6, 3],
-                                       title: t(strings.PreviewView),
-                                       ...previewView,
+                                       size: [6, 12],
+                                       title: t(strings.TacticView),
+                                       ...tacticView,
                                    },
                                    {
                                        size: [3, 12],
                                        title: t(strings.RallyView),
                                        ...rallyView,
-                                   },
-                                   {
-                                       size: [6, 9],
-                                       title: t(strings.TacticView),
-                                       ...tacticView,
                                    },
                                    {
                                        size: [3, 6],

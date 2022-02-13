@@ -19,11 +19,11 @@ export const types = [
         types: [
             {
                 type: 'SetExistence',
-                params: [{key: 'exist', label: '是否考虑'}],
+                params: ['attr', 'exist'],
             },
             {
                 type: 'SetImportance',
-                params: [{key: 'importance', label: '重要度变化'}],
+                params: ['attr', 'importance'],
             },
         ]
     },
@@ -32,15 +32,15 @@ export const types = [
         types: [
             {
                 type: 'Delete',
-                params: [{key: 'index', label: '战术编号'}],
+                params: ['index'],
             },
             {
                 type: 'Split',
-                params: [{key: 'index', label: '战术编号'}, {key: 'attr', label: '针对属性细分'}, {key: 'value', label: '针对值细分'}],
+                params: ['index', 'attr', 'value'],
             },
             {
                 type: 'Merge',
-                params: [{key: 'index', label: '战术编号'}],
+                params: ['index'],
             },
         ]
     },
@@ -49,14 +49,11 @@ export const types = [
         types: [
             {
                 type: 'Increment',
-                params: [{key: 'index', label: '战术编号'}, {key: 'direction', label: '扩展方向'}, {
-                    key: 'hitCount',
-                    label: '扩展拍数'
-                }],
+                params: ['index', 'direction', 'hitCount'],
             },
             {
                 type: 'Decrement',
-                params: [{key: 'index', label: '战术编号'}, {key: 'hits', label: '忽略的拍序号'}],
+                params: ['index', 'direction', 'hitCount'],
             },
         ]
     },
@@ -65,18 +62,15 @@ export const types = [
         types: [
             {
                 type: 'Replace',
-                params: [{key: 'index', label: '战术编号'}, {key: 'hit', label: '拍'}, {
-                    key: 'attr',
-                    label: '属性'
-                }, {key: 'target', label: '目标值'}],
+                params: ['index', 'hit', 'attr', 'target'],
             },
             {
                 type: 'Ignore',
-                params: [{key: 'index', label: '战术编号'}, {key: 'hit', label: '拍'}, {key: 'attr', label: '属性'}],
+                params: ['index', 'hit', 'attr'],
             },
             {
                 type: 'Explore',
-                params: [{key: 'index', label: '战术编号'}, {key: 'hit', label: '拍'}, {key: 'attr', label: '属性'}],
+                params: ['index', 'hit', 'attr'],
             },
         ]
     }

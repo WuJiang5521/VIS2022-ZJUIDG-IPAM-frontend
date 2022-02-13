@@ -43,7 +43,8 @@ export default class DataStore {
     }
 
     init = () => new Promise((resolve, reject) => {
-        api.getDatasets()
+        api.init()
+            .then(api.getDatasets)
             .then(this.setDatasets)
             .then(resolve)
     })
