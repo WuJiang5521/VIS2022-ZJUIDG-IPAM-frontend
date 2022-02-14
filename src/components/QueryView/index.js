@@ -26,9 +26,6 @@ const QueryView = inject()(observer(({
                 {inputMethod === 'form' && <FormQuery {...queryParams}/>}
                 {inputMethod === 'nlp' && <NLQuery {...queryParams}/>}
             </Box>
-            <Box>
-
-            </Box>
         </Box>
         <Box margin={1}
              marginTop={0}
@@ -47,21 +44,21 @@ const QueryViewToolbar = inject()(observer(({
     return <Box display={'flex'}
                 justifyContent={'right'}
                 alignItems={'center'}>
-        <ToggleButtonGroup value={inputMethod}
-                           exclusive
-                           onChange={(_, newVal) => {
-                               if (newVal) setInputMethod(newVal)
-                           }}
-                           sx={{marginLeft: 1, marginRight: 1}}>
-            <ToggleButton value={'nlp'}
-                          sx={{padding: '2px'}}>
-                <Textsms/>
-            </ToggleButton>
-            <ToggleButton value={'form'}
-                          sx={{padding: '2px'}}>
-                <DataObject/>
-            </ToggleButton>
-        </ToggleButtonGroup>
+        {/*<ToggleButtonGroup value={inputMethod}*/}
+        {/*                   exclusive*/}
+        {/*                   onChange={(_, newVal) => {*/}
+        {/*                       if (newVal) setInputMethod(newVal)*/}
+        {/*                   }}*/}
+        {/*                   sx={{marginLeft: 1, marginRight: 1}}>*/}
+        {/*    <ToggleButton value={'nlp'}*/}
+        {/*                  sx={{padding: '2px'}}>*/}
+        {/*        <Textsms/>*/}
+        {/*    </ToggleButton>*/}
+        {/*    <ToggleButton value={'form'}*/}
+        {/*                  sx={{padding: '2px'}}>*/}
+        {/*        <DataObject/>*/}
+        {/*    </ToggleButton>*/}
+        {/*</ToggleButtonGroup>*/}
 
         <Button size={"small"}
                 disabled={!applicable}

@@ -4,7 +4,7 @@
 import React, {useMemo, useRef} from "react";
 import {Box, Typography} from "@mui/material";
 import {useTheme} from "@mui/styles";
-import {useSize} from "./useSize";
+import {useSize} from "../../utils/useSize";
 
 function overlap(p1, l1, p2, l2) {
     return p1 < p2 + l2 && p2 < p1 + l1;

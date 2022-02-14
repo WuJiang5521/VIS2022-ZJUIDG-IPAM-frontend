@@ -14,6 +14,8 @@ const dict = {
     TacticView: {cn: '战术视图', en: 'Tactic View'},
     RallyView: {cn: '回合视图', en: 'Rally View'},
     ProjectView: {cn: '投影视图', en: 'Project View'},
+
+    Error: {cn: '错误', en: 'Error'},
 }
 
 const words = Object.keys(dict);

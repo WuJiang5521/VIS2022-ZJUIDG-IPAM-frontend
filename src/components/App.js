@@ -10,6 +10,7 @@ import useRallyView from "./RallyView";
 import useProjectView from "./ProjectView";
 import {useTranslation} from "react-i18next";
 import strings from "../static/strings";
+import Feedback from "./Feedback";
 
 function App() {
     const queryView = useQueryView();
@@ -50,6 +51,7 @@ function App() {
                                    },
                                ]}/>
             </Box>
+            <Feedback/>
         </React.Fragment>
     </ThemeProvider>;
 }
