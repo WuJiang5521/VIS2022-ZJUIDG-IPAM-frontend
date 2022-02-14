@@ -10,12 +10,12 @@ export const SortTypes = {
 }
 
 const tacticSorter = {
-    [SortTypes.MajorityDown]: (t1, t2) => 0,
-    [SortTypes.MajorityUp]: (t1, t2) => 0,
-    [SortTypes.UsageDown]: (t1, t2) => 0,
-    [SortTypes.UsageUp]: (t1, t2) => 0,
-    [SortTypes.WinRateDown]: (t1, t2) => 0,
-    [SortTypes.WinRateUp]: (t1, t2) => 0,
+    [SortTypes.MajorityDown]: (t1, t2) => t2.stat.majority - t1.stat.majority,
+    [SortTypes.MajorityUp]: (t1, t2) => t1.stat.majority - t2.stat.majority,
+    [SortTypes.UsageDown]: (t1, t2) => t2.usage_count - t1.usage_count,
+    [SortTypes.UsageUp]: (t1, t2) => t1.usage_count - t2.usage_count,
+    [SortTypes.WinRateDown]: (t1, t2) => t2.stat.winRate0 - t1.stat.winRate0,
+    [SortTypes.WinRateUp]: (t1, t2) => t1.stat.winRate0 - t2.stat.winRate0,
 }
 
 export default function useTacticSort(tactics) {

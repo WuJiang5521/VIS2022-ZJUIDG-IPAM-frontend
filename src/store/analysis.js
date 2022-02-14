@@ -68,6 +68,12 @@ export default class AnalysisStore {
         }
     }
 
+    hoveredTactic = null;
+    hoverTactic = (id, hover) => {
+        if (hover) this.hoveredTactic = id;
+        else if (this.hoveredTactic === id) this.hoveredTactic = null;
+    }
+
     constructor() {
         makeAutoObservable(this);
         Store.register('analysis', this);
@@ -88,7 +94,10 @@ export default class AnalysisStore {
                         max: 3,
                     }
                 },
-                tactics: [...new Array(30)].map(genVirtualTactic),
+                tactics: [...new Array(30)].map((_, i) => ({
+                    ...genVirtualTactic(),
+                    fixId: i,
+                })),
                 sequences: {},
             });
 

@@ -45,3 +45,5 @@ const theme = {
 }
 
 export default theme;
+// playerColors must be in rgb form!!!
+export const playerColors = ['rgb(244, 122, 69)', 'rgb(4, 101, 130)'];

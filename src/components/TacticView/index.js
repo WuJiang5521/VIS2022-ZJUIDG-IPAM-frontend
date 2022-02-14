@@ -9,8 +9,6 @@ import useTacticSort, {SortTypes} from "./useTacticSort";
 import useTacticStat from "./useTacticStat";
 import {useTheme} from "@mui/styles";
 import {HeadCell} from "./TableCell";
-import {useSize} from "../../utils/useSize";
-import {useRef} from "react";
 
 const sortTypes = {
     usage: [SortTypes.UsageDown, SortTypes.UsageUp],
@@ -24,12 +22,9 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
     const {sortedTactics, sortType, setSortType} = useTacticSort(tacticStats);
     const handleSort = types => selection => setSortType(types[selection]);
 
-    const containerRef = useRef(null);
-    const {width} = useSize(containerRef);
-
     const theme = useTheme();
 
-    return <TableContainer ref={containerRef}
+    return <TableContainer id={'tactic-table'}
                            sx={{
                                width: `calc(100% - ${theme.spacing(2)})`,
                                height: `calc(100% - ${theme.spacing(2)})`,
@@ -57,10 +52,10 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                     <Tactic key={tId}
                             tactic={tactic}
                             tId={tId}
-                            selected={analysis.selectedTactics.includes(tactic.id)}
-                            onSelect={selected => analysis.selectTactic(tactic.id, selected)}
-                            favorite={analysis.favoriteTactics.includes(tactic.id)}
-                            onFavorite={favorite => analysis.favoriteTactic(tactic.id, favorite)}/>
+                            selected={analysis.selectedTactics.includes(tactic.fixId)}
+                            onSelect={selected => analysis.selectTactic(tactic.fixId, selected)}
+                            favorite={analysis.favoriteTactics.includes(tactic.fixId)}
+                            onFavorite={favorite => analysis.favoriteTactic(tactic.fixId, favorite)}/>
                 ))}
             </TableBody>
         </Table>

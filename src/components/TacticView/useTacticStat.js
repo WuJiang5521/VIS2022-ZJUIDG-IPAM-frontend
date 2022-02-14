@@ -12,7 +12,7 @@ function genTacticStat(tactic=null) {
     stat.winRate1 = 1 - stat.winRate0;
     stat.usage = tactic.usage_count;
     // TODO: remove the randomInt
-    stat.majority = tactic.usage_count * randomInt(12);
+    stat.majority = tactic.usage_count * randomInt(4, 12);
     return stat;
 }
 
