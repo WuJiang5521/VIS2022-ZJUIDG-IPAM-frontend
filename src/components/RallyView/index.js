@@ -3,9 +3,28 @@
  */
 
 import {inject, observer} from "mobx-react";
+import {Box, Stack} from "@mui/material";
+import TacticDistribution from "./TacticDistribution";
+import RallyList from "./RallyList";
+import VideoPlayer from "./VideoPlayer";
 
-const RallyView = inject()(observer(({}) => {
-    return null;
+const RallyView = inject('analysis')(observer(({analysis}) => {
+    const rallies = analysis.ralliesOfSelectedTactics;
+    return <Stack width={'100%'} height={'100%'}
+                  p={1}>
+        <Box mb={1} flex={'0 0 150px'}>
+            <TacticDistribution rallies={rallies}/>
+        </Box>
+        <Box mb={1} flex={'1 0 0%'}>
+            <RallyList/>
+        </Box>
+        <Box mb={1} flex={'1 0 0%'}>
+            <RallyList/>
+        </Box>
+        <Box flex={'0 0 auto'}>
+            <VideoPlayer/>
+        </Box>
+    </Stack>;
 }));
 
 const RallyViewToolbar = inject()(observer(({}) => {

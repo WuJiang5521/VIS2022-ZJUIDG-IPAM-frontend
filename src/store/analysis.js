@@ -77,6 +77,15 @@ export default class AnalysisStore {
     get ralliesOfSelectedTactics() {
         const rallies = [];
 
+        const tactics = this.state.tactics;
+        const sequences = this.state.sequences;
+        this.selectedTactics.forEach(id => {
+            const tactic = tactics[id];
+
+            rallies.push(...(sequences[tactic.id] || []))
+        })
+
+        return rallies;
     }
 
     constructor() {
