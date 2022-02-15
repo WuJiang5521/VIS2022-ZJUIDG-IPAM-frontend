@@ -14,7 +14,6 @@ import {useTranslation} from "react-i18next";
 import strings from "../../static/strings";
 
 const QueryView = inject()(observer(({
-                                         inputMethod,
                                          queryParams,
                                      }) => {
 
@@ -23,8 +22,7 @@ const QueryView = inject()(observer(({
         <Box margin={1}
              flex={'0 0 auto'}>
             <Box>
-                {inputMethod === 'form' && <FormQuery {...queryParams}/>}
-                {inputMethod === 'nlp' && <NLQuery {...queryParams}/>}
+                <NLQuery {...queryParams}/>
             </Box>
         </Box>
         <Box margin={1}
@@ -37,29 +35,12 @@ const QueryView = inject()(observer(({
 }));
 
 const QueryViewToolbar = inject()(observer(({
-                                                inputMethod, setInputMethod,
                                                 applicable,
                                             }) => {
     const {t} = useTranslation();
     return <Box display={'flex'}
                 justifyContent={'right'}
                 alignItems={'center'}>
-        {/*<ToggleButtonGroup value={inputMethod}*/}
-        {/*                   exclusive*/}
-        {/*                   onChange={(_, newVal) => {*/}
-        {/*                       if (newVal) setInputMethod(newVal)*/}
-        {/*                   }}*/}
-        {/*                   sx={{marginLeft: 1, marginRight: 1}}>*/}
-        {/*    <ToggleButton value={'nlp'}*/}
-        {/*                  sx={{padding: '2px'}}>*/}
-        {/*        <Textsms/>*/}
-        {/*    </ToggleButton>*/}
-        {/*    <ToggleButton value={'form'}*/}
-        {/*                  sx={{padding: '2px'}}>*/}
-        {/*        <DataObject/>*/}
-        {/*    </ToggleButton>*/}
-        {/*</ToggleButtonGroup>*/}
-
         <Button size={"small"}
                 disabled={!applicable}
                 sx={{paddingTop: '3px', paddingBottom: '3px'}}>
@@ -76,13 +57,11 @@ const QueryViewToolbar = inject()(observer(({
 }));
 
 export default function useQueryView() {
-    const [inputMethod, setInputMethod] = useState('form');
     const queryParams = useQueryParams();
 
     return {
-        view: <QueryView inputMethod={inputMethod} queryParams={queryParams}/>,
+        view: <QueryView queryParams={queryParams}/>,
         toolbar: <QueryViewToolbar
-            inputMethod={inputMethod} setInputMethod={setInputMethod}
             applicable={queryParams.isApplicable()}/>,
     }
 }

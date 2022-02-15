@@ -1,4 +1,4 @@
-import {playerColors} from "../../static/theme";
+import {playerColors} from "../static/theme";
 
 const parseColor = color => {
     const values = color
@@ -10,7 +10,7 @@ const parseColor = color => {
 
 const colorScale = [
     parseColor(playerColors[0]),
-    {r: 255, g: 255, b: 255},
+    {r: 233, g: 233, b: 233},
     parseColor(playerColors[1])
 ]
 
@@ -25,7 +25,6 @@ function getScaleColor(number, colors) {
 }
 
 export default function winRate2color(winRate) {
-    console.log(colorScale);
     return getScaleColor(
         2 - winRate * 2,
         colorScale,

@@ -1,6 +1,7 @@
 import {alpha} from "@mui/material";
 
 const scrollbarColor = 'rgb(36, 40, 41)'
+export const scrollbarSize = 6;
 
 const theme = {
     palette: {
@@ -18,11 +19,11 @@ const theme = {
                 body: {
                     '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
                         backgroundColor: 'rgb(255, 255, 255)',
-                        width: 6,
-                        height: 6,
+                        width: scrollbarSize,
+                        height: scrollbarSize,
                     },
                     '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
-                        borderRadius: 6,
+                        borderRadius: scrollbarSize,
                         backgroundColor: alpha(scrollbarColor, 0.6),
                         border: 'none',
                     },
@@ -46,4 +47,4 @@ const theme = {
 
 export default theme;
 // playerColors must be in rgb form!!!
-export const playerColors = ['rgb(244, 122, 69)', 'rgb(4, 101, 130)'];
+export const playerColors = ['rgb(211,72,8)', 'rgb(4, 101, 130)'];

@@ -6,6 +6,7 @@ import strings from "../../static/strings";
 import TitleBarSelect from "./TitleBarSelect";
 import {Check, Close} from "@mui/icons-material";
 import Store from "../../store/store";
+import {playerColors} from "../../static/theme";
 
 function TitleBar({data, analysis}) {
     const {t} = useTranslation();
@@ -98,7 +99,8 @@ function TitleBar({data, analysis}) {
                             }))}
                             value={cache.dataset}
                             onChange={e => cache.setDataset(e.target.value)}/>
-            <Box sx={{marginRight: 3}}/>
+            <Box mr={3}/>
+            <Box width={20} height={20} borderRadius={0.5} mr={0.5} backgroundColor={playerColors[0]}/>
             <TitleBarSelect label={t(strings.Player)}
                             options={cache.players.map(p => ({
                                 value: p,
@@ -106,7 +108,8 @@ function TitleBar({data, analysis}) {
                             }))}
                             value={cache.player}
                             onChange={e => cache.setPlayer(e.target.value)}/>
-            <Box sx={{marginRight: 3}}/>
+            <Box mr={3}/>
+            <Box width={20} height={20} borderRadius={0.5} mr={0.5} backgroundColor={playerColors[1]}/>
             <TitleBarSelect label={t(strings.Opponents)}
                             multiple
                             options={cache.availableOpponents.map(p => ({
@@ -115,9 +118,9 @@ function TitleBar({data, analysis}) {
                             }))}
                             value={cache.opponents}
                             onChange={e => cache.setOpponents(e.target.value)}/>
-            <Box sx={{marginRight: 3}}/>
+            <Box mr={3}/>
             <Typography>{t(strings.SeqCount)}: {cache.sequenceCount}</Typography>
-            <Box sx={{marginRight: 3}}/>
+            <Box mr={3}/>
             {!cache.isDisabled && <React.Fragment>
                 <Button disabled={!cache.isApplicable}
                         color={'success'}

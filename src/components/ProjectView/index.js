@@ -6,11 +6,12 @@ import {inject, observer} from "mobx-react";
 import {Box} from "@mui/material";
 import useTacticStat from "../TacticView/useTacticStat";
 import Point from "./Point";
-import winRate2color from "./winRate2color";
+import winRate2color from "../../utils/winRate2color";
 
 const ProjectView = inject('analysis')(observer(({analysis}) => {
     const tacticStat = useTacticStat(analysis.state.tactics);
     const sortedTactics = tacticStat.map(t => t).sort((t1, t2) => 0);
+
     return <Box>
         {sortedTactics.map(t => {
             const isSelected = analysis.selectedTactics.includes(t.fixId);

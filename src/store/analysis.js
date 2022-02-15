@@ -74,6 +74,11 @@ export default class AnalysisStore {
         else if (this.hoveredTactic === id) this.hoveredTactic = null;
     }
 
+    get ralliesOfSelectedTactics() {
+        const rallies = [];
+
+    }
+
     constructor() {
         makeAutoObservable(this);
         Store.register('analysis', this);
@@ -85,21 +90,23 @@ export default class AnalysisStore {
             tactics: [],
             sequences: {},
         });
-        for (let i = 0; i < 13; i++)
-            this.pushHistory({
-                query: {
-                    type: 'LimitIndex',
-                    params: {
-                        min: 1,
-                        max: 3,
-                    }
-                },
-                tactics: [...new Array(30)].map((_, i) => ({
-                    ...genVirtualTactic(),
-                    fixId: i,
-                })),
-                sequences: {},
-            });
+
+        if (window.is_dev())
+            for (let i = 0; i < 13; i++)
+                this.pushHistory({
+                    query: {
+                        type: 'LimitIndex',
+                        params: {
+                            min: 1,
+                            max: 3,
+                        }
+                    },
+                    tactics: [...new Array(30)].map((_, i) => ({
+                        ...genVirtualTactic(),
+                        fixId: i,
+                    })),
+                    sequences: {},
+                });
 
         resolve();
     });

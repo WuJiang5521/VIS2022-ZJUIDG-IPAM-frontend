@@ -3,7 +3,7 @@
  */
 
 import React, {useCallback} from 'react';
-import {alpha, Box, Chip, darken, Typography} from "@mui/material";
+import {alpha, Box, Chip, darken, lighten, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import {inject, observer} from "mobx-react";
 import {useTheme} from "@mui/styles";
@@ -11,8 +11,9 @@ import {useTheme} from "@mui/styles";
 function ItemBox({type, params, selected, onSelect}) {
     const {t} = useTranslation();
     const theme = useTheme();
-    const color = selected ? darken(theme.palette.background.default, 0) : theme.palette.background.default;
-    const borderColor = selected ? darken(theme.palette.background.default, 0.7) : theme.palette.background.default;
+    const bgcolor = lighten(theme.palette.background.default, 0.6);
+    const color = selected ? darken(bgcolor, 0) : bgcolor;
+    const borderColor = selected ? darken(bgcolor, 0.7) : bgcolor;
     const tColor = theme.palette.getContrastText(color);
     return <Box bgcolor={color}
                 border={'2px solid'}
@@ -20,9 +21,14 @@ function ItemBox({type, params, selected, onSelect}) {
                 borderRadius={1}
                 mt={0} mr={1} mb={1} ml={1}
                 pt={1} pr={2} pb={1} pl={2}
-                cursor={'pointer'}
                 transition={'background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;'}
-                onClick={onSelect}>
+                onClick={onSelect}
+                sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                        backgroundColor: darken(bgcolor, 0.1)
+                    },
+                }}>
         <Typography color={tColor}>{t(type)}</Typography>
         <Box>
             {Object.entries(params || {})

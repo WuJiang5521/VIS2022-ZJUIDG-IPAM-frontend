@@ -3,12 +3,14 @@
  */
 
 import {inject, observer} from "mobx-react";
-import {Box, Button, Chip, Divider, IconButton, Menu, MenuItem, TextField, Typography} from "@mui/material";
+import {Box, Button, Chip, Divider, IconButton, Menu, MenuItem, TextField} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
 import strings from "../../static/strings";
 import {useState} from "react";
 import {findQueryType, types} from "./useQueryParams";
+import {scrollbarSize} from "../../static/theme";
+import {useTheme} from "@mui/styles";
 
 function TypesMenu({anchorEl, onClose, onSelect}) {
     const typeItems = [];
@@ -44,12 +46,19 @@ function ParamsMenu({anchorEl, onClose, onSelect, type}) {
     </Menu>;
 }
 
-function FormQuery({queryParams, setQueryParams, clearQueryParams}) {
+function FormQuery({queryParams, setQueryParams, onStart, onEnd}) {
     const {t} = useTranslation();
+    const theme = useTheme();
 
     const [typeBtn, setTypeBtn] = useState(null);
-    const handleOpenTypesMenu = e => setTypeBtn(e.currentTarget)
-    const handleCloseTypesMenu = () => setTypeBtn(null);
+    const handleOpenTypesMenu = e => {
+        onStart();
+        setTypeBtn(e.currentTarget)
+    }
+    const handleCloseTypesMenu = () => {
+        onEnd();
+        setTypeBtn(null);
+    }
     const handleSelectType = t => {
         setQueryParams({
             type: t,
@@ -82,40 +91,46 @@ function FormQuery({queryParams, setQueryParams, clearQueryParams}) {
         setQueryParams({params});
     };
 
-    return <Box>
-        <Box>
-            <Button onClick={handleOpenTypesMenu}>
-                {t(queryParams.type || strings.EmptyType)}
-            </Button>
-        </Box>
-        <Box>
+    return <Box display={'flex'} height={34}>
+        <Button sx={{flex: '0 0 auto'}} size={"small"} onClick={handleOpenTypesMenu}>
+            {t(queryParams.type || strings.EmptyType)}
+        </Button>
+        {
+            queryParams.type && !inputParam &&
+            <IconButton sx={{flex: '0 0 auto'}} size={"small"} onClick={handleOpenParamMenu}>
+                <Add/>
+            </IconButton>
+        }
+        {
+            Boolean(inputParam) &&
+            <TextField value={inputParam[1]}
+                       label={inputParam[0]}
+                       variant={"filled"}
+                       size={"small"}
+                       autoFocus
+                       onChange={handleChangeInputParam}
+                       sx={{
+                           flex: '0 0 100px',
+                           height: 40,
+                           '& .MuiInputBase-input': {pt: '10px', pb: '1px', pl: 1, pr: 1},
+                           '& .MuiInputLabel-root': {transform: `translate(${theme.spacing(1)}, 6px) scale(1)`},
+                           '& .MuiInputLabel-shrink': {transform: `translate(${theme.spacing(1)}, 0px) scale(0.6)`},
+                       }}
+                       onKeyDown={e => e.key === 'Enter' && handleInputParam()}/>
+        }
+        <Box sx={{flex: '1 0 0%', transform: `translateY(${scrollbarSize}px)`}}
+             overflow={'scroll hidden'}
+             display={'flex'}
+             flexWrap={'nowrap'}>
             {
                 queryParams.params &&
                 Object.entries(queryParams.params).map(([key, value]) => (
                     <Chip key={key}
+                          size={"small"}
                           label={`${key}: ${value}`}
                           sx={{marginLeft: 0.5}}
                           onDelete={handleDelete(key)}/>
                 ))
-            }
-            {
-                inputParam &&
-                <Box display={'inline-flex'} alignItems={'center'}>
-                    <Typography variant={'subtitle2'} sx={{margin: 1}}>{inputParam[0]}: </Typography>
-                    <TextField value={inputParam[1]}
-                               variant={"filled"}
-                               size={"small"}
-                               hiddenLabel
-                               autoFocus
-                               onChange={handleChangeInputParam}
-                               onKeyDown={e => e.key === 'Enter' && handleInputParam()}/>
-                </Box>
-            }
-            {
-                queryParams.type && !inputParam &&
-                <IconButton onClick={handleOpenParamMenu}>
-                    <Add/>
-                </IconButton>
             }
         </Box>
 

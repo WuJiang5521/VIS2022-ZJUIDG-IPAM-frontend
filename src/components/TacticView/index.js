@@ -29,7 +29,8 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                                width: `calc(100% - ${theme.spacing(2)})`,
                                height: `calc(100% - ${theme.spacing(2)})`,
                                margin: 1
-                           }}>
+                           }}
+                           onScroll={console.log}>
         <Table stickyHeader sx={{tableLayout: 'fixed'}}>
             <TableHead>
                 <TableRow>
