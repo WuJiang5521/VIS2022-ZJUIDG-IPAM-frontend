@@ -64,10 +64,10 @@ function NLQuery({queryParams, setQueryParams, clearQueryParams}) {
                    onChange={handleChangeText}
                    onKeyDown={e => (e.key === 'Enter') && handleProcessText()}/>
             {(queryParams.type === null && text === '') ?
-                <IconButton size={"small"}>
+                <IconButton size={"small"} flex={0}>
                     <KeyboardVoice/>
                 </IconButton> :
-                <IconButton size={"small"}
+                <IconButton size={"small"} flex={0}
                             onClick={handleClear}>
                     <Close/>
                 </IconButton>}

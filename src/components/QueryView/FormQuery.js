@@ -121,7 +121,8 @@ function FormQuery({queryParams, setQueryParams, onStart, onEnd}) {
         <Box sx={{flex: '1 0 0%', transform: `translateY(${scrollbarSize}px)`}}
              overflow={'scroll hidden'}
              display={'flex'}
-             flexWrap={'nowrap'}>
+             flexWrap={'nowrap'}
+             alignItems={'center'}>
             {
                 queryParams.params &&
                 Object.entries(queryParams.params).map(([key, value]) => (

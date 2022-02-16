@@ -10,8 +10,10 @@ const barType = 'Overlap';
 // const barType = 'Top';
 const barHeight = 20;
 const showBorder = true;
-// const doubleAlign = 'left';
-const doubleAlign = 'center';
+const doubleAlign = 'left';
+// const doubleAlign = 'center';
+// const trackColor = 'background.default';
+const trackColor = 'background.paper';
 
 export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) {
     return <TableRow>
@@ -29,6 +31,7 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
                  height={barHeight}
                  showBorder={showBorder}
                  textWidth={26}
+                 trackColor={trackColor}
                  value={tactic.usage_count / tactic.globalStat.usage}
                  label={tactic.usage_count}/>
         </BodyCell>
@@ -48,6 +51,7 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
                          showBorder={false}
                          value={[tactic.stat.winRate0, tactic.stat.winRate1]}
                          barColor={playerColors}
+                         trackColor={trackColor}
                          doubleAlign={doubleAlign}
                          label={[
                              `${(tactic.stat.winRate0 * 100).toFixed(1)}%`,
@@ -60,6 +64,7 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
                  height={barHeight}
                  showBorder={showBorder}
                  textWidth={34}
+                 trackColor={trackColor}
                  value={tactic.stat.majority / tactic.globalStat.majority}
                  label={tactic.stat.majority}/>
         </BodyCell>

@@ -156,23 +156,6 @@ function DoubleOverlapBar({
             </Typography>
         </Box>
     </Box>
-
-    // <Box {...commonStyle}
-    //             position={'relative'}
-    //             borderRight={`${showBorder ? 1 : 0}px solid ${barColor[0]}`}
-    //             bgcolor={trackColor}
-    //             color={theme.palette.getContrastText(trackColor)}>
-    //     {label[0] || val[0]}
-    //     <Box {...commonStyle}
-    //          position={'absolute'}
-    //          width={`${val[0]}%`}
-    //          top={0}
-    //          left={0}
-    //          bgcolor={barColor[0]}
-    //          color={theme.palette.getContrastText(barColor[0])}>
-    //         {label[0] || val[0]}
-    //     </Box>
-    // </Box>
 }
 
 function SingleTopBar({

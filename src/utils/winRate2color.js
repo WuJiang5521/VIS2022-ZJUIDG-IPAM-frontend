@@ -21,7 +21,7 @@ function getScaleColor(number, colors) {
     const {r: r1, g: g1, b: b1} = colors[idx];
     const {r: r2, g: g2, b: b2} = colors[idx + 1];
     const ratio = number - idx;
-    return `rgb(${r1 * ratio + r2 * (1 - ratio)}, ${g1 * ratio + g2 * (1 - ratio)}, ${b1 * ratio + b2 * (1 - ratio)})`
+    return `rgb(${r2 * ratio + r1 * (1 - ratio)}, ${g2 * ratio + g1 * (1 - ratio)}, ${b2 * ratio + b1 * (1 - ratio)})`
 }
 
 export default function winRate2color(winRate) {

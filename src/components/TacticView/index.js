@@ -5,8 +5,7 @@
 import {inject, observer} from "mobx-react";
 import {Table, TableBody, TableContainer, TableHead, TableRow} from "@mui/material";
 import {Tactic} from "./Tactic";
-import useTacticSort, {SortTypes} from "./useTacticSort";
-import useTacticStat from "./useTacticStat";
+import {SortTypes} from "../../utils/tacticSort";
 import {useTheme} from "@mui/styles";
 import {HeadCell} from "./TableCell";
 
@@ -17,9 +16,9 @@ const sortTypes = {
 }
 
 const TacticView = inject('analysis')(observer(({analysis}) => {
-    const tactics = analysis.state.tactics;
-    const tacticStats = useTacticStat(tactics);
-    const {sortedTactics, sortType, setSortType} = useTacticSort(tacticStats);
+    const sortType = analysis.sortType;
+    const setSortType = analysis.setSortType;
+    const sortedTactics = analysis.sortedTactics;
     const handleSort = types => selection => setSortType(types[selection]);
 
     const theme = useTheme();
@@ -28,7 +27,8 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                            sx={{
                                width: `calc(100% - ${theme.spacing(2)})`,
                                height: `calc(100% - ${theme.spacing(2)})`,
-                               margin: 1
+                               m: 1,
+                               pr: 1,
                            }}
                            onScroll={console.log}>
         <Table stickyHeader sx={{tableLayout: 'fixed'}}>

@@ -3,11 +3,9 @@
  */
 
 import {inject, observer} from "mobx-react";
-import {useState} from "react";
-import {Box, Button, Stack, ToggleButton, ToggleButtonGroup} from "@mui/material";
-import {Check, DataObject, Preview, Textsms} from "@mui/icons-material";
+import {Box, Button, Stack} from "@mui/material";
+import {Check, Undo, Visibility} from "@mui/icons-material";
 import NLQuery from "./NLQuery";
-import FormQuery from "./FormQuery";
 import QueryHistory from "./QueryHistory";
 import {useQueryParams} from "./useQueryParams";
 import {useTranslation} from "react-i18next";
@@ -34,25 +32,37 @@ const QueryView = inject()(observer(({
     </Stack>;
 }));
 
-const QueryViewToolbar = inject()(observer(({
-                                                applicable,
-                                            }) => {
+const QueryViewToolbar = inject('analysis')(observer(({
+                                                          analysis,
+                                                          applicable,
+                                                      }) => {
     const {t} = useTranslation();
+    const style = {
+        pt: 0.25,
+        pb: 0.25,
+        mr: 1,
+    }
     return <Box display={'flex'}
+                height={'100%'}
                 justifyContent={'right'}
                 alignItems={'center'}>
-        <Button size={"small"}
-                disabled={!applicable}
-                sx={{paddingTop: '3px', paddingBottom: '3px'}}>
-            <Preview/>
+        {!applicable && <Button size={'small'}
+                                disabled={analysis.history.length <= 1}
+                                startIcon={<Undo/>}
+                                sx={style}
+                                onClick={analysis.undo}>
+            {t(strings.Undo)}
+        </Button>}
+        {applicable && <Button size={"small"}
+                               startIcon={<Visibility/>}
+                               sx={style}>
             {t(strings.PreviewChange)}
-        </Button>
-        <Button size={"small"}
-                disabled={!applicable}
-                sx={{paddingTop: '3px', paddingBottom: '3px'}}>
-            <Check/>
+        </Button>}
+        {applicable && <Button size={"small"}
+                               startIcon={<Check/>}
+                               sx={style}>
             {t(strings.ApplyChange)}
-        </Button>
+        </Button>}
     </Box>;
 }));
 

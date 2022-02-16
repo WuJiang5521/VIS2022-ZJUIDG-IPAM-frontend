@@ -7,14 +7,26 @@ import {alpha, Box, Chip, darken, lighten, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import {inject, observer} from "mobx-react";
 import {useTheme} from "@mui/styles";
+import formatTime from "../../utils/formatTime";
+import {ArrowDownward, ArrowUpward, Remove} from "@mui/icons-material";
 
-function ItemBox({type, params, selected, onSelect}) {
+function ItemBox({idx, type, params, selected, onSelect, time, dl, dlOffset}) {
     const {t} = useTranslation();
     const theme = useTheme();
     const bgcolor = lighten(theme.palette.background.default, 0.6);
     const color = selected ? darken(bgcolor, 0) : bgcolor;
     const borderColor = selected ? darken(bgcolor, 0.7) : bgcolor;
     const tColor = theme.palette.getContrastText(color);
+    const captionStyle = {
+        sx: {
+            fontSize: '0.75rem',
+            lineHeight: 1.66,
+            letterSpacing: '0.033333em',
+            fontWeight: 400,
+            verticalAlign: 'middle',
+        }
+    }
+
     return <Box bgcolor={color}
                 border={'2px solid'}
                 borderColor={borderColor}
@@ -29,34 +41,63 @@ function ItemBox({type, params, selected, onSelect}) {
                         backgroundColor: darken(bgcolor, 0.1)
                     },
                 }}>
-        <Typography color={tColor}>{t(type)}</Typography>
-        <Box>
-            {Object.entries(params || {})
-                .map(([key, val]) => (
-                    <Chip key={key}
-                          size={"small"}
-                          label={`${key}: ${val}`}
-                          sx={{
-                              m: 0.5,
-                              background: alpha(tColor, 0.18),
-                              color: tColor,
-                          }}/>
-                ))}
+        <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
+            <Typography color={tColor}>{idx}. {t(type)}</Typography>
+            <Typography {...captionStyle}>{formatTime(time)}</Typography>
+        </Box>
+
+        <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
+            <Box flex={1}>
+                {Object.entries(params || {})
+                    .map(([key, val]) => (
+                        <Chip key={key}
+                              size={"small"}
+                              label={`${key}: ${val}`}
+                              sx={{
+                                  m: 0.5,
+                                  background: alpha(tColor, 0.18),
+                                  color: tColor,
+                              }}/>
+                    ))}
+            </Box>
+            <Typography {...captionStyle}>
+                {dl}
+                <Box component={'span'}
+                     ml={0.5}
+                     sx={{
+                         color: dlOffset > 0 ? 'error.main' :
+                             (dlOffset === 0 ? tColor :
+                                 'success.main')
+                     }}>
+                    {dlOffset > 0 && <ArrowUpward {...captionStyle}/>}
+                    {dlOffset === 0 && <Remove {...captionStyle}/>}
+                    {dlOffset < 0 && <ArrowDownward {...captionStyle}/>}
+                    {Math.abs(dlOffset)}
+                </Box>
+            </Typography>
         </Box>
     </Box>
 }
 
-function HistoryItem({query, analysis, idx}) {
+function HistoryItem({query, analysis, idx, time, dl, dlOffset}) {
     const handleSelect = useCallback(() => analysis.viewHistory(idx), [analysis, idx]);
     return query === null ?
-        <ItemBox type={'Init'}
+        <ItemBox idx={idx}
+                 type={'Init'}
                  selected={analysis.currentViewHistory === idx}
                  onSelect={handleSelect}
+                 time={time}
+                 dl={dl}
+                 dlOffset={dlOffset}
         /> :
-        <ItemBox type={query.type}
+        <ItemBox idx={idx}
+                 type={query.type}
                  params={query.params}
                  selected={analysis.currentViewHistory === idx}
                  onSelect={handleSelect}
+                 time={time}
+                 dl={dl}
+                 dlOffset={dlOffset}
         />;
 }
 

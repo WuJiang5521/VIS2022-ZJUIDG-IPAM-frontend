@@ -1,7 +1,7 @@
 import {alpha} from "@mui/material";
 
 const scrollbarColor = 'rgb(36, 40, 41)'
-export const scrollbarSize = 6;
+export const scrollbarSize = 4;
 
 const theme = {
     palette: {

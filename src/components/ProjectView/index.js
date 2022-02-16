@@ -4,29 +4,47 @@
 
 import {inject, observer} from "mobx-react";
 import {Box} from "@mui/material";
-import useTacticStat from "../TacticView/useTacticStat";
 import Point from "./Point";
 import winRate2color from "../../utils/winRate2color";
+import {useRef} from "react";
+import {useSize} from "../../utils/useSize";
+import scale from "../../utils/scale";
+import tacticSorter, {SortTypes} from "../../utils/tacticSort";
 
-const ProjectView = inject('analysis')(observer(({analysis}) => {
-    const tacticStat = useTacticStat(analysis.state.tactics);
-    const sortedTactics = tacticStat.map(t => t).sort((t1, t2) => 0);
+const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize = 20}) => {
+    const tactics = analysis.sortedTactics;
+    const sortedTactics = tactics.map((t, tid) => ({
+        idxInTacticView: tid,
+        ...t,
+    })).sort(tacticSorter[SortTypes.UsageDown]);
+    const maxUsage = tactics.length > 0 ? tactics[0].globalStat.usage : 0;
 
-    return <Box>
-        {sortedTactics.map(t => {
-            const isSelected = analysis.selectedTactics.includes(t.fixId);
-            return <Point key={t.id}
-                          t={t}
-                          cx={t.x}
-                          cy={t.y}
-                          r={t.usage_count}
-                          color={winRate2color(t.stat.winRate0)}
-                          isHovered={analysis.hoveredTactic === t.fixId}
-                          isSelected={isSelected}
-                          isFavorite={analysis.favoriteTactics.includes(t.fixId)}
-                          isCache={false}
-                          onSelect={() => analysis.selectTactic(t.fixId, !isSelected)}/>
-        })}
+    const containerRef = useRef(null);
+    const {width, height} = useSize(containerRef);
+
+    const scaleSize = scale(
+        [0, maxUsage],
+        [minSize, maxSize]
+    );
+
+    return <Box width={'100%'} height={'100%'} p={1}>
+        <Box ref={containerRef} width={'100%'} height={'100%'} overflow={'hidden'}>
+            {sortedTactics.map(t => {
+                const isSelected = analysis.selectedTactics.includes(t.fixId);
+                return <Point key={t.id}
+                              id={t.idxInTacticView + 1}
+                              t={t}
+                              cx={t.x * width}
+                              cy={t.y * height}
+                              r={scaleSize(t.usage_count)}
+                              color={winRate2color(t.stat.winRate0)}
+                              isHovered={analysis.hoveredTactic === t.fixId}
+                              isSelected={isSelected}
+                              isFavorite={analysis.favoriteTactics.includes(t.fixId)}
+                              isCache={false}
+                              onSelect={() => analysis.selectTactic(t.fixId, !isSelected)}/>
+            })}
+        </Box>
     </Box>;
 }));
 

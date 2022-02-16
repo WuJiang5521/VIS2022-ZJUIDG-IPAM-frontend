@@ -7,6 +7,7 @@ const dict = {
 
     QueryView: {cn: '查询视图', en: 'Query View'},
     PreviewChange: {cn: '预览', en: 'Preview'},
+    Undo: {cn: '撤销', en: 'Undo'},
     ApplyChange: {cn: '确认', en: 'Apply'},
     EmptyType: {cn: '选择修改类型', en: 'Select Query Type'},
 

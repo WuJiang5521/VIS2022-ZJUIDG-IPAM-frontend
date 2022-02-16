@@ -26,26 +26,26 @@ function App() {
             <Box marginTop={'40px'}
                  width={'100vw'}
                  height={'calc(100vh - 40px)'}>
-                <LayoutManager size={[12, 12]}
+                <LayoutManager size={[24, 24]}
                                padding={1}
                                panels={[
                                    {
-                                       size: [3, 6],
+                                       size: [5, 14],
                                        title: t(strings.QueryView),
                                        ...queryView,
                                    },
                                    {
-                                       size: [6, 12],
+                                       size: [13, 24],
                                        title: t(strings.TacticView),
                                        ...tacticView,
                                    },
                                    {
-                                       size: [3, 12],
+                                       size: [6, 24],
                                        title: t(strings.RallyView),
                                        ...rallyView,
                                    },
                                    {
-                                       size: [3, 6],
+                                       size: [5, 10],
                                        title: t(strings.ProjectView),
                                        ...projectView,
                                    },

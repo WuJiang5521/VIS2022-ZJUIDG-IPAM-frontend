@@ -1,5 +1,3 @@
-import {useState} from "react";
-
 export const SortTypes = {
     MajorityDown: 'MajorityDown',
     MajorityUp: 'MajorityUp',
@@ -18,11 +16,4 @@ const tacticSorter = {
     [SortTypes.WinRateUp]: (t1, t2) => t1.stat.winRate0 - t2.stat.winRate0,
 }
 
-export default function useTacticSort(tactics) {
-    const [sortType, setSortType] = useState('MajorityDown');
-    return {
-        sortType,
-        setSortType,
-        sortedTactics: tactics.map(t => t).sort(tacticSorter[sortType]),
-    }
-}
+export default tacticSorter;

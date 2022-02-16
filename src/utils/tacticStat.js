@@ -1,6 +1,6 @@
-import randomInt from "../../utils/randomInt";
+import randomInt from "./randomInt";
 
-function genTacticStat(tactic=null) {
+export function genTacticStat(tactic=null) {
     const stat = {
         winRate0: 0,
         winRate1: 0,
@@ -16,20 +16,7 @@ function genTacticStat(tactic=null) {
     return stat;
 }
 
-function mergeStat(globalStat, stat) {
+export function mergeStat(globalStat, stat) {
     Object.keys(globalStat)
         .forEach(key => globalStat[key] = Math.max(globalStat[key], stat[key]));
-}
-
-export default function useTacticStat(tactics) {
-    const globalStat = genTacticStat();
-    return tactics.map(tactic => {
-        const stat = genTacticStat(tactic);
-        mergeStat(globalStat, stat);
-        return {
-            ...tactic,
-            stat,
-            globalStat,
-        }
-    })
 }
