@@ -8,12 +8,12 @@ import TacticDetail from "./TacticDetail";
 const barType = 'Overlap';
 // const barType = 'Left';
 // const barType = 'Top';
-const barHeight = 20;
-const showBorder = true;
+const barHeight = 30;
+const showBorder = false;
 const doubleAlign = 'left';
 // const doubleAlign = 'center';
-// const trackColor = 'background.default';
-const trackColor = 'background.paper';
+const trackColor = 'rgb(244,244,244)';
+// const trackColor = 'background.paper';
 
 export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) {
     return <TableRow>
