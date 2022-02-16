@@ -108,7 +108,6 @@ export default class AnalysisStore {
         const sequences = this.state.sequences;
         this.selectedTactics.forEach(id => {
             const tactic = tactics[id];
-
             rallies.push(...(sequences[tactic.id] || []))
         })
 
