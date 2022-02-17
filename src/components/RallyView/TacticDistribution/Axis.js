@@ -2,6 +2,7 @@ import React, {memo} from "react";
 import {useTranslation} from "react-i18next";
 import {useTheme} from "@mui/styles";
 import strings from "../../../static/strings";
+import Text from "./Text";
 
 const Arrow = memo(({x1, x2, y1, y2, size, style, arrowStyle}) => {
     size = size || [10, 10];
@@ -61,11 +62,11 @@ const Axis = memo(({
                    x2={width} y2={0}
                    size={arrowSize}
                    style={mainAxisStyle}/>
-            <text x={width} y={-textPadding - arrowSize[0] / 2}
+            <Text x={width} y={-textPadding - arrowSize[0] / 2}
                   textAnchor={'end'} alignmentBaseline={"baseline"}
                   style={textStyle}>
                 {t(strings.Index)}
-            </text>
+            </Text>
         </g>
 
         {/* axis y */}
@@ -75,23 +76,23 @@ const Axis = memo(({
                    x2={0} y2={0}
                    size={arrowSize}
                    style={mainAxisStyle}/>
-            <text x={textPadding + arrowSize[0] / 2} y={0}
+            <Text x={textPadding + arrowSize[0] / 2} y={0}
                   textAnchor={'start'} alignmentBaseline={"hanging"}
                   style={textStyle}>
                 {t(strings.Frequency)}
-            </text>
+            </Text>
         </g>
 
         {/* label x */}
         <g transform={`translate(${ox}, ${oy})`}
            style={{transition: 'transform .3s ease'}}>
             {[...new Array(maxX)].map((_, i) => (
-                <text key={i}
+                <Text key={i}
                       transform={`translate(${barStartX(i) - ox}, 3)`}
                       textAnchor={'middle'} alignmentBaseline={'hanging'}
                       style={{transition: 'transform .3s ease', ...textStyle}}>
                     {i + 1}
-                </text>
+                </Text>
             ))}
         </g>
 
@@ -105,11 +106,11 @@ const Axis = memo(({
                     <line x1={0} y1={0}
                           x2={width - sideBarWidth} y2={0}
                           style={hintLineStyle}/>
-                    <text x={-3} y={0}
+                    <Text x={-3} y={0}
                           textAnchor={'end'} alignmentBaseline={'middle'}
                           style={textStyle}>
                         {h}
-                    </text>
+                    </Text>
                 </g>
             ))}
         </g>

@@ -7,22 +7,45 @@ import {Box, Stack} from "@mui/material";
 import TacticDistribution from "./TacticDistribution";
 import RallyList from "./RallyList";
 import VideoPlayer from "./VideoPlayer";
+import {useCallback, useState} from "react";
 
-const RallyView = inject('analysis')(observer(({analysis}) => {
+const RallyView = inject('analysis', 'data')(observer(({analysis, data}) => {
     const rallies = analysis.ralliesOfSelectedTactics;
+
+    const [currentPlay, setCurrentPlay] = useState({
+        id: null,
+        videoName: null,
+        startTime: null,
+        endTime: null,
+    });
+    const handlePlay = useCallback(rally => {
+        setCurrentPlay({
+            id: rally.id,
+            videoName: rally.video_name,
+            startTime: rally.start_time,
+            endTime: rally.end_time,
+        })
+    }, []);
+
     return <Stack width={'100%'} height={'100%'}
                   p={1}>
         <Box mb={1} flex={'0 0 150px'} overflow={'hidden'}>
             <TacticDistribution rallies={rallies}/>
         </Box>
         <Box mb={1} flex={'1 0 0%'} overflow={'hidden'}>
-            <RallyList/>
+            <RallyList rallies={rallies.filter(rally => rally.win)}
+                       currentPlay={currentPlay.id}
+                       onPlay={handlePlay}/>
         </Box>
         <Box mb={1} flex={'1 0 0%'} overflow={'hidden'}>
-            <RallyList/>
+            <RallyList rallies={rallies.filter(rally => !rally.win)}
+                       currentPlay={currentPlay.id}
+                       onPlay={handlePlay}/>
         </Box>
         <Box flex={'0 0 auto'} overflow={'hidden'}>
-            <VideoPlayer/>
+            <VideoPlayer src={data.getVideoSrc(currentPlay.videoName)}
+                         startTime={currentPlay.startTime}
+                         endTime={currentPlay.endTime}/>
         </Box>
     </Stack>;
 }));

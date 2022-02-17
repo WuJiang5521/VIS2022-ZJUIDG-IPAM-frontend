@@ -17,6 +17,9 @@ const dict = {
     RallyView: {cn: '回合视图', en: 'Rally View'},
     Frequency: {cn: '频次', en: 'Freq.'},
     Index: {cn: '拍次', en: 'Hit No.'},
+    videoHintPending: {cn: '请选择回合播放视频', en: 'Please select a rally to play'},
+    videoHintError: {cn: '视频资源错误，请联系网站维护者', en: 'The video resource cannot be played'},
+    videoHintLoading: {cn: '视频正在加载', en: 'The video is loading ... Please wait ...'},
 
     ProjectView: {cn: '投影视图', en: 'Project View'},
 

@@ -37,6 +37,11 @@ export default class DataStore {
         return matches;
     }
 
+    getVideoSrc = videoName =>
+        (videoName && videoName.endsWith('mp4')) ?
+            api.videoSrc(videoName) :
+            null;
+
     constructor() {
         makeAutoObservable(this);
         Store.register('data', this);

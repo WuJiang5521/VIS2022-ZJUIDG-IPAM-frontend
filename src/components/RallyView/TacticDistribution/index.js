@@ -9,6 +9,7 @@ import useStyleControl from "./useStyleControl";
 import HintLine from "./HintLine";
 import StackBar from "./StackBar";
 import Axis from "./Axis";
+import tacticDistributionStat from "./stat";
 
 function TacticDistribution({rallies}) {
     const theme = useTheme();
@@ -45,29 +46,6 @@ function TacticDistribution({rallies}) {
             </svg>
         </Box>}
     </Observer>
-}
-
-const insert = (distribution, idx, win) => {
-    while (distribution.length <= idx + 1) distribution.push([0, 0]);
-    distribution[idx][win ? 0 : 1] += 1;
-    return distribution[idx];
-}
-
-function tacticDistributionStat(rallies) {
-    const distribution = [];
-    let maxX = 0, maxY = 0;
-    rallies.forEach(rally => {
-        const bar = insert(distribution, rally.index, rally.win)
-        maxX = Math.max(distribution.length, maxX);
-        maxY = Math.max(bar[0] + bar[1], maxY);
-    });
-    return {
-        stat: {
-            maxX,
-            maxY,
-        },
-        distribution,
-    };
 }
 
 export default TacticDistribution;

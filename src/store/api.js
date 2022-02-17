@@ -57,6 +57,8 @@ class API extends BaseAPI {
 
     undo = () => this.fetch(url('/modification'), {method: 'DELETE'})
         .then(res => res.json())
+
+    videoSrc = videoName => url(`/video/${videoName}`)
 }
 
 const api = new API();

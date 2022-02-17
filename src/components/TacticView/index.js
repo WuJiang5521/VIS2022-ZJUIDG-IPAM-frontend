@@ -36,7 +36,7 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                 <TableRow>
                     <HeadCell label={'No.'} width={67}/>
                     <HeadCell label={'Tactic'}/>
-                    <HeadCell label={'Usage'} width={120}
+                    <HeadCell label={'Freq.'} width={120}
                               onSort={handleSort(sortTypes.usage)}
                               sort={sortTypes.usage.indexOf(sortType)}/>
                     <HeadCell label={'Win Rate'} width={120}
