@@ -13,7 +13,11 @@ const dict = {
 
     PreviewView: {cn: '预览视图', en: 'Preview View'},
     TacticView: {cn: '战术视图', en: 'Tactic View'},
+
     RallyView: {cn: '回合视图', en: 'Rally View'},
+    Frequency: {cn: '频次', en: 'Freq.'},
+    Index: {cn: '拍次', en: 'Hit No.'},
+
     ProjectView: {cn: '投影视图', en: 'Project View'},
 
     Error: {cn: '错误', en: 'Error'},

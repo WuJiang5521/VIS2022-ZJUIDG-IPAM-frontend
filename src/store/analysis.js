@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import Store from "./store";
 import api from "./api";
-import genVirtualTactic from "../utils/virtualTactic";
+import {virtualRally, virtualTactic} from "../utils/virtualData";
 import randomInt from "../utils/randomInt";
 import tacticSorter, {SortTypes} from "../utils/tacticSort";
 import {genTacticStat, mergeStat} from "../utils/tacticStat";
@@ -135,6 +135,14 @@ export default class AnalysisStore {
                 lastUpdate = new Date(lastUpdate);
                 lastUpdate.setMinutes(lastUpdate.getMinutes() + randomInt(3, 6));
                 lastDescriptionLength += randomInt(-5, 10);
+
+                const tactics = [...new Array(30)].map((_, i) => ({
+                    ...virtualTactic(),
+                    fixId: i,
+                }));
+                const sequences = {};
+                tactics.forEach(t => sequences[t.id] = [...Array(t.usage_count)].map(virtualRally));
+
                 this.pushHistory({
                     lastUpdate: lastUpdate,
                     desc_len: lastDescriptionLength,
@@ -145,11 +153,8 @@ export default class AnalysisStore {
                             max: 3,
                         }
                     },
-                    tactics: [...new Array(30)].map((_, i) => ({
-                        ...genVirtualTactic(),
-                        fixId: i,
-                    })),
-                    sequences: {},
+                    tactics,
+                    sequences,
                 });
             }
         }
