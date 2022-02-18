@@ -166,7 +166,7 @@ export default class AnalysisStore {
                     desc_len: lastDescriptionLength,
                     query: {
                         type: 'LimitIndex',
-                        text: 'I only need serving tactics.',
+                        text: 'I only need serving tactics. I don\'t need other tactics.',
                         params: {
                             min: 1,
                             max: 3,

@@ -3,7 +3,7 @@
  */
 
 import React, {useCallback, useRef} from 'react';
-import {alpha, Box, Chip, darken, lighten, Typography} from "@mui/material";
+import {alpha, Box, Chip, darken, Divider, lighten, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import {inject, observer} from "mobx-react";
 import {useTheme} from "@mui/styles";
@@ -72,7 +72,7 @@ function ItemBox({idx, type, text, params, selected, onSelect, time, dl, dlOffse
                 onClick={onSelect}
                 overflow={'hidden'}
                 sx={{
-                    height: showDetail ? 100 : 24 + parseInt(theme.spacing(2)),
+                    height: showDetail ? 110 : 24 + parseInt(theme.spacing(2)),
                     cursor: 'pointer',
                     transition: transition('all'),
                     '&:hover': {
@@ -80,9 +80,11 @@ function ItemBox({idx, type, text, params, selected, onSelect, time, dl, dlOffse
                     },
                 }}>
         <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
+            <Typography color={tColor} mr={1} noWrap>{text}</Typography>
             <Typography {...captionStyle}>{formatTime(time)}</Typography>
-            <Typography color={tColor}>{text}</Typography>
         </Box>
+
+        <Divider sx={{m: 0.5}}/>
 
         <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
             <Typography color={tColor}>{t(type)}</Typography>
