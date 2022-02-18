@@ -149,7 +149,7 @@ export default class AnalysisStore {
                 lastUpdate.setMinutes(lastUpdate.getMinutes() + randomInt(3, 6));
                 lastDescriptionLength += randomInt(-5, 10);
 
-                const tactics = [...new Array(30)].map((_, i) => ({
+                const tactics = [...new Array(randomInt(17, 24))].map((_, i) => ({
                     ...virtualTactic(),
                     fix: false,
                     fixId: i,
@@ -166,6 +166,7 @@ export default class AnalysisStore {
                     desc_len: lastDescriptionLength,
                     query: {
                         type: 'LimitIndex',
+                        text: 'I only need serving tactics.',
                         params: {
                             min: 1,
                             max: 3,

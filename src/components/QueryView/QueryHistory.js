@@ -17,13 +17,16 @@ function QueryHistory({analysis}) {
                 query: h.query,
                 desc_len: h.desc_len,
                 lastUpdate: h.lastUpdate,
+                tac_num: h.tactics.length,
             }))
             .map((query, qId, arr) => (
                 <HistoryItem key={qId}
                              query={query.query}
                              time={query.lastUpdate}
                              dl={query.desc_len}
-                             dlOffset={qId === 0 ? 0 : query.desc_len - arr[qId - 1].desc_len}
+                             dlOffset={(qId === 0) ? 0 : (query.desc_len - arr[qId - 1].desc_len)}
+                             tc={query.tac_num}
+                             tcOffset={(qId === 0) ? 0 : (query.tac_num - arr[qId - 1].tac_num)}
                              idx={qId}/>
             ))
             .reverse()}

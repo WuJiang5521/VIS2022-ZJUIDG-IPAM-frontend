@@ -1,11 +1,17 @@
 import React from 'react';
 import {inject, observer} from "mobx-react";
-import {Box} from "@mui/material";
+import styled from "@emotion/styled";
+import {transition} from "../../static/theme";
 
 function TacticDetail({}) {
-    return <Box width={'100%'} height={80}>
+    return <Container height={80}>
 
-    </Box>
+    </Container>
 }
+
+const Container = styled('div')({
+    width: '100%',
+    transition: transition('height'),
+})
 
 export default inject()(observer(TacticDetail));
