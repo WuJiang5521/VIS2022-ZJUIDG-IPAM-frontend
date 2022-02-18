@@ -3,11 +3,15 @@
  */
 
 import {inject, observer} from "mobx-react";
-import {Box} from "@mui/material";
 import HistoryItem from "./HistoryItem";
+import {Box} from "@mui/material";
 
 function QueryHistory({analysis}) {
-    return <Box width={'100%'} height={'100%'} overflow={'hidden scroll'}>
+    return <Box sx={{
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden scroll',
+    }}>
         {analysis.history
             .map(h => ({
                 query: h.query,

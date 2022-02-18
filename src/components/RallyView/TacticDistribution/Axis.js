@@ -3,13 +3,14 @@ import {useTranslation} from "react-i18next";
 import {useTheme} from "@mui/styles";
 import strings from "../../../static/strings";
 import Text from "./Text";
+import {transition} from "../../../static/theme";
 
 const Arrow = memo(({x1, x2, y1, y2, size, style, arrowStyle}) => {
     size = size || [10, 10];
     style = style || {stroke: 'black', strokeWidth: 1, fill: 'none'};
     arrowStyle = arrowStyle || style;
     const path = `M${-size[0] / 2} ${-size[1]}L0 0L${size[0] / 2} ${-size[1]}`;
-    const deg = Math.atan((y2 - y1) / (x2 - x1)) / Math.PI * 180
+    const deg = ((Math.atan((y2 - y1) / (x2 - x1)) / Math.PI * 180) || 0)
         + ((y2 - y1) * (x2 - x1) < 0 ? 180 : 0)
         - 90;
     return <React.Fragment>
@@ -57,7 +58,7 @@ const Axis = memo(({
     return <g>
         {/* axis x */}
         <g transform={`translate(${0}, ${oy})`}
-           style={{transition: 'transform .3s ease'}}>
+           style={{transition: transition('transform')}}>
             <Arrow x1={0} y1={0}
                    x2={width} y2={0}
                    size={arrowSize}
@@ -71,7 +72,7 @@ const Axis = memo(({
 
         {/* axis y */}
         <g transform={`translate(${sideBarWidth}, ${0})`}
-           style={{transition: 'transform .3s ease'}}>
+           style={{transition: transition('transform')}}>
             <Arrow x1={0} y1={height}
                    x2={0} y2={0}
                    size={arrowSize}
@@ -85,12 +86,12 @@ const Axis = memo(({
 
         {/* label x */}
         <g transform={`translate(${ox}, ${oy})`}
-           style={{transition: 'transform .3s ease'}}>
+           style={{transition: transition('transform')}}>
             {[...new Array(maxX)].map((_, i) => (
                 <Text key={i}
                       transform={`translate(${barStartX(i) - ox}, 3)`}
                       textAnchor={'middle'} alignmentBaseline={'hanging'}
-                      style={{transition: 'transform .3s ease', ...textStyle}}>
+                      style={{transition: transition('transform'), ...textStyle}}>
                     {i + 1}
                 </Text>
             ))}
@@ -98,11 +99,11 @@ const Axis = memo(({
 
         {/* label y */}
         <g transform={`translate(${ox}, ${oy})`}
-           style={{transition: 'transform .3s ease'}}>
+           style={{transition: transition('transform')}}>
             {hintLines.map((h, hId) => (
                 <g key={h}
                    transform={`translate(0, -${h * unitHeight})`}
-                   style={{transition: 'transform .3s ease'}}>
+                   style={{transition: transition('transform')}}>
                     <line x1={0} y1={0}
                           x2={width - sideBarWidth} y2={0}
                           style={hintLineStyle}/>

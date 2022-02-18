@@ -6,8 +6,10 @@ import {inject, observer} from "mobx-react";
 import {Box, Divider, IconButton} from "@mui/material";
 import FormQuery from "./FormQuery";
 import {useCallback, useState} from "react";
-import {styled, useTheme} from "@mui/styles";
+import {useTheme} from "@mui/styles";
 import {Close, KeyboardVoice} from "@mui/icons-material";
+import {transition} from "../../static/theme";
+import styled from '@emotion/styled';
 
 const Input = styled('input')({
     border: 'none',
@@ -51,7 +53,7 @@ function NLQuery({queryParams, setQueryParams, clearQueryParams}) {
                 overflow={'hidden'}
                 height={expanded ? 68 + parseInt(theme.spacing(4)) : 34 + parseInt(theme.spacing(2))}
                 sx={{
-                    transition: 'height .3s ease',
+                    transition: transition('height'),
                     borderWidth: 1,
                     borderStyle: 'solid',
                     borderColor: '-internal-light-dark(rgb(118,118,118), rgb(133,133,133))',

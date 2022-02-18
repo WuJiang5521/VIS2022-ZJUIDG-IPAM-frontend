@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "ahooks": "^3.1.9",
     "i18next": "^21.6.6",
     "mobx": "^6.3.12",
     "mobx-react": "^7.2.1",

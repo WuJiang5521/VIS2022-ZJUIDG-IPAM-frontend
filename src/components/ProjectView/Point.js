@@ -3,7 +3,8 @@
  */
 
 import {memo} from 'react';
-import {Box, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
+import styled from "@emotion/styled";
 
 function Point({
                    id,
@@ -18,30 +19,36 @@ function Point({
                    isCache,
                    onSelect,
                }) {
-    return <Box position={'absolute'}
-                sx={{transform: `translate(${cx}px, ${cy}px)`}}
-                width={0}
-                height={0}
-                overflow={'visible'}>
-        <Box width={r * 2}
-             height={r * 2}
-             borderRadius={`${r}px`}
-             bgcolor={color}
-             textAlign={'center'}
-             lineHeight={`${r * 2}px`}
-             sx={{
-                 fontSize: '0.75rem',
-                 fontWeight: 400,
-                 letterSpacing: '0.03333em',
-                 transform: `translate(-${r}px, -${r}px)`,
-                 cursor: 'pointer',
-                 '&:hover': {
-                     outline: '-webkit-focus-ring-color auto 1px'
-                 }
-             }}>
+    return <Pos style={{transform: `translate(${cx}px, ${cy}px)`}}>
+        <P style={{
+            width: r * 2,
+            height: r * 2,
+            borderRadius: `${r}px`,
+            backgroundColor: color,
+            lineHeight: `${r * 2}px`,
+            transform: `translate(-${r}px, -${r}px)`,
+        }}>
             <Typography variant={'caption'}>{id}</Typography>
-        </Box>
-    </Box>;
+        </P>
+    </Pos>;
 }
+
+const Pos = styled('div')({
+    position: 'absolute',
+    width: 0,
+    height: 0,
+    overflow: 'visible',
+});
+
+const P = styled('div')({
+    fontSize: '0.75rem',
+    fontWeight: 400,
+    letterSpacing: '0.03333em',
+    textAlign: 'center',
+    cursor: 'pointer',
+    '&:hover': {
+        outline: '-webkit-focus-ring-color auto 1px'
+    }
+})
 
 export default memo(Point);

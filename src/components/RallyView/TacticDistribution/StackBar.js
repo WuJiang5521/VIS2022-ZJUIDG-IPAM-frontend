@@ -1,5 +1,6 @@
 import {Tooltip} from "@mui/material";
 import React, {memo} from "react";
+import {transition} from "../../../static/theme";
 
 export default memo(function StackBar({idx, value, color, styleControl}) {
     const {height, barWidth, barStartX, oy, unitHeight} = styleControl;
@@ -26,7 +27,7 @@ export default memo(function StackBar({idx, value, color, styleControl}) {
             </tr>
             </tbody>
         </table>}>
-        <g transform={`translate(${startX},${startY})`} style={{transition: 'transform .3s ease'}}>
+        <g transform={`translate(${startX},${startY})`} style={{transition: transition('transform')}}>
             <rect {...barStyle}
                   y={-height}
                   height={height}
@@ -35,12 +36,12 @@ export default memo(function StackBar({idx, value, color, styleControl}) {
                   y={-value[0] * unitHeight}
                   height={value[0] * unitHeight}
                   fill={color[0]}
-                  style={{transition: 'y .3s ease, height .3s ease'}}/>
+                  style={{transition: transition('y', 'height')}}/>
             <rect {...barStyle}
                   y={-(value[0] + value[1]) * unitHeight}
                   height={value[1] * unitHeight}
                   fill={color[1]}
-                  style={{transition: 'y .3s ease, height .3s ease'}}/>
+                  style={{transition: transition('y', 'height')}}/>
         </g>
     </Tooltip>;
 })

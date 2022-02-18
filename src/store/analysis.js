@@ -22,6 +22,15 @@ export default class AnalysisStore {
     }
     setOpponents = ops => this.opponents = ops;
 
+    get attrs() {
+        const datasets = Store.getStores().data.datasets;
+        for (const ds of datasets) {
+            if (ds.name === this.dataset)
+                return ds.attrs;
+        }
+        return [];
+    }
+
     restart = () => {
         api.setDataset(this.dataset, this.player, this.opponents)
             .then(res => {
@@ -108,7 +117,11 @@ export default class AnalysisStore {
         const sequences = this.state.sequences;
         this.selectedTactics.forEach(id => {
             const tactic = tactics[id];
-            rallies.push(...(sequences[tactic.id] || []))
+            const seqs = sequences[tactic.id] || [];
+            rallies.push(...seqs.map(seq => ({
+                ...seq,
+                tacticPos: [seq.index, seq.index + tactic.tactic.length]
+            })))
         })
 
         return rallies;
@@ -138,10 +151,15 @@ export default class AnalysisStore {
 
                 const tactics = [...new Array(30)].map((_, i) => ({
                     ...virtualTactic(),
+                    fix: false,
                     fixId: i,
                 }));
                 const sequences = {};
-                tactics.forEach(t => sequences[t.id] = [...Array(t.usage_count)].map(virtualRally));
+                tactics.forEach(t => sequences[t.id] = [...Array(t.usage_count)].map(() => {
+                    const rally = virtualRally(t.id, t.tactic.length);
+                    rally.index = rally.index[0][1];
+                    return rally;
+                }));
 
                 this.pushHistory({
                     lastUpdate: lastUpdate,

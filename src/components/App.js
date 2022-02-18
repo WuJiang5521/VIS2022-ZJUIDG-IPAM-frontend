@@ -23,9 +23,11 @@ function App() {
         <CssBaseline/>
         <React.Fragment>
             <TitleBar/>
-            <Box marginTop={'40px'}
-                 width={'100vw'}
-                 height={'calc(100vh - 40px)'}>
+            <Box sx={{
+                mt: '40px',
+                width: '100vw',
+                height: 'calc(100vh - 40px)',
+            }}>
                 <LayoutManager size={[24, 24]}
                                padding={1}
                                panels={[

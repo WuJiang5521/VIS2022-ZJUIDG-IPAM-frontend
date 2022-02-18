@@ -48,3 +48,4 @@ const theme = {
 export default theme;
 // playerColors must be in rgb form!!!
 export const playerColors = ['rgb(211,72,8)', 'rgb(4, 101, 130)'];
+export const transition = (...keys) => keys.map(key => `${key} .3s cubic-bezier(0.4, 0, 0.2, 1) 0ms`).join(',');

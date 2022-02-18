@@ -32,7 +32,7 @@ export default function useStyleControl({width, height}, {maxX, maxY}) {
         const pt = 15;
         const pr = 15;
         const sideBarWidth = (step * count).toString().length * fontSize / 2 + textPadding * 2;
-        const unitWidth = (width - sideBarWidth - pr) / maxX;
+        const unitWidth = Math.max((width - sideBarWidth - pr) / maxX, 1);
         const bottomBarHeight = textPadding * 2 + fontSize;
         const unitHeight = (height - bottomBarHeight - pt) / (step * count);
         const barWidth = Math.min(20, unitWidth * 0.8);

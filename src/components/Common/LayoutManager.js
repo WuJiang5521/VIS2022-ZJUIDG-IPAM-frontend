@@ -94,22 +94,28 @@ const useBoxes = (grids, layoutSize, gridSize, padding) => {
 function Panel({box, title, toolbar, view}) {
     const theme = useTheme();
 
-    return <Box position={'absolute'}
-                backgroundColor={theme.palette.background.paper}
-                left={box.x}
-                top={box.y}
-                width={box.width}
-                height={box.height}
-                borderRadius={`${theme.shape.borderRadius}px`}
-                overflow={'hidden'}>
-        <Box width={box.width}
-             height={30}
-             display={'flex'}>
-            <Box flex={'0 0 auto'}
-                 backgroundColor={theme.palette.primary.main}
-                 paddingLeft={2}
-                 paddingRight={2}
-                 borderRadius={`0 0 ${theme.shape.borderRadius}px 0`}>
+    return <Box sx={{
+        position: 'absolute',
+        backgroundColor: theme.palette.background.paper,
+        left: box.x,
+        top: box.y,
+        width: box.width,
+        height: box.height,
+        borderRadius: `${theme.shape.borderRadius}px`,
+        overflow: 'hidden',
+    }}>
+        <Box style={{
+            width: box.width,
+            height: 30,
+            display: 'flex',
+        }}>
+            <Box style={{
+                flex: '0 0 auto',
+                backgroundColor: theme.palette.primary.main,
+                paddingLeft: theme.spacing(2),
+                paddingRight: theme.spacing(2),
+                borderRadius: `0 0 ${theme.shape.borderRadius}px 0`,
+            }}>
                 <Typography variant={'subtitle1'}
                             sx={{
                                 color: theme.palette.primary.contrastText
