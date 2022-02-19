@@ -32,9 +32,26 @@ export default class AnalysisStore {
     }
 
     restart = () => {
+        const history = {
+            lastUpdate: new Date(),
+            query: null,
+            desc_len: null,
+            tactics: null,
+            sequences: null,
+        }
         api.setDataset(this.dataset, this.player, this.opponents)
+            .then(api.runAlg)
             .then(res => {
-                console.log(res);
+                history.desc_len = res.desc_len;
+                history.tactics = res.tactics;
+                return Promise.all(res.tactics.map(t => api.getTacticSequences(t.id)))
+            })
+            .then(res => {
+                history.sequences = Object.fromEntries(history.tactics.map((t, tid) => [
+                    t.id,
+                    res[tid],
+                ]));
+                this.initHistory(history);
             });
     }
 
@@ -47,6 +64,10 @@ export default class AnalysisStore {
         this.history.pop();
         this.viewHistory(this.history.length - 1);
     }
+    initHistory = (history) => {
+        this.history = [history];
+        this.currentViewHistory = 0;
+    }
     undo = () => {
         api.undo()
             .then(this.popHistory)
@@ -56,13 +77,58 @@ export default class AnalysisStore {
         query: {},
         tactics: [],
         sequences: {},
+        desc_len: 0,
     }
+    get isPreviewing() {
+        return this.cacheState.desc_len !== 0;
+    }
+    initCacheState = () => this.cacheState = {
+        query: {},
+        tactics: [],
+        sequences: {},
+        desc_len: 0,
+    }
+    setCacheState = s => this.cacheState = s;
+    preview = query => {
+        const state = {
+            query,
+            desc_len: 0,
+            tactics: [],
+            sequences: {}
+        }
+        api.modify(query.type, query.params)
+            .then(res => {
+                state.desc_len = res.desc_len;
+                state.tactics = res.tactics;
+                return Promise.all(res.tactics.map(t => api.getTacticSequences(t.id)));
+            })
+            .then(res => {
+                state.sequences = Object.fromEntries(state.tactics.map((t, tid) => [
+                    t.id,
+                    res[tid],
+                ]))
+                this.setCacheState(state);
+            })
+    }
+    applyChange = () => {
+        this.pushHistory({
+            lastUpdate: new Date(),
+            ...this.cacheState,
+        })
+        this.initCacheState();
+    }
+    cancelChange = () => {
+        api.undo()
+            .then(this.initCacheState);
+    }
+
     currentViewHistory = -1;
     viewHistory = idx => this.currentViewHistory = idx;
 
     get stateEditable() {
         return this.history.length - 1 === this.currentViewHistory;
     }
+
     get state() {
         return this.history[this.currentViewHistory];
     }
@@ -166,10 +232,14 @@ export default class AnalysisStore {
                     desc_len: lastDescriptionLength,
                     query: {
                         type: 'LimitIndex',
-                        text: 'I only need serving tactics. I don\'t need other tactics.',
+                        text: 'I only need serving tactics.' + (randomInt(2) ? 'I don\'t need other tactics.' : ''),
                         params: {
                             min: 1,
                             max: 3,
+                            ...(randomInt(2) && {
+                                other: 'abc',
+                                test: '12345',
+                            })
                         }
                     },
                     tactics,

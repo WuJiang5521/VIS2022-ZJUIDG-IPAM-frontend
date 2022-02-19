@@ -55,10 +55,39 @@ class API extends BaseAPI {
         })
         .then(res => res.json())
 
-    undo = () => this.fetch(url('/modification'), {method: 'DELETE'})
-        .then(res => res.json())
+    runAlg = () => this.fetch(
+        url('/tactic'),
+        {method: 'POST'}
+    ).then(res => res.json())
+
+    getTacticSequences = tac_id => this.fetch(
+        url(`/rally/${tac_id}`)
+    ).then(res => res.json())
+
+    processText = text => this.fetch(
+        url(`/text/${text}`)
+    ).then(res => res.json())
+
+    modify = (type, params) => this.fetch(
+        url('/modification'),
+        {method: 'POST', body: JSON.stringify({type, params})}
+    ).then(res => res.json())
+
+    undo = () => this.fetch(
+        url('/modification'),
+        {method: 'DELETE'}
+    ).then(res => res.json())
+
+    fixTactic = (tac_id, isFix) => this.fetch(
+        url(`/tactic/preference/${tac_id}`),
+        {method: 'PUT', body: JSON.stringify(isFix)},
+    ).then(res => res.json())
 
     videoSrc = videoName => url(`/video/${videoName}`)
+}
+
+class VirtualAPI {
+
 }
 
 const api = new API();

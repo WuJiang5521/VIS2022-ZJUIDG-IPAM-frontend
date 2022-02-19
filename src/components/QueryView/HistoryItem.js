@@ -11,34 +11,68 @@ import formatTime from "../../utils/formatTime";
 import {ArrowDownward, ArrowUpward, Remove} from "@mui/icons-material";
 import {useHover} from "ahooks";
 import {transition} from "../../static/theme";
+import {useSize} from "../../utils/useSize";
 
 function Offset({val, offset, label}) {
     const captionStyle = {
-        sx: {
+        style: {
             fontSize: '0.75rem',
             lineHeight: 1.66,
             letterSpacing: '0.033333em',
             fontWeight: 400,
             verticalAlign: 'middle',
+            textAlign: 'right',
         }
     }
 
-    return <Typography {...captionStyle}>
-        {label}:
-        {val}
-        <Box component={'span'}
-             ml={0.5}
-             sx={{
-                 color: offset > 0 ? 'error.main' :
-                     (offset === 0 ? 'text.default' :
-                         'success.main')
-             }}>
-            {offset > 0 && <ArrowUpward {...captionStyle}/>}
-            {offset === 0 && <Remove {...captionStyle}/>}
-            {offset < 0 && <ArrowDownward {...captionStyle}/>}
-            {Math.abs(offset)}
+    return <tr {...captionStyle}>
+        <th>{label}:</th>
+        <td>{val}</td>
+        <td>
+            <Box component={'span'}
+                 ml={0.5}
+                 sx={{
+                     color: offset > 0 ? 'error.main' :
+                         (offset === 0 ? 'text.default' :
+                             'success.main')
+                 }}>
+                {offset > 0 && <ArrowUpward {...captionStyle}/>}
+                {offset === 0 && <Remove {...captionStyle}/>}
+                {offset < 0 && <ArrowDownward {...captionStyle}/>}
+                {Math.abs(offset)}
+            </Box>
+        </td>
+    </tr>
+}
+
+function QueryParams({type, params, tColor}) {
+    const {t} = useTranslation();
+
+    return <Box flex={1} maxWidth={'calc(100% - 120px)'}>
+        <Typography color={tColor}>{t(type)}</Typography>
+        <Box display={'flex'} flexWrap={'wrap'} overflow={'hidden'}>
+            {Object.entries(params)
+                .map(([key, val]) => (
+                    <Chip key={key}
+                          size={"small"}
+                          label={`${key}: ${val}`}
+                          sx={{
+                              m: 0.5,
+                              background: alpha(tColor, 0.18),
+                              color: tColor,
+                          }}/>
+                ))}
         </Box>
-    </Typography>
+    </Box>
+}
+
+function Eval({dl, dlOffset, tc, tcOffset}) {
+    return <table style={{flex: '0 0 auto', height: 'fit-content'}}>
+        <tbody>
+        <Offset val={tc} label={'Tac. Num'} offset={tcOffset}/>
+        <Offset val={dl} label={'Score'} offset={dlOffset}/>
+        </tbody>
+    </table>
 }
 
 function ItemBox({idx, type, text, params, selected, onSelect, time, dl, dlOffset, tc, tcOffset}) {
@@ -48,64 +82,50 @@ function ItemBox({idx, type, text, params, selected, onSelect, time, dl, dlOffse
     const color = selected ? darken(bgcolor, 0) : bgcolor;
     const borderColor = selected ? darken(bgcolor, 0.7) : bgcolor;
     const tColor = theme.palette.getContrastText(color);
-    const captionStyle = {
-        sx: {
-            fontSize: '0.75rem',
-            lineHeight: 1.66,
-            letterSpacing: '0.033333em',
-            fontWeight: 400,
-            verticalAlign: 'middle',
-        }
-    }
-    const ref = useRef(null);
-    const isHovered = useHover(ref);
+    const rootRef = useRef(null);
+    const isHovered = useHover(rootRef);
 
     const showDetail = isHovered || selected;
 
-    return <Box ref={ref}
+    const headRef = useRef(null);
+    const {height: headHeight} = useSize(headRef);
+    const contentRef = useRef(null)
+    const {height: contentHeight} = useSize(contentRef);
+
+    return <Box ref={rootRef}
                 bgcolor={color}
                 border={'2px solid'}
                 borderColor={borderColor}
                 borderRadius={1}
                 mt={0} mr={1} mb={1} ml={1}
-                pt={1} pr={2} pb={1} pl={2}
+                pt={0.5} pr={1} pb={0.5} pl={1}
                 onClick={onSelect}
                 overflow={'hidden'}
                 sx={{
-                    height: showDetail ? 110 : 24 + parseInt(theme.spacing(2)),
+                    height: showDetail ? (headHeight + contentHeight + parseInt(theme.spacing(3))) : (headHeight + parseInt(theme.spacing(1))),
                     cursor: 'pointer',
                     transition: transition('all'),
                     '&:hover': {
                         bgcolor: darken(bgcolor, 0.1),
                     },
                 }}>
-        <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
-            <Typography color={tColor} mr={1} noWrap>{text}</Typography>
-            <Typography {...captionStyle}>{formatTime(time)}</Typography>
+        <Box ref={headRef}
+             display={'flex'}
+             justifyContent={'space-between'}>
+            <Typography color={tColor} mr={1}> - {text}</Typography>
+            <Typography variant={'caption'} mt={'0.125rem'}>{formatTime(time)}</Typography>
         </Box>
 
         <Divider sx={{m: 0.5}}/>
 
-        <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
-            <Typography color={tColor}>{t(type)}</Typography>
-            <Offset val={tc} label={'Tac. Num'} offset={tcOffset}/>
-        </Box>
-
-        <Box display={'flex'} justifyContent={'space-between'} alignItems={"center"}>
-            <Box flex={1}>
-                {Object.entries(params || {})
-                    .map(([key, val]) => (
-                        <Chip key={key}
-                              size={"small"}
-                              label={`${key}: ${val}`}
-                              sx={{
-                                  m: 0.5,
-                                  background: alpha(tColor, 0.18),
-                                  color: tColor,
-                              }}/>
-                    ))}
-            </Box>
-            <Offset val={dl} label={'Score'} offset={dlOffset}/>
+        <Box ref={contentRef}
+             display={'flex'}
+             justifyContent={'space-between'}
+             overflow={'hidden'}>
+            <QueryParams type={type}
+                         params={params || {}}
+                         tColor={tColor}/>
+            <Eval dl={dl} dlOffset={dlOffset} tc={tc} tcOffset={tcOffset}/>
         </Box>
     </Box>
 }

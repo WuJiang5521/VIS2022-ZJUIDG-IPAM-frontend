@@ -18,7 +18,7 @@ const theme = {
             styleOverrides: {
                 body: {
                     '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
-                        backgroundColor: 'rgb(255, 255, 255)',
+                        backgroundColor: 'rgba(0,0,0,0)',
                         width: scrollbarSize,
                         height: scrollbarSize,
                     },

@@ -2,12 +2,12 @@ import React, {memo, useRef} from 'react';
 import {inject, observer} from "mobx-react";
 import {IconButton, Typography} from "@mui/material";
 import {PlayArrow, Visibility} from "@mui/icons-material";
-import useHover from "../../../utils/useHover";
 import useRallyHeight from "./useRallyHeight";
 import {useTheme} from "@mui/styles";
 import {playerColors, transition} from "../../../static/theme";
 import useClick from "../../../utils/useClick";
 import styled from "@emotion/styled";
+import {useHover} from "ahooks";
 
 const actionProps = ({
                          visible = false, highlight = false
@@ -44,6 +44,13 @@ function Rally({rally, isPlaying, onPlay, isExpand, onExpand, analysis}) {
 
     const {rallyHeight, headHeight, attrHeight, m} = useRallyHeight(analysis.attrs.length);
     const rh = rallyHeight(isExpand), mh = m(isExpand);
+
+    // const cellMargin = isExpand ? 100 : theme.spacing(1);
+    const hitWidth = isTactic => isTactic ? 21 : 15;
+    const cellMargin = isExpand ? 100 : headHeight * 2;
+    const actionWidth = isExpand ? 100 : (visible ? (headHeight * 2) : theme.spacing(1));
+    const cellWidth = isExpand ? 100 : hitWidth(true) + parseInt(theme.spacing(1));
+
     return <Container ref={rootRef}
                       style={{
                           height: rh,
@@ -52,7 +59,7 @@ function Rally({rally, isPlaying, onPlay, isExpand, onExpand, analysis}) {
             <Tr style={{height: headHeight}}
                 onClick={handleClick}
                 onDoubleClick={handleDoubleClick}>
-                <Th style={{maxWidth: isExpand ? 100 : headHeight * 2}}>
+                <Th style={{maxWidth: actionWidth}}>
                     <IconButton {...actionProps({visible, highlight: isExpand})}
                                 onClick={handleViewDetail}>
                         <Visibility/>
@@ -65,17 +72,22 @@ function Rally({rally, isPlaying, onPlay, isExpand, onExpand, analysis}) {
 
                 {rally.rally.map((hit, hId) => {
                     const isTactic = (rally.tacticPos[0] <= hId) && (hId < rally.tacticPos[1]);
+                    const size = hitWidth(isTactic);
                     const color = playerColors[(hId + (rally.is_server ? 0 : 1)) % 2]
                     const bgcolor = isTactic ? color : theme.palette.background.paper;
                     return <Td key={hId}
                         style={{
-                            maxWidth: isExpand ? 100 : headHeight,
-                            marginLeft: (hId === 0) && (isExpand ? 100 : headHeight * 2),
+                            maxWidth: cellWidth,
+                            marginLeft: (hId === 0) && cellMargin,
                         }}>
                         <Hit style={{
                             backgroundColor: bgcolor,
                             color: theme.palette.getContrastText(bgcolor),
                             borderColor: color,
+                            width: size,
+                            height: size,
+                            lineHeight: `${size}px`,
+                            fontSize: `${size * 0.75}px`,
                         }}>{hId + 1}</Hit>
                     </Td>
                 })}
@@ -83,16 +95,16 @@ function Rally({rally, isPlaying, onPlay, isExpand, onExpand, analysis}) {
             {analysis.attrs.map((attr, aId) => (
                 <Tr key={aId}
                     style={{height: attrHeight}}>
-                    <Th style={{maxWidth: isExpand ? 100 : headHeight * 2}}>
+                    <Th style={{maxWidth: actionWidth}}>
                         <Typography variant={'body2'} fontWeight={"bold"}>{attr}</Typography>
                     </Th>
 
                     {rally.rally.map((hit, hId) => (
                         <Td key={hId}
                             style={{
-                                maxWidth: isExpand ? 100 : headHeight,
+                                maxWidth: cellWidth,
                                 borderTop: `1px solid ${theme.palette.background.default}`,
-                                marginLeft: (hId === 0) && (isExpand ? 100 : headHeight * 2),
+                                marginLeft: (hId === 0) && cellMargin,
                             }}>
                             <Typography variant={'body2'}>{hit[aId]}</Typography>
                         </Td>
@@ -102,7 +114,7 @@ function Rally({rally, isPlaying, onPlay, isExpand, onExpand, analysis}) {
             {isExpand && <Head style={{
                 top: mh,
                 height: rh - mh * 4,
-                left: isExpand ? 100 : headHeight * 2
+                left: actionWidth
             }}/>}
         </Tb>
     </Container>
@@ -154,10 +166,7 @@ const Th = styled('div')(({theme}) => ({
 }));
 const Hit = styled('div')({
     borderRadius: '50%',
-    width: 21,
-    height: 21,
     border: '1px solid',
-    lineHeight: '21px',
     textAlign: 'center',
 })
 

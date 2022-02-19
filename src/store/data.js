@@ -41,6 +41,7 @@ export default class DataStore {
         (videoName && videoName.endsWith('mp4')) ?
             api.videoSrc(videoName) :
             null;
+    processText = api.processText;
 
     constructor() {
         makeAutoObservable(this);

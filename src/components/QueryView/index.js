@@ -19,9 +19,7 @@ const QueryView = inject()(observer(({
                   height={'100%'}>
         <Box margin={1}
              flex={'0 0 auto'}>
-            <Box>
-                <NLQuery {...queryParams}/>
-            </Box>
+            <NLQuery {...queryParams}/>
         </Box>
         <Box margin={1}
              marginTop={0}
@@ -34,8 +32,10 @@ const QueryView = inject()(observer(({
 
 const QueryViewToolbar = inject('analysis')(observer(({
                                                           analysis,
-                                                          applicable,
+                                                          queryParams,
                                                       }) => {
+    const applicable = queryParams.isApplicable();
+
     const {t} = useTranslation();
     const style = {
         pt: 0.25,
@@ -55,12 +55,14 @@ const QueryViewToolbar = inject('analysis')(observer(({
         </Button>}
         {applicable && <Button size={"small"}
                                startIcon={<Visibility/>}
-                               sx={style}>
+                               sx={style}
+                               onClick={() => analysis.preview(queryParams)}>
             {t(strings.PreviewChange)}
         </Button>}
         {applicable && <Button size={"small"}
                                startIcon={<Check/>}
-                               sx={style}>
+                               sx={style}
+                               onClick={analysis.applyChange}>
             {t(strings.ApplyChange)}
         </Button>}
     </Box>;
@@ -71,7 +73,6 @@ export default function useQueryView() {
 
     return {
         view: <QueryView queryParams={queryParams}/>,
-        toolbar: <QueryViewToolbar
-            applicable={queryParams.isApplicable()}/>,
+        toolbar: <QueryViewToolbar queryParams={queryParams}/>,
     }
 }

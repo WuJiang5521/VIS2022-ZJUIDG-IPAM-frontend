@@ -26,7 +26,7 @@ const Input = styled('input')({
     }
 })
 
-function NLQuery({queryParams, setQueryParams, clearQueryParams}) {
+function NLQuery({queryParams, setQueryParams, clearQueryParams, data}) {
     const [focus, setFocus] = useState(false);
     const handleFocus = useCallback(() => setFocus(true), []);
     const handleBlur = useCallback(() => setTimeout(() => setFocus(false), 100), []);
@@ -42,7 +42,11 @@ function NLQuery({queryParams, setQueryParams, clearQueryParams}) {
         clearQueryParams();
     };
     const handleProcessText = () => {
-        console.log(text);
+        data.processText(text)
+            .then(res => setQueryParams({
+                type: res.type,
+                params: res.params,
+            }))
     }
 
     const expanded = focus || inputForm || queryParams.type !== null;
@@ -83,4 +87,4 @@ function NLQuery({queryParams, setQueryParams, clearQueryParams}) {
     </Box>;
 }
 
-export default inject()(observer(NLQuery));
+export default inject('data')(observer(NLQuery));
