@@ -42,6 +42,7 @@ export default class DataStore {
             api.videoSrc(videoName) :
             null;
     processText = api.processText;
+    processAudio = api.processAudio;
 
     constructor() {
         makeAutoObservable(this);

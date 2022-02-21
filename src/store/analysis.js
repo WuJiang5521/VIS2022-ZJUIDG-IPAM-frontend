@@ -1,10 +1,9 @@
 import {makeAutoObservable} from "mobx";
 import Store from "./store";
 import api from "./api";
-import {virtualRally, virtualTactic} from "../utils/virtualData";
-import randomInt from "../utils/randomInt";
 import tacticSorter, {SortTypes} from "../utils/tacticSort";
 import {genTacticStat, mergeStat} from "../utils/tacticStat";
+import {tacticTransformer} from "../utils/dataTransformer";
 
 export default class AnalysisStore {
     dataset = '';
@@ -43,7 +42,7 @@ export default class AnalysisStore {
             .then(api.runAlg)
             .then(res => {
                 history.desc_len = res.desc_len;
-                history.tactics = res.tactics;
+                history.tactics = res.tactics.map(tacticTransformer);
                 return Promise.all(res.tactics.map(t => api.getTacticSequences(t.id)))
             })
             .then(res => {
@@ -99,7 +98,7 @@ export default class AnalysisStore {
         api.modify(query.type, query.params)
             .then(res => {
                 state.desc_len = res.desc_len;
-                state.tactics = res.tactics;
+                state.tactics = res.tactics.map(tacticTransformer);
                 return Promise.all(res.tactics.map(t => api.getTacticSequences(t.id)));
             })
             .then(res => {
@@ -130,7 +129,12 @@ export default class AnalysisStore {
     }
 
     get state() {
-        return this.history[this.currentViewHistory];
+        return this.history[this.currentViewHistory] || {
+            query: null,
+            desc_len: 0,
+            tactics: [],
+            sequences: {},
+        };
     }
 
     selectedTactics = [];
@@ -143,12 +147,13 @@ export default class AnalysisStore {
     }
 
     favoriteTactics = [];
+    setFavoriteTactics = t => this.favoriteTactics = t;
     favoriteTactic = (id, favor) => {
-        if (favor && !this.favoriteTactics.includes(id)) this.favoriteTactics.push(id);
-        if (!favor) {
-            const idx = this.favoriteTactics.indexOf(id);
-            if (idx > -1) this.favoriteTactics.splice(idx, 1);
-        }
+        api.fixTactic(this.state.tactics.find(t => t.fixId === id).id, favor)
+            .then(r => {
+                if (favor && !this.favoriteTactics.includes(id)) this.setFavoriteTactics([...this.favoriteTactics, id]);
+                if (!favor) this.setFavoriteTactics(this.favoriteTactics.filter(t => t.fixId !== id));
+            })
     }
 
     hoveredTactic = null;
@@ -199,54 +204,54 @@ export default class AnalysisStore {
     }
 
     init = () => new Promise((resolve, reject) => {
-        let lastUpdate = new Date();
-        this.pushHistory({
-            lastUpdate,
-            desc_len: 200,
-            query: null,
-            tactics: [],
-            sequences: {},
-        });
-
-        if (window.is_dev()) {
-            let lastDescriptionLength = 200;
-            for (let i = 0; i < 13; i++) {
-                lastUpdate = new Date(lastUpdate);
-                lastUpdate.setMinutes(lastUpdate.getMinutes() + randomInt(3, 6));
-                lastDescriptionLength += randomInt(-5, 10);
-
-                const tactics = [...new Array(randomInt(17, 24))].map((_, i) => ({
-                    ...virtualTactic(),
-                    fix: false,
-                    fixId: i,
-                }));
-                const sequences = {};
-                tactics.forEach(t => sequences[t.id] = [...Array(t.usage_count)].map(() => {
-                    const rally = virtualRally(t.id, t.tactic.length);
-                    rally.index = rally.index[0][1];
-                    return rally;
-                }));
-
-                this.pushHistory({
-                    lastUpdate: lastUpdate,
-                    desc_len: lastDescriptionLength,
-                    query: {
-                        type: 'LimitIndex',
-                        text: 'I only need serving tactics.' + (randomInt(2) ? 'I don\'t need other tactics.' : ''),
-                        params: {
-                            min: 1,
-                            max: 3,
-                            ...(randomInt(2) && {
-                                other: 'abc',
-                                test: '12345',
-                            })
-                        }
-                    },
-                    tactics,
-                    sequences,
-                });
-            }
-        }
+        // let lastUpdate = new Date();
+        // this.pushHistory({
+        //     lastUpdate,
+        //     desc_len: 200,
+        //     query: null,
+        //     tactics: [],
+        //     sequences: {},
+        // });
+        //
+        // if (window.is_dev()) {
+        //     let lastDescriptionLength = 200;
+        //     for (let i = 0; i < 13; i++) {
+        //         lastUpdate = new Date(lastUpdate);
+        //         lastUpdate.setMinutes(lastUpdate.getMinutes() + randomInt(3, 6));
+        //         lastDescriptionLength += randomInt(-5, 10);
+        //
+        //         const tactics = [...new Array(randomInt(17, 24))].map((_, i) => ({
+        //             ...virtualTactic(),
+        //             fix: false,
+        //             fixId: i,
+        //         }));
+        //         const sequences = {};
+        //         tactics.forEach(t => sequences[t.id] = [...Array(t.usage_count)].map(() => {
+        //             const rally = virtualRally(t.id, t.tactic.length);
+        //             rally.index = rally.index[0][1];
+        //             return rally;
+        //         }));
+        //
+        //         this.pushHistory({
+        //             lastUpdate: lastUpdate,
+        //             desc_len: lastDescriptionLength,
+        //             query: {
+        //                 type: 'LimitIndex',
+        //                 text: 'I only need serving tactics.' + (randomInt(2) ? 'I don\'t need other tactics.' : ''),
+        //                 params: {
+        //                     min: 1,
+        //                     max: 3,
+        //                     ...(randomInt(2) && {
+        //                         other: 'abc',
+        //                         test: '12345',
+        //                     })
+        //                 }
+        //             },
+        //             tactics,
+        //             sequences,
+        //         });
+        //     }
+        // }
 
         resolve();
     });

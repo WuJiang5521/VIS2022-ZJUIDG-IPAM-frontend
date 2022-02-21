@@ -3,23 +3,23 @@
  */
 
 import {inject, observer} from "mobx-react";
-import {Box, Button, Stack} from "@mui/material";
-import {Check, Undo, Visibility} from "@mui/icons-material";
+import {Box, Stack} from "@mui/material";
 import NLQuery from "./NLQuery";
 import QueryHistory from "./QueryHistory";
 import {useQueryParams} from "./useQueryParams";
-import {useTranslation} from "react-i18next";
-import strings from "../../static/strings";
+import QueryViewToolbar from "./Toolbar";
 
-const QueryView = inject()(observer(({
-                                         queryParams,
-                                     }) => {
+const QueryView = inject('analysis')(observer(({
+                                                   queryParams,
+                                                   analysis,
+                                               }) => {
+    const disabled = !analysis.stateEditable;
 
     return <Stack width={'100%'}
                   height={'100%'}>
         <Box margin={1}
              flex={'0 0 auto'}>
-            <NLQuery {...queryParams}/>
+            <NLQuery {...queryParams} disabled={disabled}/>
         </Box>
         <Box margin={1}
              marginTop={0}
@@ -28,44 +28,6 @@ const QueryView = inject()(observer(({
             <QueryHistory/>
         </Box>
     </Stack>;
-}));
-
-const QueryViewToolbar = inject('analysis')(observer(({
-                                                          analysis,
-                                                          queryParams,
-                                                      }) => {
-    const applicable = queryParams.isApplicable();
-
-    const {t} = useTranslation();
-    const style = {
-        pt: 0.25,
-        pb: 0.25,
-        mr: 1,
-    }
-    return <Box display={'flex'}
-                height={'100%'}
-                justifyContent={'right'}
-                alignItems={'center'}>
-        {!applicable && <Button size={'small'}
-                                disabled={analysis.history.length <= 1}
-                                startIcon={<Undo/>}
-                                sx={style}
-                                onClick={analysis.undo}>
-            {t(strings.Undo)}
-        </Button>}
-        {applicable && <Button size={"small"}
-                               startIcon={<Visibility/>}
-                               sx={style}
-                               onClick={() => analysis.preview(queryParams)}>
-            {t(strings.PreviewChange)}
-        </Button>}
-        {applicable && <Button size={"small"}
-                               startIcon={<Check/>}
-                               sx={style}
-                               onClick={analysis.applyChange}>
-            {t(strings.ApplyChange)}
-        </Button>}
-    </Box>;
 }));
 
 export default function useQueryView() {

@@ -46,7 +46,7 @@ function ParamsMenu({anchorEl, onClose, onSelect, type}) {
     </Menu>;
 }
 
-function FormQuery({queryParams, setQueryParams, onStart, onEnd}) {
+function FormQuery({queryParams, setQueryParams, onStart, onEnd, disabled}) {
     const {t} = useTranslation();
     const theme = useTheme();
 
@@ -92,12 +92,12 @@ function FormQuery({queryParams, setQueryParams, onStart, onEnd}) {
     };
 
     return <Box display={'flex'} height={34}>
-        <Button sx={{flex: '0 0 auto'}} size={"small"} onClick={handleOpenTypesMenu}>
+        <Button sx={{flex: '0 0 auto'}} size={"small"} onClick={handleOpenTypesMenu} disabled={disabled}>
             {t(queryParams.type || strings.EmptyType)}
         </Button>
         {
             queryParams.type && !inputParam &&
-            <IconButton sx={{flex: '0 0 auto'}} size={"small"} onClick={handleOpenParamMenu}>
+            <IconButton sx={{flex: '0 0 auto'}} size={"small"} onClick={handleOpenParamMenu} disabled={disabled}>
                 <Add/>
             </IconButton>
         }
@@ -109,6 +109,7 @@ function FormQuery({queryParams, setQueryParams, onStart, onEnd}) {
                        size={"small"}
                        autoFocus
                        onChange={handleChangeInputParam}
+                       disabled={disabled}
                        sx={{
                            flex: '0 0 100px',
                            height: 40,
@@ -130,6 +131,7 @@ function FormQuery({queryParams, setQueryParams, onStart, onEnd}) {
                           size={"small"}
                           label={`${key}: ${value}`}
                           sx={{marginLeft: 0.5}}
+                          disabled={disabled}
                           onDelete={handleDelete(key)}/>
                 ))
             }

@@ -98,7 +98,7 @@ function ItemBox({idx, type, text, params, selected, onSelect, time, dl, dlOffse
                 borderColor={borderColor}
                 borderRadius={1}
                 mt={0} mr={1} mb={1} ml={1}
-                pt={0.5} pr={1} pb={0.5} pl={1}
+                pt={0.5} pr={1.5} pb={0.5} pl={1.5}
                 onClick={onSelect}
                 overflow={'hidden'}
                 sx={{

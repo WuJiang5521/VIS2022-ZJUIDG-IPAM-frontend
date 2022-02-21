@@ -86,10 +86,12 @@ export function findQueryType(type) {
 
 export const useQueryParams = () => {
     const [queryParams, setQueryParams] = useState({
+        text: '',
         type: null,
         params: null,
     })
     const clearQueryParams = useCallback(() => setQueryParams({
+        text: '',
         type: null,
         params: null,
     }), []);

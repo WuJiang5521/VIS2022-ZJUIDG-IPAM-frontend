@@ -7,9 +7,10 @@ import {Box, Divider, IconButton} from "@mui/material";
 import FormQuery from "./FormQuery";
 import {useCallback, useState} from "react";
 import {useTheme} from "@mui/styles";
-import {Close, KeyboardVoice} from "@mui/icons-material";
+import {Close} from "@mui/icons-material";
 import {transition} from "../../static/theme";
 import styled from '@emotion/styled';
+import AudioRecorder from "./AudioRecorder";
 
 const Input = styled('input')({
     border: 'none',
@@ -26,29 +27,38 @@ const Input = styled('input')({
     }
 })
 
-function NLQuery({queryParams, setQueryParams, clearQueryParams, data}) {
-    const [focus, setFocus] = useState(false);
-    const handleFocus = useCallback(() => setFocus(true), []);
-    const handleBlur = useCallback(() => setTimeout(() => setFocus(false), 100), []);
+function NLQuery({queryParams, setQueryParams, clearQueryParams, data, system, analysis, disabled}) {
+    const text = queryParams.text;
+    const handleChangeText = e => setQueryParams({text: e.target.value});
+    const handleClear = () => {
+        clearQueryParams();
+        analysis.initCacheState();
+    }
+    const handleProcessText = (text) => {
+        data.processText(text)
+            .then(res => {
+                if (res === null) system.alert('The system cannot recognize your text. Please be more specific!')
+                else setQueryParams({
+                    type: res.type,
+                    params: res.params,
+                })
+            })
+    }
+    const handleProcessAudio = (audioBlob) => {
+        data.processAudio(audioBlob)
+            .then(text => {
+                setQueryParams({text});
+                handleProcessText(text);
+            });
+    }
 
     const [inputForm, setInputForm] = useState(false);
     const handleInputForm = useCallback(() => setInputForm(true), []);
     const handleFinishInput = useCallback(() => setInputForm(false), []);
 
-    const [text, setText] = useState('');
-    const handleChangeText = e => setText(e.target.value);
-    const handleClear = () => {
-        setText('');
-        clearQueryParams();
-    };
-    const handleProcessText = () => {
-        data.processText(text)
-            .then(res => setQueryParams({
-                type: res.type,
-                params: res.params,
-            }))
-    }
-
+    const [focus, setFocus] = useState(false);
+    const handleFocus = useCallback(() => setFocus(true), []);
+    const handleBlur = useCallback(() => setTimeout(() => setFocus(false), 100), []);
     const expanded = focus || inputForm || queryParams.type !== null;
 
     const theme = useTheme();
@@ -67,19 +77,19 @@ function NLQuery({queryParams, setQueryParams, clearQueryParams, data}) {
         <Box display={'flex'}>
             <Input onFocus={handleFocus} onBlur={handleBlur}
                    value={text}
+                   disabled={disabled}
                    onChange={handleChangeText}
-                   onKeyDown={e => (e.key === 'Enter') && handleProcessText()}/>
+                   onKeyDown={e => (e.key === 'Enter') && handleProcessText(text)}/>
             {(queryParams.type === null && text === '') ?
-                <IconButton size={"small"} flex={0}>
-                    <KeyboardVoice/>
-                </IconButton> :
+                <AudioRecorder disabled={disabled} onFinish={handleProcessAudio}/> :
                 <IconButton size={"small"} flex={0}
                             onClick={handleClear}>
                     <Close/>
                 </IconButton>}
         </Box>
         <Divider sx={{m: 1}}/>
-        <FormQuery queryParams={queryParams}
+        <FormQuery  disabled={disabled}
+                    queryParams={queryParams}
                    setQueryParams={setQueryParams}
                    clearQueryParams={clearQueryParams}
                    onStart={handleInputForm}
@@ -87,4 +97,4 @@ function NLQuery({queryParams, setQueryParams, clearQueryParams, data}) {
     </Box>;
 }
 
-export default inject('data')(observer(NLQuery));
+export default inject('system', 'data', 'analysis')(observer(NLQuery));

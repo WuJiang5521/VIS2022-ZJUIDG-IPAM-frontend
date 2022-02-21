@@ -4,6 +4,7 @@ import {BodyCell} from "./TableCell";
 import {playerColors} from "../../static/theme";
 import Bar from "./Bar";
 import TacticDetail from "./TacticDetail";
+import {useState} from "react";
 
 const barType = 'Overlap';
 // const barType = 'Left';
@@ -16,15 +17,30 @@ const trackColor = 'rgb(244,244,244)';
 // const trackColor = 'background.paper';
 
 export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) {
-    return <TableRow>
+    const [viewDetail, setViewDetail] = useState(false);
+
+    const handleSelect = e => {
+        e.stopPropagation();
+        onSelect(!selected);
+    }
+
+    const handleFavorite = e => {
+        e.stopPropagation();
+        onFavorite(!favorite)
+    }
+
+    return <TableRow onClick={() => setViewDetail(a => !a)}>
         <BodyCell>
             <FormControlLabel checked={selected}
-                              onChange={() => onSelect(!selected)}
+                              onClick={handleSelect}
                               control={<Checkbox/>}
                               label={tId + 1}/>
         </BodyCell>
         <BodyCell>
-            <TacticDetail tactic={tactic.tactic}/>
+            <TacticDetail open={viewDetail}
+                          tactic={tactic.tactic}
+                          tacticAddition={tactic.tactic_surrounding}
+                          usageCount={tactic.usage_count}/>
         </BodyCell>
         <BodyCell>
             <Bar variant={`Single${barType}`}
@@ -69,7 +85,7 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
                  label={tactic.stat.majority}/>
         </BodyCell>
         <BodyCell>
-            <IconButton onClick={() => onFavorite(!favorite)}>
+            <IconButton onClick={handleFavorite}>
                 {favorite ? <Favorite color={'error'}/> : <FavoriteBorder/>}
             </IconButton>
         </BodyCell>

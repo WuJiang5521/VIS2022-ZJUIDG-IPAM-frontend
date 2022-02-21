@@ -10,6 +10,7 @@ import {useRef} from "react";
 import {useSize} from "../../utils/useSize";
 import scale from "../../utils/scale";
 import tacticSorter, {SortTypes} from "../../utils/tacticSort";
+import ProjectViewToolbar from "./Toolbar";
 
 const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize = 20}) => {
     const tactics = analysis.sortedTactics;
@@ -28,7 +29,9 @@ const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize
     );
 
     return <Box width={'100%'} height={'100%'} p={1}>
-        <Box ref={containerRef} width={'100%'} height={'100%'} overflow={'hidden'}>
+        <Box ref={containerRef}
+             width={'100%'} height={'100%'}
+             overflow={'hidden'} position={'relative'}>
             {sortedTactics.map(t => {
                 const isSelected = analysis.selectedTactics.includes(t.fixId);
                 return <Point key={t.id}
@@ -46,10 +49,6 @@ const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize
             })}
         </Box>
     </Box>;
-}));
-
-const ProjectViewToolbar = inject()(observer(({}) => {
-    return null;
 }));
 
 export default function useProjectView() {

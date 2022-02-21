@@ -9,6 +9,7 @@ const dict = {
     PreviewChange: {cn: '预览', en: 'Preview'},
     Undo: {cn: '撤销', en: 'Undo'},
     ApplyChange: {cn: '确认', en: 'Apply'},
+    CancelChange: {cn: '取消', en: 'Cancel'},
     EmptyType: {cn: '选择修改类型', en: 'Select Query Type'},
 
     PreviewView: {cn: '预览视图', en: 'Preview View'},

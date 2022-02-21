@@ -6102,6 +6102,11 @@ micromatch@^4.0.2, micromatch@^4.0.4:
     braces "^3.0.1"
     picomatch "^2.2.3"
 
+microphone-js@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmmirror.com/microphone-js/-/microphone-js-0.1.1.tgz#ba1467ff36e1e02746a2be4b36413f3452abcc2c"
+  integrity sha512-hTYzlV1BkiwPHGbTNkMDEiX/FINSNQ1qFNGwNvqeT+Vuds80x8IiGNFdQbFRDMpnpQYd4MeCY4LI1XCc4ShjPw==
+
 mime-db@1.51.0, "mime-db@>= 1.43.0 < 2":
   version "1.51.0"
   resolved "https://registry.npmmirror.com/mime-db/download/mime-db-1.51.0.tgz?cache=0&sync_timestamp=1636425960744&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fmime-db%2Fdownload%2Fmime-db-1.51.0.tgz"
