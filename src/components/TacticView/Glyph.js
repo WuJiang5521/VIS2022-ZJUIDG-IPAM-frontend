@@ -1,9 +1,9 @@
 import React from 'react';
 import {inject, observer} from "mobx-react";
-import GlyphSet from "./GlyphSets";
+import SymbolSet from "./SymbolSets";
 
 function Glyph({hit, hitAdditional, size, analysis, freq}) {
-    const glyphSet = GlyphSet.dataset(analysis.dataset);
+    const glyphSet = SymbolSet.dataset(analysis.dataset);
     return <React.Fragment>
         <rect x={-size / 2} y={-size / 2} width={size} height={size} strokeWidth={1} stroke={'black'} fill={'none'}/>
         {analysis.attrs.map((attrKey, aId) => {
@@ -18,7 +18,7 @@ function Glyph({hit, hitAdditional, size, analysis, freq}) {
             }
             return <g key={attrKey}
                       opacity={opacity}>
-                {renderer.render(value)}
+                {renderer.render(value, true)}
             </g>
         })}
     </React.Fragment>

@@ -1,4 +1,6 @@
-const glyphSets = {
+const bs = val => 40 * val;
+
+const symbolSets = {
     'Badminton': {
         'Ball Height': {
             glyphs: {
@@ -9,19 +11,25 @@ const glyphSets = {
             }
         },
         'Ball Position': {
-            glyphs: {
+            pos: (size, asGlyph) => asGlyph ?
+                `` :
+                `scale(${size[0] / bs(1)},${size[1] / bs(1)})`,
+            params: {
                 'Backcourt Left': <g></g>,
                 'Backcourt Right': <g></g>,
                 'Midfield Left': <g></g>,
                 'Midfield Right': <g></g>,
                 'Forecourt Left': <g></g>,
                 'Forecourt Right': <g></g>,
+            },
+            template: params => {
+
             }
         },
         'Hit Technique': {
             pos: (size, asGlyph) => asGlyph ?
-                `translate(0,${37.5}) scale(${size[0] / 100 * 0.25},${size[1] / 100 * 0.25})` :
-                `scale(${size[0] / 100},${size[0] / 100})`,
+                `translate(${-0.05 * size[0]},${0.5 * size[1] - 0.35 * 0.5 * size[1]}) scale(${size[0] / bs(.5)},${size[1] / bs(.5)})` :
+                `scale(${size[0] / bs(1)},${size[1] / bs(1)})`,
             params: {
                 'Net service': 'NS',
                 'Backcourt service': 'BS',
@@ -40,8 +48,8 @@ const glyphSets = {
             },
             template: params => {
                 return <g>
-                    <path d={'M-50 -25H50A50 50 0 0 1 -50 -25Z'} fillOpacity={0} strokeWidth={1} stroke={'#000'}/>
-                    <text x={0} y={0} textAnchor={'middle'} dominantBaseline={'middle'} fontSize={20}>{params}</text>
+                    <path d={`M-${bs(0.2)} -${bs(.35)}H${bs(.5)}V-${bs(.15)}A${bs(.5)} ${bs(.5)} 0 0 1 -${bs(.5)} -${bs(.15)}Z`} fillOpacity={0} strokeWidth={1} stroke={'#000'}/>
+                    <text x={0} y={-bs(0.1)} textAnchor={'middle'} dominantBaseline={'middle'} fontSize={bs(.3)}>{params}</text>
                 </g>
             }
         }
@@ -90,15 +98,15 @@ class Renderer {
     }
 }
 
-class GlyphSet {
+class SymbolSet {
     constructor(ds) {
         this.dsName = ds;
         this.glyphSet = null;
         this.glyphSetName = null;
-        for (const glyphSetName of Object.keys(glyphSets))
+        for (const glyphSetName of Object.keys(symbolSets))
             if (ds.startsWith(glyphSetName)) {
                 this.glyphSetName = glyphSetName;
-                this.glyphSet = glyphSets[glyphSetName]
+                this.glyphSet = symbolSets[glyphSetName]
             }
         if (!this.glyphSet)
             console.warn('Unrecognized dataset name: ' + ds);
@@ -111,8 +119,8 @@ class GlyphSet {
     }
 
     static dataset(ds) {
-        return new GlyphSet(ds);
+        return new SymbolSet(ds);
     }
 }
 
-export default GlyphSet;
+export default SymbolSet;
