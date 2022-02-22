@@ -6,11 +6,15 @@ import {useSize} from "../../utils/useSize";
 import Hit from "./Hit";
 
 function TacticDetail({open, tactic, tacticAddition, usageCount, user}) {
+    const attrStatNum = Math.max(...tacticAddition.map(hitAddition => hitAddition.filter(a => a !== null).length));
+
     const ref = useRef();
     const {width} = useSize(ref);
     const cellWidth = Math.min(width / 5 - 1, 100);
+    const statSize = cellWidth * 0.3;
+    const statPadding = [statSize * 0.1, statSize * 0.5];
     const fullWidth = tactic.length * cellWidth;
-    const fullHeight = cellWidth * 2;
+    const fullHeight = cellWidth + attrStatNum * (statSize * 2 + statPadding[0] + statPadding[1]);
     const height = open ? fullHeight : cellWidth;
 
     const player = hId => (hId + user) % 2;
@@ -23,7 +27,9 @@ function TacticDetail({open, tactic, tacticAddition, usageCount, user}) {
                      hit={hit} hitAdditional={tacticAddition[hId]}
                      player={player(hId)}
                      freq={usageCount}
-                     open={open}/>
+                     open={open}
+                     statSize={statSize}
+                     statPadding={statPadding}/>
             </g>)}
         </svg>
     </Container>

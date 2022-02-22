@@ -1,8 +1,8 @@
 import React, {memo} from 'react';
 import Glyph from "./Glyph";
-import ValueStat from "./ValueStat";
+import HitStat from "./HitStat";
 
-function Hit({size, maxHeight, hit, hitAdditional, open, player, freq}) {
+function Hit({size, maxHeight, hit, hitAdditional, open, player, freq, statSize, statPadding}) {
     return <React.Fragment>
         {/* itself */}
         <g transform={`translate(${size / 2}, ${size / 2})`}>
@@ -14,10 +14,13 @@ function Hit({size, maxHeight, hit, hitAdditional, open, player, freq}) {
         </g>
         {/* detail */}
         {open && <g transform={`translate(0, ${size})`}>
-            <ValueStat hitAdditional={hitAdditional}
-                       freq={freq}
-                       width={size}
-                       height={maxHeight - size}/>
+            <HitStat hitAdditional={hitAdditional}
+                     freq={freq}
+                     width={size}
+                     player={player}
+                     height={maxHeight - size}
+                     size={statSize}
+                     padding={statPadding}/>
         </g>}
     </React.Fragment>
 }

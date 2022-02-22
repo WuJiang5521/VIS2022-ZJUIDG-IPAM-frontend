@@ -126,7 +126,7 @@ function genHit([single, multi], count = 1, ds, attrs = []) {
     if (!attrs)
         attrs = Store.getStores().analysis.attrs;
     return attrs.map(attrKey => {
-        if (Math.random() < single / (single + multi)) return genValue(ds, attrKey, count);
+        if (Math.random() < single / (single + multi)) return genValue(ds, attrKey, 1);
         else return genValue(ds, attrKey, count)
     })
 }
@@ -193,8 +193,8 @@ export function virtualRally(tacticId, tacticLen, tacticUser, ds, attrs) {
         ]],
         rally: [...new Array(hit_count)].map(() => genHit([1, 0], 1, ds, attrs)),
 
-        match_name: '',
-        video_name: '',
+        match_name: 'video',
+        video_name: 'video.mp4',
         start_time,
         end_time: Math.random() * 5 + start_time,
     }
