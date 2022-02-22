@@ -2,7 +2,19 @@ import React, {memo} from 'react';
 import Glyph from "./Glyph";
 import HitStat from "./HitStat";
 
-function Hit({size, maxHeight, hit, hitAdditional, open, player, freq, statSize, statPadding}) {
+function Hit({
+                 size,
+                 maxHeight,
+                 hit,
+                 hitAdditional,
+                 open,
+                 player,
+                 freq,
+                 statSize,
+                 statPadding,
+                 statShrink,
+                 visibleStatAttr
+             }) {
     return <React.Fragment>
         {/* itself */}
         <g transform={`translate(${size / 2}, ${size / 2})`}>
@@ -20,7 +32,9 @@ function Hit({size, maxHeight, hit, hitAdditional, open, player, freq, statSize,
                      player={player}
                      height={maxHeight - size}
                      size={statSize}
-                     padding={statPadding}/>
+                     shrink={statShrink}
+                     padding={statPadding}
+                     visibleAttr={visibleStatAttr}/>
         </g>}
     </React.Fragment>
 }

@@ -3,6 +3,7 @@ import SymbolSet from "./SymbolSets";
 import {playerColors} from "../../static/theme";
 import {useTheme} from "@mui/styles";
 import uuid4 from "../../utils/uuid4";
+import {Tooltip} from "@mui/material";
 
 const AttrStat = inject('analysis')(({attrKey, values, analysis, width, size, padding, color}) => {
     const theme = useTheme();
@@ -36,9 +37,15 @@ const AttrStat = inject('analysis')(({attrKey, values, analysis, width, size, pa
         const clipPathId = uuid4();
         return <g key={i}
                   transform={`translate(${padding}, ${(size + padding) * i})`}>
-            <g transform={`translate(${size / 2 + padding}, ${size / 2})`}>
-                {renderer.render(val, false)}
-            </g>
+            <Tooltip title={val} placement={"left-end"}>
+                <g transform={`translate(${size / 2 + padding}, ${size / 2})`}>
+                    <rect x={-size / 2} y={-size / 2}
+                          width={size} height={size}
+                          fill={theme.palette.background.paper}
+                          strokeWidth={0}/>
+                    {renderer.render(val, false)}
+                </g>
+            </Tooltip>
             <g transform={`translate(${size + padding * 3}, ${size / 2})`}>
                 <rect {...rectStyle} width={maxBarWidth} fill={bgColor}/>
                 <text {...textStyle} fill={theme.palette.getContrastText(bgColor)}>{label}</text>
@@ -48,16 +55,19 @@ const AttrStat = inject('analysis')(({attrKey, values, analysis, width, size, pa
                         <rect {...rectStyle} width={maxBarWidth * ratio}/>
                     </clipPath>
                 </defs>
-                <text {...textStyle} clipPath={`url(#${clipPathId})`} fill={theme.palette.getContrastText(fgColor)}>{label}</text>
+                <text {...textStyle} clipPath={`url(#${clipPathId})`}
+                      fill={theme.palette.getContrastText(fgColor)}>{label}</text>
             </g>
         </g>
     });
 })
 
-function HitStat({hitAdditional, analysis, width, height, player, size, padding, shrink=false}) {
+function HitStat({hitAdditional, analysis, width, height, player, size, padding, visibleAttr, shrink=false}) {
     const attrs = analysis.attrs;
     return hitAdditional
-        .map((values, aId) => [values, attrs[aId], aId])
+        .map((values, aId) => [values, attrs[aId]])
+        .filter(([values], aId) => visibleAttr.has(aId))
+        .map(([values, attrKey], aId) => [values, attrKey, aId])
         .filter(([values]) => values !== null)
         .map(([values, attrKey, originalAId], aId) => {
             return <g transform={`translate(0, ${(size * 2 + padding[0] + padding[1]) * (shrink ? aId : originalAId)})`}

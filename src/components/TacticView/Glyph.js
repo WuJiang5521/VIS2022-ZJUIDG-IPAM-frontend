@@ -15,14 +15,15 @@ function Glyph({hit, hitAdditional, size, analysis, freq, player}) {
         }
         return [value, opacity, attrKey];
     })
-    return <Tooltip title={<table>
-        <tbody>
-        {values.map(v => <tr key={v[2]}>
-            <th>{v[2]}</th>
-            <td>{v[0]}</td>
-        </tr>)}
-        </tbody>
-    </table>}>
+    return <Tooltip placement={"top"}
+                    title={<table>
+                        <tbody>
+                        {values.map(v => <tr key={v[2]}>
+                            <th>{v[2]}</th>
+                            <td>{v[0]}</td>
+                        </tr>)}
+                        </tbody>
+                    </table>}>
         <g>
             <rect x={-size / 2} y={-size / 2} width={size} height={size}
                 // strokeWidth={1} stroke={'black'}

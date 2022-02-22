@@ -109,7 +109,9 @@ function genValue(ds, attrKey, count = 1) {
     let remainCount = count;
     while (remainCount !== 0) {
         const c = randomInt(1, remainCount + 1);
-        const val = availVal[randomInt(availVal.length)];
+        let val = availVal[randomInt(availVal.length)];
+        while (Object.keys(res).length < 2 && res.hasOwnProperty(val))
+            val = availVal[randomInt(availVal.length)];
         if (!res.hasOwnProperty(val)) res[val] = 0;
         res[val] += c;
         remainCount -= c;
