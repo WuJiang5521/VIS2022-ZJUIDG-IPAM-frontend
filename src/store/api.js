@@ -1,5 +1,6 @@
 import Store from "./store";
 import VirtualData, {virtualRally} from "../utils/virtualData";
+import {values} from "../utils/virtualData";
 
 const url = uri => `http://127.0.0.1:8000${uri}`;
 
@@ -94,8 +95,19 @@ class API extends BaseAPI {
 class VirtualAPI extends BaseAPI {
     lastTacticSet = null;
 
-    getDatasets = () => this.fetch(url('/datasets'))
-        .then(res => res.json())
+    getDatasets = () => new Promise(resolve => {
+        resolve(['Badminton', 'Tennis', 'Table Tennis'].map(sport => ['Female', 'Male'].map(gender => ({
+            name: `${sport} (${gender})`,
+            matches: [
+                {
+                    name: '',
+                    players: ['a', 'b'],
+                    sequenceCount: 100,
+                }
+            ],
+            attrs: Object.keys(values[sport]),
+        }))).flat())
+    })
 
     setDataset = (dataset, player, opponents) => this.fetch(
         url('/dataset'),
@@ -113,7 +125,7 @@ class VirtualAPI extends BaseAPI {
     getTacticSequences = tac_id => new Promise(resolve => {
         const t = this.lastTacticSet.tactics.find(t => t.id === tac_id);
         resolve([...Array(t.usage_count)].map(() => {
-            const rally = virtualRally(tac_id, t.tactic.length);
+            const rally = virtualRally(tac_id, t.tactic.length, t.user);
             rally.index = rally.index[0][1];
             return rally;
         }))

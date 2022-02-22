@@ -38,6 +38,8 @@ export default class AnalysisStore {
             tactics: null,
             sequences: null,
         }
+        this.initCacheState();
+        this.clearOldData();
         api.setDataset(this.dataset, this.player, this.opponents)
             .then(api.runAlg)
             .then(res => {
@@ -160,6 +162,11 @@ export default class AnalysisStore {
     hoverTactic = (id, hover) => {
         if (hover) this.hoveredTactic = id;
         else if (this.hoveredTactic === id) this.hoveredTactic = null;
+    }
+    clearOldData = () => {
+        this.selectedTactics = [];
+        this.favoriteTactics = [];
+        this.hoveredTactic = null;
     }
 
     get statTactics() {

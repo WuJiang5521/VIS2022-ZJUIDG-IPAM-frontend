@@ -2,14 +2,107 @@ import uuid4 from "./uuid4";
 import randomInt from "./randomInt";
 import Store from "../store/store";
 
-const values = {
-    'Ball Height': ['Very low', 'Low', 'Medium', 'High'],
-    'Ball Position': ['Backcourt Left', 'Backcourt Right', 'Midfield Left', 'Midfield Right', 'Forecourt Left', 'Forecourt Right'],
-    'Hit Technique': ['Net service', 'Backcourt service', 'Smash', 'Drive', 'Lift', 'High clear', 'Hook', 'Shot', 'Net shot', 'Drop', 'Push', 'Block', 'Other', 'Score'],
+export const values = {
+    'Badminton': {
+        'Ball Height': [
+            'Very low',
+            'Low',
+            'Medium',
+            'High'
+        ],
+        'Ball Position': [
+            'Backcourt Left',
+            'Backcourt Right',
+            'Midfield Left',
+            'Midfield Right',
+            'Forecourt Left',
+            'Forecourt Right'
+        ],
+        'Hit Technique': [
+            'Net service',
+            'Backcourt service',
+            'Smash',
+            'Drive',
+            'Lift',
+            'High clear',
+            'Hook',
+            'Shot',
+            'Net shot',
+            'Drop',
+            'Push',
+            'Block',
+            'Other',
+            'Score'
+        ],
+    },
+    'Tennis': {
+        'Ball Position': [
+            'Starting Tee 1',
+            'Starting Tee 2',
+            'Starting Tee 3',
+            'Starting Tee 4',
+            'Serving right zone outside corner',
+            'Serving right zone midway',
+            'Serving right zone inside corner',
+            'Serving left zone outside corner',
+            'Serving left zone midway',
+            'Serving left zone inside corner',
+            'Right zone front',
+            'Right zone midfront',
+            'Right zone midback',
+            'Right zone back',
+            'Midright zone front',
+            'Midright zone midfront',
+            'Midright zone midback',
+            'Midright zone back',
+            'Midleft zone front',
+            'Midleft zone midfront',
+            'Midleft zone midback',
+            'Midleft zone back',
+            'Left zone front',
+            'Left zone midfront',
+            'Left zone midback',
+            'Left zone back',
+            'RF RMF MRF MRMF no drop point',
+            'RB RMB MRB MRMB no drop point',
+            'LF LMF MLF MLMF no drop point',
+            'LB LMB MLB MLMB no drop point',
+            'Unexpected ball',
+        ],
+        'Hitting Pose': [
+            'Starting Tee 1',
+            'Starting Tee 2',
+            'Starting Tee 3',
+            'Starting Tee 4',
+            'Forehand',
+            'Backhand',
+            'Sideway',
+            'Back sideway',
+            'Untouch',
+        ],
+        'Hit Technique': [
+            'Overhand serving',
+            'Underhand serving',
+            'Drive',
+            'Drive in the air',
+            'Smash',
+            'Ground smash',
+            'Volley',
+            'Drop shot',
+            'Push and block',
+            'Half volley',
+            'Lob',
+            'Slice',
+            'Other',
+        ],
+    },
+    'Table Tennis': {
+
+    }
 }
 
-function genValue(attrKey, count = 1) {
-    const availVal = values[attrKey];
+function genValue(ds, attrKey, count = 1) {
+    const availVal = values[ds][attrKey];
     if (count === 1) return availVal[randomInt(availVal.length)];
 
     const res = {};
@@ -24,14 +117,26 @@ function genValue(attrKey, count = 1) {
     return res;
 }
 
-function genHit([single, multi], count = 1, attrs = []) {
+function genHit([single, multi], count = 1, ds, attrs = []) {
+    if (!ds)
+        ds = Store.getStores().analysis.dataset;
+    for (const dsName of Object.keys(values))
+        if (ds.startsWith(dsName))
+            ds = dsName;
+    if (!attrs)
+        attrs = Store.getStores().analysis.attrs;
     return attrs.map(attrKey => {
-        if (Math.random() < single / (single + multi)) return genValue(attrKey, count);
-        else return genValue(attrKey, count)
+        if (Math.random() < single / (single + multi)) return genValue(ds, attrKey, count);
+        else return genValue(ds, attrKey, count)
     })
 }
 
-export function virtualTactic(attrs) {
+export function virtualTactic(ds, attrs) {
+    if (!ds)
+        ds = Store.getStores().analysis.dataset;
+    for (const dsName of Object.keys(values))
+        if (ds.startsWith(dsName))
+            ds = dsName;
     if (!attrs)
         attrs = Store.getStores().analysis.attrs;
 
@@ -41,13 +146,14 @@ export function virtualTactic(attrs) {
     const double_usage_win_seq_count = randomInt(Math.min(win_seq_count, double_usage_count));
     const usage_count = seq_count + double_usage_count;
 
-    const tactic = [...new Array(randomInt(2, 7))].map(() => genHit([0.6, 0.4], usage_count, attrs))
+    const tactic = [...new Array(randomInt(2, 7))].map(() => genHit([0.6, 0.4], usage_count, ds, attrs))
 
     return {
         id: uuid4(),
 
         tactic: tactic.map(hit => hit.map(val => (typeof val === 'string') ? val : null)),
         tactic_surrounding: tactic.map(hit => hit.map(val => (typeof val !== 'string') ? val : null)),
+        user: randomInt(2),
 
         seq_count,
         win_seq_count,
@@ -61,9 +167,18 @@ export function virtualTactic(attrs) {
 
 const duration = randomInt(40 * 60, 90 * 60);
 
-export function virtualRally(tacticId, tacticLen, attrs) {
+export function virtualRally(tacticId, tacticLen, tacticUser, ds, attrs) {
+    if (!ds)
+        ds = Store.getStores().analysis.dataset;
+    for (const dsName of Object.keys(values))
+        if (ds.startsWith(dsName))
+            ds = dsName;
+    if (!attrs)
+        attrs = Store.getStores().analysis.attrs;
+
     const is_server = randomInt(2) === 0;
-    const hit_count = randomInt(tacticLen + (is_server ? 0 : 1), 10);
+    const isEven = (tacticUser === 0) === is_server;
+    const hit_count = randomInt(tacticLen + (isEven ? 0 : 1), 10);
     const start_time = Math.random() * (duration - 5);
 
     return {
@@ -72,8 +187,11 @@ export function virtualRally(tacticId, tacticLen, attrs) {
         is_server,
         hit_count,
 
-        index: [[tacticId, Math.floor(randomInt(hit_count - tacticLen) / 2) * 2 + (is_server ? 0 : 1)]],
-        rally: [...new Array(hit_count)].map(() => genHit([1, 0], 1, attrs)),
+        index: [[
+            tacticId,
+            Math.floor(randomInt(hit_count - tacticLen) / 2) * 2 + (isEven ? 0 : 1)
+        ]],
+        rally: [...new Array(hit_count)].map(() => genHit([1, 0], 1, ds, attrs)),
 
         match_name: '',
         video_name: '',

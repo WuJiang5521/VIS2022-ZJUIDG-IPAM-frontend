@@ -1,6 +1,6 @@
 import React, {memo, useRef} from 'react';
 import {inject, observer} from "mobx-react";
-import {IconButton, Typography} from "@mui/material";
+import {IconButton, Tooltip, Typography} from "@mui/material";
 import {PlayArrow, Visibility} from "@mui/icons-material";
 import useRallyHeight from "./useRallyHeight";
 import {useTheme} from "@mui/styles";
@@ -106,7 +106,9 @@ function Rally({rally, isPlaying, onPlay, isExpand, onExpand, analysis}) {
                                 borderTop: `1px solid ${theme.palette.background.default}`,
                                 marginLeft: (hId === 0) && cellMargin,
                             }}>
-                            <Typography variant={'body2'}>{hit[aId]}</Typography>
+                            <Tooltip title={hit[aId]}>
+                                <Typography variant={'body2'} noWrap>{hit[aId]}</Typography>
+                            </Tooltip>
                         </Td>
                     ))}
                 </Tr>

@@ -39,6 +39,7 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
         <BodyCell>
             <TacticDetail open={viewDetail}
                           tactic={tactic.tactic}
+                          user={tactic.user}
                           tacticAddition={tactic.tactic_surrounding}
                           usageCount={tactic.usage_count}/>
         </BodyCell>

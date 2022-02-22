@@ -2,13 +2,14 @@ import React, {memo} from 'react';
 import Glyph from "./Glyph";
 import ValueStat from "./ValueStat";
 
-function Hit({size, maxHeight, hit, hitAdditional, open, freq}) {
+function Hit({size, maxHeight, hit, hitAdditional, open, player, freq}) {
     return <React.Fragment>
         {/* itself */}
         <g transform={`translate(${size / 2}, ${size / 2})`}>
             <Glyph hit={hit}
                    hitAdditional={hitAdditional}
                    freq={freq}
+                   player={player}
                    size={size * 0.8}/>
         </g>
         {/* detail */}

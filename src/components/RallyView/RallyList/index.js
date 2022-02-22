@@ -6,6 +6,7 @@ import {useVirtualList} from "ahooks";
 import useRallyHeight from "./useRallyHeight";
 
 function RallyList({rallies, title, onPlay, currentPlay, analysis}) {
+
     const [currentExpand, setCurrentExpand] = useState(null);
     const handleExpand = useCallback(rally => setCurrentExpand(oldId => (rally.id === oldId) ? null : rally.id), []);
 

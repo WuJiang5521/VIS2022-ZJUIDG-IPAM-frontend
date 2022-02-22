@@ -20,7 +20,6 @@ const defaultCurrentPlay = {
 
 const RallyView = inject('analysis', 'data')(observer(({analysis, data}) => {
     const {t} = useTranslation();
-    const tactic = analysis.selec
     const rallies = analysis.ralliesOfSelectedTactics;
 
     const [currentPlay, setCurrentPlay] = useState(defaultCurrentPlay);
@@ -37,6 +36,7 @@ const RallyView = inject('analysis', 'data')(observer(({analysis, data}) => {
             endTime: rally.end_time,
         })
     }, []);
+    const rallySort = (r1, r2) => r1.tacticPos[0] - r2.tacticPos[0];
 
     return <Stack width={'100%'} height={'100%'}
                   p={1}>
@@ -44,13 +44,13 @@ const RallyView = inject('analysis', 'data')(observer(({analysis, data}) => {
             <TacticDistribution rallies={rallies}/>
         </Box>
         <Box mb={1} flex={'1 0 0%'} overflow={'hidden'}>
-            <RallyList rallies={rallies.filter(rally => rally.win)}
+            <RallyList rallies={rallies.filter(rally => rally.win).sort(rallySort)}
                        currentPlay={currentPlay.id}
                        title={t(strings.PlayerWins)}
                        onPlay={handlePlay}/>
         </Box>
         <Box mb={1} flex={'1 0 0%'} overflow={'hidden'}>
-            <RallyList rallies={rallies.filter(rally => !rally.win)}
+            <RallyList rallies={rallies.filter(rally => !rally.win).sort(rallySort)}
                        currentPlay={currentPlay.id}
                        title={t(strings.OpponentsWins)}
                        onPlay={handlePlay}/>

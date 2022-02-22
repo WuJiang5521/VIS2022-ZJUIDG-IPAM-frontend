@@ -5,13 +5,15 @@ import {transition} from "../../static/theme";
 import {useSize} from "../../utils/useSize";
 import Hit from "./Hit";
 
-function TacticDetail({open, tactic, tacticAddition, usageCount}) {
+function TacticDetail({open, tactic, tacticAddition, usageCount, user}) {
     const ref = useRef();
     const {width} = useSize(ref);
-    const cellWidth = Math.min(width / 6, 80);
+    const cellWidth = Math.min(width / 5 - 1, 100);
     const fullWidth = tactic.length * cellWidth;
     const fullHeight = cellWidth * 2;
     const height = open ? fullHeight : cellWidth;
+
+    const player = hId => (hId + user) % 2;
 
     return <Container ref={ref} style={{height}}>
         <svg width={fullWidth} height={fullHeight} viewBox={`0 0 ${fullWidth} ${fullHeight}`}>
@@ -19,6 +21,7 @@ function TacticDetail({open, tactic, tacticAddition, usageCount}) {
                                          transform={`translate(${cellWidth * hId}, ${0})`}>
                 <Hit size={cellWidth} maxHeight={fullHeight}
                      hit={hit} hitAdditional={tacticAddition[hId]}
+                     player={player(hId)}
                      freq={usageCount}
                      open={open}/>
             </g>)}
@@ -29,7 +32,7 @@ function TacticDetail({open, tactic, tacticAddition, usageCount}) {
 const Container = styled('div')({
     width: '100%',
     transition: transition('height'),
-    overflow: 'hidden',
+    overflow: 'auto hidden',
     position: 'relative',
 })
 
