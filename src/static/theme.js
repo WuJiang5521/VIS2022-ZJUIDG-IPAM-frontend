@@ -18,6 +18,12 @@ const theme = {
         }
     },
     components: {
+        MuiTooltip: {
+            defaultProps: {
+                disableInteractive: true,
+                enterDelay: 300,
+            },
+        },
         MuiCssBaseline: {
             styleOverrides: {
                 body: {

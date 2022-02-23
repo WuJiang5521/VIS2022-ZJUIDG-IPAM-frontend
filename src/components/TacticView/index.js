@@ -39,10 +39,10 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                     <HeadCell label={'Freq.'} width={120}
                               onSort={handleSort(sortTypes.usage)}
                               sort={sortTypes.usage.indexOf(sortType)}/>
-                    <HeadCell label={'Win Rate'} width={120}
+                    <HeadCell label={'Win%'} width={120}
                               onSort={handleSort(sortTypes.winRate)}
                               sort={sortTypes.winRate.indexOf(sortType)}/>
-                    <HeadCell label={'Majority'} width={120}
+                    <HeadCell label={'Imp.'} width={120}
                               onSort={handleSort(sortTypes.majority)}
                               sort={sortTypes.majority.indexOf(sortType)}/>
                     <HeadCell label={'Pref.'} width={60} noDivider/>
