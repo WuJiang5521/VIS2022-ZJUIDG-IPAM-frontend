@@ -182,7 +182,7 @@ export default class AnalysisStore {
         })
     }
 
-    sortType = SortTypes.MajorityDown;
+    sortType = SortTypes.ImportanceDown;
     setSortType = newSortType => this.sortType = newSortType;
     get sortedTactics() {
         return this.statTactics.map(t => t).sort(tacticSorter[this.sortType])
