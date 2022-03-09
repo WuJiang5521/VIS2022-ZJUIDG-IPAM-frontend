@@ -82,8 +82,8 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
                  showBorder={showBorder}
                  textWidth={34}
                  trackColor={trackColor}
-                 value={tactic.stat.majority / tactic.globalStat.majority}
-                 label={tactic.stat.majority}/>
+                 value={tactic.stat.importance / tactic.globalStat.importance}
+                 label={tactic.stat.importance}/>
         </BodyCell>
         <BodyCell>
             <IconButton onClick={handleFavorite}>

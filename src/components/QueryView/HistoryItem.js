@@ -32,9 +32,9 @@ function Offset({val, offset, label}) {
             <Box component={'span'}
                  ml={0.5}
                  sx={{
-                     color: offset > 0 ? 'error.main' :
+                     color: offset > 0 ? 'success.main' :
                          (offset === 0 ? 'text.default' :
-                             'success.main')
+                             'error.main')
                  }}>
                 {offset > 0 && <ArrowUpward {...captionStyle}/>}
                 {offset === 0 && <Remove {...captionStyle}/>}
