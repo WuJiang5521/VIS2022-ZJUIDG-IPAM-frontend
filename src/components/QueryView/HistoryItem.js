@@ -94,25 +94,29 @@ function ItemBox({idx, type, text, params, selected, onSelect, time, dl, dlOffse
 
     return <Box ref={rootRef}
                 bgcolor={color}
-                border={'2px solid'}
-                borderColor={borderColor}
                 borderRadius={1}
                 mt={0} mr={1} mb={1} ml={1}
                 pt={0.5} pr={1.5} pb={0.5} pl={1.5}
                 onClick={onSelect}
                 overflow={'hidden'}
                 sx={{
+                    borderWidth: `1px 1px 1px 5px`,
+                    borderStyle: 'solid',
+                    borderColor: color,
+                    borderLeftColor: borderColor,
                     height: showDetail ? (headHeight + contentHeight + parseInt(theme.spacing(3))) : (headHeight + parseInt(theme.spacing(1))),
                     cursor: 'pointer',
                     transition: transition('all'),
                     '&:hover': {
                         bgcolor: darken(bgcolor, 0.1),
+                        borderColor: darken(bgcolor, 0.1),
+                        borderLeftColor: selected ? borderColor : darken(bgcolor, 0.1),
                     },
                 }}>
         <Box ref={headRef}
              display={'flex'}
              justifyContent={'space-between'}>
-            <Typography color={tColor} mr={1}> - {text}</Typography>
+            <Typography color={tColor} mr={1}>{text}</Typography>
             <Typography variant={'caption'} mt={'0.125rem'}>{formatTime(time)}</Typography>
         </Box>
 

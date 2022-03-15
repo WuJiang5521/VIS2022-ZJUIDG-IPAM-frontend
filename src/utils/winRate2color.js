@@ -1,4 +1,5 @@
-import {playerColors} from "../static/theme";
+import {playerColors, winColors} from "../static/theme";
+import {alpha} from "@mui/material";
 
 const parseColor = color => {
     const values = color
@@ -10,9 +11,9 @@ const parseColor = color => {
 const formatColor = ({r, g, b}) => `rgb(${r}, ${g}, ${b})`
 
 const colorScale = [
-    parseColor(playerColors[0]),
+    parseColor(winColors[0]),
     {r: 233, g: 233, b: 233},
-    parseColor(playerColors[1])
+    parseColor(winColors[1])
 ]
 
 function getScaleColor(number, colors) {
@@ -34,4 +35,15 @@ export default function winRate2color(winRate) {
         2 - winRate * 2,
         colorScale,
     )
+}
+
+export function freqRate2color(freqRate, side) {
+    let a = 1;
+    if (freqRate === 1) a = 1;
+    else if (freqRate > .5) a = .7;
+    else if (freqRate > .2) a = .3;
+    else a = .1;
+
+    if (side === 0 || side === 1) return alpha(playerColors[side], a);
+    return a;
 }
