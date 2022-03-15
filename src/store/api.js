@@ -49,13 +49,17 @@ class API extends BaseAPI {
     getDatasets = () => this.fetch(url('/datasets'))
         .then(res => res.json())
 
-    setDataset = (dataset, player, opponents) => this.fetch(
+    setDataset = (dataset, player, opponents) => {
+        console.log(JSON.stringify({dataset, player, opponents}))
+        return this.fetch(
         url('/dataset'),
         {
             method: 'POST',
             body: JSON.stringify({dataset, player, opponents})
         })
-        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            return res.json()})}
 
     runAlg = () => this.fetch(
         url('/tactic'),
