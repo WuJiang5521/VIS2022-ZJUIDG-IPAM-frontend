@@ -6,3 +6,11 @@ export function tacticTransformer(t, tId) {
         fix: false,
     }
 }
+
+export function rallyTransformer(r, tId) {
+    console.log(r);
+    return {
+        ...r,
+        index: r.index[tId][0],
+    }
+}

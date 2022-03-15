@@ -3,7 +3,7 @@ import Store from "./store";
 import api from "./api";
 import tacticSorter, {SortTypes} from "../utils/tacticSort";
 import {genTacticStat, mergeStat} from "../utils/tacticStat";
-import {tacticTransformer} from "../utils/dataTransformer";
+import {rallyTransformer, tacticTransformer} from "../utils/dataTransformer";
 
 export default class AnalysisStore {
     dataset = '';
@@ -50,7 +50,7 @@ export default class AnalysisStore {
             .then(res => {
                 history.sequences = Object.fromEntries(history.tactics.map((t, tid) => [
                     t.id,
-                    res[tid],
+                    res[tid].map(r => rallyTransformer(r, t.id)),
                 ]));
                 this.initHistory(history);
             });
@@ -106,7 +106,7 @@ export default class AnalysisStore {
             .then(res => {
                 state.sequences = Object.fromEntries(state.tactics.map((t, tid) => [
                     t.id,
-                    res[tid],
+                    res[tid].map(r => rallyTransformer(r, t.id)),
                 ]))
                 this.setCacheState(state);
             })
