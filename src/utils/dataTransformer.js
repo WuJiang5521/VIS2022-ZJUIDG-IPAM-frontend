@@ -8,10 +8,12 @@ const vt = v => {
 const ht = h => h.map(a => vt(a));
 
 export function tacticTransformer(t, tId) {
+    let value_count = 0;
+    t.tactic.forEach(h => h.forEach(a => a && (value_count++)));
     return {
         ...t,
         tactic: t.tactic.map(ht),
-        value_count: t.tactic.reduce((p, h) => p + h.reduce((p, a) => p + Number(a), 0), 0),
+        value_count,
         tactic_surrounding: t.tactic_surrounding.slice(1, t.tactic_surrounding.length - 1).map(ht),
         fixId: tId,
         fix: false,
