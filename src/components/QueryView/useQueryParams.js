@@ -98,7 +98,7 @@ export const useQueryParams = () => {
     const validateSetQueryParams = useCallback(newOnes =>
         setQueryParams(oldOnes => ({
             ...oldOnes,
-            ...newOnes
+            ...newOnes,
         })), []);
     const isApplicable = () => {
         return queryParams.type !== null;

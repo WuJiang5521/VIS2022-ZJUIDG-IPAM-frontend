@@ -29,9 +29,6 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
         onFavorite(!favorite)
     }
 
-    console.log(JSON.parse(JSON.stringify(tactic.tactic_surrounding)));
-    console.log(JSON.parse(JSON.stringify(tactic.tactic)))
-
     return <TableRow onClick={() => setViewDetail(a => !a)}>
         <BodyCell>
             <FormControlLabel checked={selected}

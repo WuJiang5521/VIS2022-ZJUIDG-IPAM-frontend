@@ -3,7 +3,7 @@ import Store from "./store";
 import api from "./api";
 import tacticSorter, {SortTypes} from "../utils/tacticSort";
 import {genTacticStat, mergeStat} from "../utils/tacticStat";
-import {rallyTransformer, tacticTransformer} from "../utils/dataTransformer";
+import {constraintTransformer, rallyTransformer, tacticTransformer} from "../utils/dataTransformer";
 
 export default class AnalysisStore {
     dataset = '';
@@ -97,7 +97,7 @@ export default class AnalysisStore {
             tactics: [],
             sequences: {}
         }
-        api.modify(query.type, query.params)
+        api.modify(...constraintTransformer(query.type, query.params))
             .then(res => {
                 state.desc_len = res.desc_len;
                 state.tactics = res.tactics.map(tacticTransformer);

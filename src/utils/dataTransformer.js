@@ -1,3 +1,5 @@
+import Store from "../store/store";
+
 const vt = v => {
     if (typeof v === 'string') return v.endsWith('Op') ? v.substring(0, v.length - 2) : v;
     if (!v) return v;
@@ -21,4 +23,22 @@ export function rallyTransformer(r, tId) {
         rally: r.rally.map(ht),
         index: r.index[tId][0],
     }
+}
+
+function getTacticId(index) {
+    const tactics = Store.getStores().analysis.sortedTactics;
+    return index
+        .split(',')
+        .map(a => parseInt(a.trim()))
+        .map(i => tactics[i].id);
+}
+
+export function constraintTransformer(type, params) {
+    return [
+        type,
+        {
+            ...params,
+            index: !params.index ? undefined : getTacticId(params.index),
+        }
+    ]
 }

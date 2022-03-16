@@ -126,14 +126,16 @@ function FormQuery({queryParams, setQueryParams, onStart, onEnd, disabled}) {
              alignItems={'center'}>
             {
                 queryParams.params &&
-                Object.entries(queryParams.params).map(([key, value]) => (
-                    <Chip key={key}
-                          size={"small"}
-                          label={`${key}: ${value}`}
-                          sx={{marginLeft: 0.5}}
-                          disabled={disabled}
-                          onDelete={handleDelete(key)}/>
-                ))
+                Object.entries(queryParams.params)
+                    .filter(([key, value]) => value !== undefined)
+                    .map(([key, value]) => (
+                        <Chip key={key}
+                              size={"small"}
+                              label={`${key}: ${value}`}
+                              sx={{marginLeft: 0.5}}
+                              disabled={disabled}
+                              onDelete={handleDelete(key)}/>
+                    ))
             }
         </Box>
 
