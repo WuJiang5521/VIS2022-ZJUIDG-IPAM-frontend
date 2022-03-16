@@ -1,5 +1,3 @@
-import randomInt from "./randomInt";
-
 export function genTacticStat(tactic=null) {
     const stat = {
         winRate0: 0,
@@ -12,8 +10,7 @@ export function genTacticStat(tactic=null) {
     stat.winRate0 = tactic.win_seq_count / tactic.seq_count;
     stat.winRate1 = 1 - stat.winRate0;
     stat.usage = tactic.usage_count;
-    // TODO: remove the randomInt
-    stat.importance = tactic.usage_count * randomInt(4, 12);
+    stat.importance = tactic.usage_count * tactic.value_count;
     return stat;
 }
 
