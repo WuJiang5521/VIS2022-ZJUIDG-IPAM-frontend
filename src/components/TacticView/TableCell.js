@@ -1,10 +1,10 @@
 import React from 'react';
-import {Box, IconButton, TableCell as MuiTableCell, Typography} from "@mui/material";
+import {Box, IconButton, TableCell as MuiTableCell, TableRow, Typography} from "@mui/material";
 import {ArrowDownward, ArrowUpward, Sort} from "@mui/icons-material";
 
-function TableCell({children, width}) {
+function TableCell({highlightBackground, children, width}) {
     return <MuiTableCell sx={{
-        bgcolor: 'background.paper',
+        bgcolor: !!highlightBackground ? 'background.highlight' : 'background.paper',
         pt: 0, pb: 0, pl: 1, pr: 1,
         width,
         height: 40,
@@ -13,8 +13,8 @@ function TableCell({children, width}) {
     </MuiTableCell>
 }
 
-export function BodyCell({children}) {
-    return <TableCell>
+export function BodyCell({highlightBackground, children}) {
+    return <TableCell highlightBackground={highlightBackground}>
         {children}
     </TableCell>
 }

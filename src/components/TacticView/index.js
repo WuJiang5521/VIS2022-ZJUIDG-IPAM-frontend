@@ -20,6 +20,8 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
     const sortType = analysis.sortType;
     const setSortType = analysis.setSortType;
     const sortedTactics = analysis.sortedTactics;
+    const isPreviewing = analysis.isPreviewing;
+    const [previewTactics, indexOfDeleteTactics, indexOfNewTactics] = analysis.previewTactics;
     const handleSort = types => selection => setSortType(types[selection]);
 
     const theme = useTheme();
@@ -35,7 +37,7 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
         <Table stickyHeader sx={{tableLayout: 'fixed'}}>
             <TableHead>
                 <TableRow>
-                    <HeadCell label={'No.'} width={67}/>
+                    <HeadCell label={'No.'} width={isPreviewing ? 120 : 67}/>
                     <HeadCell label={'Tactic'}/>
                     <HeadCell label={'Freq.'} width={120}
                               onSort={handleSort(sortTypes.usage)}
@@ -50,7 +52,19 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {sortedTactics.map((tactic, tId) => (
+                {isPreviewing ? previewTactics.map((tactic, tId) => (
+                    <Tactic key={tId}
+                            tactic={tactic}
+                            tId={tactic.sortedIndex}
+                            selected={analysis.selectedTactics.includes(tactic.fixId)}
+                            onSelect={selected => analysis.selectTactic(tactic.fixId, selected)}
+                            favorite={analysis.favoriteTactics.includes(tactic.fixId)}
+                            onFavorite={favorite => analysis.favoriteTactic(tactic.fixId, favorite)}
+                            highlightBackground={tId < indexOfNewTactics}
+                            noSelect={tId >= indexOfDeleteTactics && tId < indexOfNewTactics}
+                            isPreviewing
+                    />
+                )) : sortedTactics.map((tactic, tId) => (
                     <Tactic key={tId}
                             tactic={tactic}
                             tId={tId}

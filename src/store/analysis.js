@@ -182,6 +182,19 @@ export default class AnalysisStore {
         })
     }
 
+    getStatTactics = (state) => {
+        const globalStat = genTacticStat();
+        return state.tactics.map(tactic => {
+            const stat = genTacticStat(tactic);
+            mergeStat(globalStat, stat);
+            return {
+                ...tactic,
+                stat,
+                globalStat,
+            }
+        })
+    }
+
     sortType = SortTypes.ImportanceDown;
     setSortType = newSortType => this.sortType = newSortType;
     get sortedTactics() {
@@ -203,6 +216,29 @@ export default class AnalysisStore {
         })
 
         return rallies;
+    }
+
+    get previewTactics() {
+        const statTactics = this.sortedTactics;
+        const cacheStatTactics = this.getStatTactics(this.cacheState).sort(tacticSorter[this.sortType]);
+        const deleteTactics = statTactics.map((t, i) => ({...t, sortedIndex: i, newSortedIndex: -1})).filter(statTactic => {
+                const cacheStatTacticIndex = cacheStatTactics.findIndex(cacheStatTactic => cacheStatTactic.id === statTactic.id);
+                return cacheStatTacticIndex === -1;
+            }
+        );
+        const newTactics = cacheStatTactics.map((t, i) => ({...t, sortedIndex: -1, newSortedIndex: i})).filter(cacheStatTactic => {
+                const statTacticIndex = statTactics.findIndex(statTactic => statTactic.id === cacheStatTactic.id);
+                return statTacticIndex === -1;
+            }
+        )
+        const keepTactics = statTactics.map((t, i) => ({...t, sortedIndex: i, newSortedIndex: -1})).filter(statTactic => {
+                const cacheStatTacticIndex = cacheStatTactics.findIndex(cacheStatTactic => cacheStatTactic.id === statTactic.id);
+                statTactic.newSortedIndex = cacheStatTacticIndex;
+                return cacheStatTacticIndex !== -1;
+            }
+        );
+        return [deleteTactics.concat(newTactics).concat(keepTactics),
+            deleteTactics.length, deleteTactics.length + newTactics.length];
     }
 
     constructor() {
