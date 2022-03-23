@@ -16,6 +16,7 @@ const theme = {
         background: {
             default: 'rgb(233,233,233)',
             paper: 'rgb(255,255,255)',
+            highlight: 'rgb(243, 243, 243)'
         }
     },
     components: {
