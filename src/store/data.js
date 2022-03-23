@@ -14,8 +14,8 @@ export default class DataStore {
 
             ds.matches.forEach(match => {
                 match.players.forEach(player => {
-                    if (!players.includes(player))
-                        players.push(player);
+                    if (!players.includes(player[0]))
+                        players.push(player[0]);
                 })
             })
         })
@@ -27,10 +27,10 @@ export default class DataStore {
             if (ds.name !== datasetName) return;
 
             ds.matches.forEach(match => {
-                const idx = match.players.indexOf(player);
+                const idx = match.players.map(p => p[0]).indexOf(player);
                 if (idx === -1) return;
 
-                if (opponents.includes(match.players[1 - idx]))
+                if (opponents.includes(match.players[1 - idx][0]))
                     matches.push(match);
             })
         })

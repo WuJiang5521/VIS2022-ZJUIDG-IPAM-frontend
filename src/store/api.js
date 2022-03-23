@@ -1,6 +1,5 @@
 import Store from "./store";
-import VirtualData, {virtualRally} from "../utils/virtualData";
-import {values} from "../utils/virtualData";
+import VirtualData, {values, virtualRally} from "../utils/virtualData";
 
 const url = uri => `http://127.0.0.1:8000${uri}`;
 
@@ -49,13 +48,17 @@ class API extends BaseAPI {
     getDatasets = () => this.fetch(url('/datasets'))
         .then(res => res.json())
 
-    setDataset = (dataset, player, opponents) => this.fetch(
+    setDataset = (dataset, player, opponents) => {
+        console.log(JSON.stringify({dataset, player, opponents}))
+        return this.fetch(
         url('/dataset'),
         {
             method: 'POST',
             body: JSON.stringify({dataset, player, opponents})
         })
-        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            return res.json()})}
 
     runAlg = () => this.fetch(
         url('/tactic'),
@@ -124,11 +127,7 @@ class VirtualAPI extends BaseAPI {
 
     getTacticSequences = tac_id => new Promise(resolve => {
         const t = this.lastTacticSet.tactics.find(t => t.id === tac_id);
-        resolve([...Array(t.usage_count)].map(() => {
-            const rally = virtualRally(tac_id, t.tactic.length, t.user);
-            rally.index = rally.index[0][1];
-            return rally;
-        }))
+        resolve([...Array(t.usage_count)].map(() => virtualRally(tac_id, t.tactic.length, t.user)))
     })
 
     processText = text => new Promise(resolve => {

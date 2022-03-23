@@ -1,7 +1,7 @@
 import {Checkbox, FormControlLabel, IconButton, TableRow} from "@mui/material";
 import {Favorite, FavoriteBorder} from "@mui/icons-material";
 import {BodyCell} from "./TableCell";
-import {playerColors} from "../../static/theme";
+import {winColors} from "../../static/theme";
 import Bar from "./Bar";
 import TacticDetail from "./TacticDetail";
 import {useState} from "react";
@@ -60,14 +60,14 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite}) 
                          showBorder={false}
                          value={tactic.stat.winRate0}
                          textWidth={41}
-                         barColor={playerColors[0]}
-                         trackColor={playerColors[1]}
+                         barColor={winColors[0]}
+                         trackColor={winColors[1]}
                          label={`${(tactic.stat.winRate0 * 100).toFixed(1)}%`}/> :
                     <Bar variant={`Double${barType}`}
                          height={barHeight}
                          showBorder={false}
                          value={[tactic.stat.winRate0, tactic.stat.winRate1]}
-                         barColor={playerColors}
+                         barColor={winColors}
                          trackColor={trackColor}
                          doubleAlign={doubleAlign}
                          label={[

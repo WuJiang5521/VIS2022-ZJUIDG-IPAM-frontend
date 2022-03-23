@@ -8,6 +8,7 @@ import {Tactic} from "./Tactic";
 import {SortTypes} from "../../utils/tacticSort";
 import {useTheme} from "@mui/styles";
 import {HeadCell} from "./TableCell";
+import TacticViewToolbar from "./Toolbar";
 
 const sortTypes = {
     usage: [SortTypes.UsageDown, SortTypes.UsageUp],
@@ -61,10 +62,6 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
             </TableBody>
         </Table>
     </TableContainer>;
-}));
-
-const TacticViewToolbar = inject()(observer(({}) => {
-    return null;
 }));
 
 export default function useTacticView() {

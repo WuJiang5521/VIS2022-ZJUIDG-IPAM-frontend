@@ -16,8 +16,8 @@ const dict = {
     TacticView: {cn: '战术视图', en: 'Tactic View'},
 
     RallyView: {cn: '回合视图', en: 'Rally View'},
-    PlayerWins: {cn: '得分', en: 'Player wins'},
-    OpponentsWins: {cn: '失分', en: 'Opponents win'},
+    PlayerWins: {cn: '得分', en: 'Player Wins'},
+    OpponentsWins: {cn: '失分', en: 'Player Loses'},
     Frequency: {cn: '频次', en: 'Freq.'},
     Index: {cn: '拍次', en: 'Hit No.'},
     videoHintPending: {cn: '请选择回合播放视频', en: 'Please select a rally to play'},

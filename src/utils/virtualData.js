@@ -96,9 +96,7 @@ export const values = {
             'Other',
         ],
     },
-    'Table Tennis': {
-
-    }
+    'Table Tennis': {}
 }
 
 function genValue(ds, attrKey, count = 1) {
@@ -189,10 +187,9 @@ export function virtualRally(tacticId, tacticLen, tacticUser, ds, attrs) {
         is_server,
         hit_count,
 
-        index: [[
-            tacticId,
-            Math.floor(randomInt(hit_count - tacticLen) / 2) * 2 + (isEven ? 0 : 1)
-        ]],
+        index: {
+            [tacticId]: Math.floor(randomInt(hit_count - tacticLen) / 2) * 2 + (isEven ? 0 : 1)
+        },
         rally: [...new Array(hit_count)].map(() => genHit([1, 0], 1, ds, attrs)),
 
         match_name: 'video',

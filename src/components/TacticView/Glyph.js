@@ -3,6 +3,7 @@ import {inject, observer} from "mobx-react";
 import SymbolSet from "./SymbolSets";
 import {playerColors} from "../../static/theme";
 import {Tooltip} from "@mui/material";
+import {freqRate2color} from "../../utils/winRate2color";
 
 function Glyph({hit, hitAdditional, size, analysis, freq, player}) {
     const glyphSet = SymbolSet.dataset(analysis.dataset);
@@ -34,7 +35,7 @@ function Glyph({hit, hitAdditional, size, analysis, freq, player}) {
                     .size(size);
                 const [value, opacity] = values[aId];
                 return <g key={attrKey}
-                          opacity={opacity}
+                          opacity={freqRate2color(opacity)}
                           stroke={playerColors[player]}
                           fill={playerColors[player]}>
                     {renderer.render(value, true)}

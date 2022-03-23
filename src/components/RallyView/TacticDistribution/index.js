@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import {Observer} from "mobx-react";
 import {useSize} from "../../../utils/useSize";
 import {Box} from "@mui/material";
-import {playerColors} from "../../../static/theme";
+import {winColors} from "../../../static/theme";
 import {useTheme} from "@mui/styles";
 import useMouseOffset from "../../../utils/useMouseOffset";
 import useStyleControl from "./useStyleControl";
@@ -35,7 +35,7 @@ function TacticDistribution({rallies}) {
                         <StackBar key={bId}
                                   idx={bId} totalCount={stat.distribution.length}
                                   {...size}
-                                  value={bar} color={playerColors}
+                                  value={bar} color={winColors}
                                   styleControl={styleControl}/>
                     ))}
                     {offsetY !== null && <HintLine y={offsetY}
