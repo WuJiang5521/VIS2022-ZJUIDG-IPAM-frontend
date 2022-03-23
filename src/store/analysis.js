@@ -90,19 +90,6 @@ export default class AnalysisStore {
         desc_len: 0,
     }
     setCacheState = s => this.cacheState = s;
-    get diffState() {
-        const oldTactics = [], newTactics = [];
-
-        if (this.cacheState.desc_len !== 0) {
-            const oldTacticIdMap = Object.fromEntries(this.state.tactics.map(t => [t.id, t.fixId]));
-            const newTacticIdMap = Object.fromEntries(this.cacheState.tactics.map(t => [t.id, t.fixId]));
-        }
-
-        return {
-            oldTactics,
-            newTactics,
-        }
-    }
     preview = query => {
         const state = {
             query,
