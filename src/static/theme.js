@@ -5,7 +5,7 @@ export const scrollbarSize = 4;
 
 // playerColors must be in rgb form!!!
 export const playerColors = ['rgb(247,147,30)', 'rgb(0, 113, 188)'];
-export const winColors = ['rgb(122,201,67)', 'rgb(255,29,37)'];
+export const winColors = ['rgb(122,201,67)', 'rgb(217,86,91)'];
 export const transition = (...keys) => keys.map(key => `${key} .3s cubic-bezier(0.4, 0, 0.2, 1) 0ms`).join(',');
 
 const theme = {
