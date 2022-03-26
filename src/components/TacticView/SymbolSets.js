@@ -251,6 +251,14 @@ const symbolSets = {
                                        r={(or - ir) / 2}
                                        strokeWidth={0}/>
                     })()}
+                    {valParam && valParam[0] === 0 && (function () {
+                        return <text x={-or}
+                                     y={-or}
+                                     fontSize={8}
+                                     textAnchor={'start'}
+                                     dominantBaseline={'hanging'}
+                                     strokeWidth={0}>S</text>
+                    })()}
                 </g>;
             }
         },
