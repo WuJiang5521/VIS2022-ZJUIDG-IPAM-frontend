@@ -36,7 +36,7 @@ export const types = [
             },
             {
                 type: 'Split',
-                params: ['index', 'attr', 'value'],
+                params: ['index', 'attr', 'hit'],
             },
             {
                 type: 'Merge',

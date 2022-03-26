@@ -70,7 +70,8 @@ function HitStat({hitAdditional, analysis, width, height, player, size, padding,
         .map(([values, attrKey], aId) => [values, attrKey, aId])
         .filter(([values]) => values !== null)
         .map(([values, attrKey, originalAId], aId) => {
-            return <g transform={`translate(0, ${(size * 2 + padding[0] + padding[1]) * (shrink ? aId : originalAId)})`}
+            return <g key={attrKey}
+                      transform={`translate(0, ${(size * 2 + padding[0] + padding[1]) * (shrink ? aId : originalAId)})`}
                       fill={playerColors[player]}
                       stroke={playerColors[player]}>
                 <AttrStat attrKey={attrKey}

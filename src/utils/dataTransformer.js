@@ -33,7 +33,7 @@ function getTacticId(index) {
     return index
         .split(',')
         .map(a => parseInt(a.trim()))
-        .map(i => tactics[i].id);
+        .map(i => tactics[i - 1].id);
 }
 
 export function constraintTransformer(type, params) {
