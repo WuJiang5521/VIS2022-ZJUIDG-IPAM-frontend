@@ -49,8 +49,9 @@ function PreviewingLabel({oldIndex, newIndex}) {
     </table>
 }
 
-export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite, isPreviewing, highlightBackground, noSelect}) {
+export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite, isPreviewing, highlightBackground, noSelect, isHovered, onHover}) {
     const [viewDetail, setViewDetail] = useState(false);
+    highlightBackground = highlightBackground || isHovered;
 
     const handleSelect = e => {
         e.stopPropagation();
@@ -62,7 +63,12 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite, i
         onFavorite(!favorite)
     }
 
+    const handleMouseEnter = () => onHover(tactic.fixId, true);
+    const handleMouseLeave = () => onHover(tactic.fixId, false);
+
     return <TableRow
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onClick={() => setViewDetail(a => !a)}
     >
         <BodyCell highlightBackground={highlightBackground}>

@@ -71,6 +71,8 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                             selected={analysis.selectedTactics.includes(tactic.fixId)}
                             onSelect={selected => analysis.selectTactic(tactic.fixId, selected)}
                             favorite={analysis.favoriteTactics.includes(tactic.fixId)}
+                            isHovered={analysis.hoveredTactic === tactic.fixId}
+                            onHover={analysis.hoverTactic}
                             onFavorite={favorite => analysis.favoriteTactic(tactic.fixId, favorite)}/>
                 ))}
             </TableBody>

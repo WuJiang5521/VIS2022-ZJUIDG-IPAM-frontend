@@ -6,8 +6,13 @@ import {memo} from 'react';
 import {Typography} from "@mui/material";
 import styled from "@emotion/styled";
 
+const hoverStyle = {
+    border: '1px solid grey',
+}
+
 function Point({
                    id,
+                   fixId,
                    t,
                    cx,
                    cy,
@@ -18,7 +23,11 @@ function Point({
                    isFavorite,
                    isCache,
                    onSelect,
+                   onHover,
                }) {
+    const handleMouseEnter = () => onHover(fixId, true);
+    const handleMouseLeave = () => onHover(fixId, false);
+
     return <Pos style={{transform: `translate(${cx}px, ${cy}px)`}}>
         <P style={{
             width: r * 2,
@@ -27,14 +36,18 @@ function Point({
             backgroundColor: color,
             lineHeight: `${r * 2}px`,
             transform: `translate(-${r}px, -${r}px)`,
-        }}>
-            <Typography variant={'caption'}>{id}</Typography>
+            ...(isHovered && hoverStyle),
+        }} onMouseEnter={handleMouseEnter}
+           onMouseLeave={handleMouseLeave}>
+            {(id < 10 || isHovered) && <Typography variant={'caption'}>{id}</Typography>}
         </P>
     </Pos>;
 }
 
 const Pos = styled('div')({
     position: 'absolute',
+    top: 0,
+    left: 0,
     width: 0,
     height: 0,
     overflow: 'visible',
@@ -46,9 +59,6 @@ const P = styled('div')({
     letterSpacing: '0.03333em',
     textAlign: 'center',
     cursor: 'pointer',
-    '&:hover': {
-        outline: '-webkit-focus-ring-color auto 1px'
-    }
 })
 
 export default memo(Point);

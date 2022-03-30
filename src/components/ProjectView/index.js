@@ -11,6 +11,7 @@ import {useSize} from "../../utils/useSize";
 import scale from "../../utils/scale";
 import tacticSorter, {SortTypes} from "../../utils/tacticSort";
 import ProjectViewToolbar from "./Toolbar";
+import Axis from "./Axis";
 
 const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize = 20, sizeEncoding}) => {
     const tactics = analysis.sortedTactics;
@@ -34,21 +35,27 @@ const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize
         <Box ref={containerRef}
              width={'100%'} height={'100%'}
              overflow={'hidden'} position={'relative'}>
+            <Axis/>
             {sortedTactics.map(t => {
                 const isSelected = analysis.selectedTactics.includes(t.fixId);
                 const r = scaleSize(sizeEncoding === 'freq' ? t.usage_count : t.stat.importance);
+                const dir = t.x * Math.PI * 2, dis = Math.pow(t.y, 0.5) / 2 * 0.8;
+                const cx = width / 2 + dis * width * Math.cos(dir),
+                    cy = height / 2 + dis * height * Math.sin(dir);
                 return <Point key={t.id}
                               id={t.idxInTacticView + 1}
+                              fixId={t.fixId}
                               t={t}
-                              cx={t.x * width}
-                              cy={t.y * height}
+                              cx={cx}
+                              cy={cy}
                               r={r}
                               color={winRate2color(t.stat.winRate0)}
                               isHovered={analysis.hoveredTactic === t.fixId}
                               isSelected={isSelected}
                               isFavorite={analysis.favoriteTactics.includes(t.fixId)}
                               isCache={false}
-                              onSelect={() => analysis.selectTactic(t.fixId, !isSelected)}/>
+                              onSelect={() => analysis.selectTactic(t.fixId, !isSelected)}
+                              onHover={analysis.hoverTactic}/>
             })}
         </Box>
     </Box>;

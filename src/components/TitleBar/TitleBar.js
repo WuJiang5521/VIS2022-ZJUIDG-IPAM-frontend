@@ -1,10 +1,10 @@
 import React from 'react';
 import {inject, observer, useLocalObservable} from "mobx-react";
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 import strings from "../../static/strings";
 import TitleBarSelect from "./TitleBarSelect";
-import {Check, Close} from "@mui/icons-material";
+import {Check, Close, Menu} from "@mui/icons-material";
 import Store from "../../store/store";
 import {playerColors} from "../../static/theme";
 
@@ -88,6 +88,11 @@ function TitleBar({data, analysis}) {
 
     return <AppBar sx={{height: 40, boxShadow: 'none'}}>
         <Toolbar sx={{height: 40, minHeight: '0 !important'}}>
+            <IconButton size={"small"} sx={{verticalAlign: 'top', color: 'white'}}
+                        onClick={analysis.saveProject}
+                        onContextMenu={e => {e.stopPropagation(); e.preventDefault(); analysis.loadProject();}}>
+                <Menu/>
+            </IconButton>
             <Typography variant={'h5'}
                         sx={{flexGrow: 1}}>
                 {t(strings.SystemName)}

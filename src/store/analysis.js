@@ -4,6 +4,7 @@ import api from "./api";
 import tacticSorter, {SortTypes} from "../utils/tacticSort";
 import {genTacticStat, mergeStat} from "../utils/tacticStat";
 import {constraintTransformer, rallyTransformer, tacticTransformer} from "../utils/dataTransformer";
+import {load, save} from "../utils/io";
 
 export default class AnalysisStore {
     dataset = '';
@@ -80,9 +81,11 @@ export default class AnalysisStore {
         sequences: {},
         desc_len: 0,
     }
+
     get isPreviewing() {
         return this.cacheState.desc_len !== 0;
     }
+
     initCacheState = () => this.cacheState = {
         query: {},
         tactics: [],
@@ -162,6 +165,7 @@ export default class AnalysisStore {
     hoverTactic = (id, hover) => {
         if (hover) this.hoveredTactic = id;
         else if (this.hoveredTactic === id) this.hoveredTactic = null;
+        console.log(this.hoveredTactic);
     }
     clearOldData = () => {
         this.selectedTactics = [];
@@ -197,6 +201,7 @@ export default class AnalysisStore {
 
     sortType = SortTypes.ImportanceDown;
     setSortType = newSortType => this.sortType = newSortType;
+
     get sortedTactics() {
         return this.statTactics.map(t => t).sort(tacticSorter[this.sortType])
     }
@@ -221,17 +226,29 @@ export default class AnalysisStore {
     get previewTactics() {
         const statTactics = this.sortedTactics;
         const cacheStatTactics = this.getStatTactics(this.cacheState).sort(tacticSorter[this.sortType]);
-        const deleteTactics = statTactics.map((t, i) => ({...t, sortedIndex: i, newSortedIndex: -1})).filter(statTactic => {
+        const deleteTactics = statTactics.map((t, i) => ({
+            ...t,
+            sortedIndex: i,
+            newSortedIndex: -1
+        })).filter(statTactic => {
                 const cacheStatTacticIndex = cacheStatTactics.findIndex(cacheStatTactic => cacheStatTactic.id === statTactic.id);
                 return cacheStatTacticIndex === -1;
             }
         );
-        const newTactics = cacheStatTactics.map((t, i) => ({...t, sortedIndex: -1, newSortedIndex: i})).filter(cacheStatTactic => {
+        const newTactics = cacheStatTactics.map((t, i) => ({
+            ...t,
+            sortedIndex: -1,
+            newSortedIndex: i
+        })).filter(cacheStatTactic => {
                 const statTacticIndex = statTactics.findIndex(statTactic => statTactic.id === cacheStatTactic.id);
                 return statTacticIndex === -1;
             }
         )
-        const keepTactics = statTactics.map((t, i) => ({...t, sortedIndex: i, newSortedIndex: -1})).filter(statTactic => {
+        const keepTactics = statTactics.map((t, i) => ({
+            ...t,
+            sortedIndex: i,
+            newSortedIndex: -1
+        })).filter(statTactic => {
                 const cacheStatTacticIndex = cacheStatTactics.findIndex(cacheStatTactic => cacheStatTactic.id === statTactic.id);
                 statTactic.newSortedIndex = cacheStatTacticIndex;
                 return cacheStatTacticIndex !== -1;
@@ -239,6 +256,37 @@ export default class AnalysisStore {
         );
         return [deleteTactics.concat(newTactics).concat(keepTactics),
             deleteTactics.length, deleteTactics.length + newTactics.length];
+    }
+
+    saveProject = () => {
+        const data = {
+            dataset: this.dataset,
+            player: this.player,
+            opponents: this.opponents,
+            history: this.history,
+            cacheState: this.cacheState,
+            currentViewHistory: this.currentViewHistory,
+            selectedTactics: this.selectedTactics,
+            favoriteTactics: this.favoriteTactics,
+            hoveredTactic: this.hoveredTactic,
+            sortType: this.sortType,
+        }
+        save(data);
+    }
+    loadProject = () => {
+        load()
+            .then(d => {
+                this.dataset = d.dataset;
+                this.player = d.player;
+                this.opponents = d.opponents;
+                this.history = d.history.map(rec => ({...rec, lastUpdate: new Date(rec.lastUpdate)}));
+                this.cacheState = d.cacheState;
+                this.currentViewHistory = d.currentViewHistory;
+                this.selectedTactics = d.selectedTactics;
+                this.favoriteTactics = d.favoriteTactics;
+                this.hoveredTactic = d.hoveredTactic;
+                this.sortType = d.sortType;
+            })
     }
 
     constructor() {
