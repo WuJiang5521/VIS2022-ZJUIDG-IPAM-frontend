@@ -1,5 +1,14 @@
 import {Box, Checkbox, FormControlLabel, IconButton, TableRow} from "@mui/material";
-import {ArrowDownward, ArrowUpward, Favorite, FavoriteBorder, Remove} from "@mui/icons-material";
+import {
+    Add,
+    AddOutlined,
+    ArrowDownward,
+    ArrowUpward,
+    Favorite,
+    FavoriteBorder,
+    Remove,
+    RemoveOutlined
+} from "@mui/icons-material";
 import {BodyCell} from "./TableCell";
 import {winColors} from "../../static/theme";
 import Bar from "./Bar";
@@ -73,14 +82,22 @@ export function Tactic({tactic, tId, selected, onSelect, favorite, onFavorite, i
     >
         <BodyCell highlightBackground={highlightBackground}>
             {!!isPreviewing ? (!!noSelect ? <FormControlLabel checked={selected}
-                              onClick={handleSelect}
-                              control={<Checkbox/>}
-                              label={<PreviewingLabel oldIndex={tactic.sortedIndex} newIndex={tactic.newSortedIndex}/>}
-                              disabled
+                                                              onClick={handleSelect}
+                                                              control={<Checkbox
+                                                                  sx={{color: 'success.main'}}
+                                                                  icon={<AddOutlined/>}
+                                                                  checkedIcon={<Add/>}/>}
+                                                              label={<PreviewingLabel oldIndex={tactic.sortedIndex}
+                                                                                      newIndex={tactic.newSortedIndex}/>}
             /> : <FormControlLabel checked={selected}
                                    onClick={handleSelect}
-                                   control={<Checkbox/>}
-                                   label={<PreviewingLabel oldIndex={tactic.sortedIndex} newIndex={tactic.newSortedIndex}/>}
+                                   control={tactic.newSortedIndex === -1 ? <Checkbox
+                                           sx={{color: 'error.main'}}
+                                           icon={<RemoveOutlined/>}
+                                           checkedIcon={<Remove/>}/>
+                                       : <Checkbox/>}
+                                   label={<PreviewingLabel oldIndex={tactic.sortedIndex}
+                                                           newIndex={tactic.newSortedIndex}/>}
             />) : <FormControlLabel checked={selected}
                                     onClick={handleSelect}
                                     control={<Checkbox/>}

@@ -8,7 +8,6 @@ export default function tacticDistributionStat(rallies) {
     const distribution = [];
     let maxX = 0, maxY = 0;
     rallies.forEach(rally => {
-        console.log('Rally', JSON.parse(JSON.stringify(rally)))
         const bar = insert(distribution, rally.index, rally.win)
         maxX = Math.max(distribution.length, maxX);
         maxY = Math.max(bar[0] + bar[1], maxY);

@@ -10,6 +10,14 @@ const hoverStyle = {
     border: '1px solid grey',
 }
 
+const oriStyle = {
+    border: '1px solid black',
+}
+
+const newStyle = {
+    border: '1px dashed black',
+}
+
 function Point({
                    id,
                    fixId,
@@ -21,6 +29,7 @@ function Point({
                    isHovered,
                    isSelected,
                    isFavorite,
+                   isDeleting,
                    isCache,
                    onSelect,
                    onHover,
@@ -36,10 +45,14 @@ function Point({
             backgroundColor: color,
             lineHeight: `${r * 2}px`,
             transform: `translate(-${r}px, -${r}px)`,
-            ...(isHovered && hoverStyle),
+            ...((isHovered || isSelected) && hoverStyle),
+            ...((isDeleting) && oriStyle),
+            ...((isCache) && newStyle),
         }} onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}>
-            {(id < 10 || isHovered) && <Typography variant={'caption'}>{id}</Typography>}
+            {(!isDeleting) && (id < 10 || isHovered) && <Typography variant={'caption'}>{id}</Typography>}
+            {isDeleting && <Typography>-</Typography>}
+            {/*{isCache && <Typography>+</Typography>}*/}
         </P>
     </Pos>;
 }

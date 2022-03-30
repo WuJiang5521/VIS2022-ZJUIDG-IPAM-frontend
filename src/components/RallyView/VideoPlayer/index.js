@@ -30,6 +30,7 @@ function VideoPlayer({src, startTime, endTime}) {
                    width={'100%'}
                    controls
                    style={{display: status === VideoStatus.Loading ? 'none' : 'block'}}
+                   autoPlay
                    onLoadedMetadata={handleLoaded}
                    onTimeUpdate={handleTimeUpdate}
                    onError={handleError}>

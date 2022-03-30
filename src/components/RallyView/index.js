@@ -38,6 +38,9 @@ const RallyView = inject('analysis', 'data')(observer(({analysis, data}) => {
     }, []);
     const rallySort = (r1, r2) => r1.tacticPos[0] - r2.tacticPos[0];
 
+    const videoSrc = data.getVideoSrc(currentPlay.videoName);
+    const defaultVideoSrc = currentPlay.id && './video.mp4';
+
     return <Stack width={'100%'} height={'100%'}
                   p={1}>
         <Box mb={1} flex={'0 0 150px'} overflow={'hidden'}>
@@ -56,7 +59,7 @@ const RallyView = inject('analysis', 'data')(observer(({analysis, data}) => {
                        onPlay={handlePlay}/>
         </Box>
         <Box flex={'0 0 auto'} overflow={'hidden'}>
-            <VideoPlayer src={data.getVideoSrc(currentPlay.videoName)}
+            <VideoPlayer src={videoSrc || defaultVideoSrc}
                          startTime={currentPlay.startTime}
                          endTime={currentPlay.endTime}/>
         </Box>
