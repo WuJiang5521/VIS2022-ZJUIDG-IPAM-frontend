@@ -42,6 +42,9 @@ class BaseAPI {
             this.headers.set('Token', res);
             Store.getStores().system.setNetwork(true);
         });
+
+    _data = null;
+    useData = d => this._data = d;
 }
 
 class API extends BaseAPI {
@@ -49,16 +52,13 @@ class API extends BaseAPI {
         .then(res => res.json())
 
     setDataset = (dataset, player, opponents) => {
-        console.log(JSON.stringify({dataset, player, opponents}))
         return this.fetch(
         url('/dataset'),
         {
             method: 'POST',
             body: JSON.stringify({dataset, player, opponents})
         })
-        .then(res => {
-            console.log(res);
-            return res.json()})}
+        .then(res => res.json())}
 
     runAlg = () => this.fetch(
         url('/tactic'),

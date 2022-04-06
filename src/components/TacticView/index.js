@@ -32,8 +32,7 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                                height: `calc(100% - ${theme.spacing(2)})`,
                                m: 1,
                                pr: 1,
-                           }}
-                           onScroll={console.log}>
+                           }}>
         <Table stickyHeader sx={{tableLayout: 'fixed'}}>
             <TableHead>
                 <TableRow>
@@ -61,6 +60,7 @@ const TacticView = inject('analysis')(observer(({analysis}) => {
                             favorite={analysis.favoriteTactics.includes(tactic.fixId)}
                             onFavorite={favorite => analysis.favoriteTactic(tactic.fixId, favorite)}
                             highlightBackground={tId < indexOfNewTactics}
+                            onHover={analysis.hoverTactic}
                             noSelect={tId >= indexOfDeleteTactics && tId < indexOfNewTactics}
                             isPreviewing
                     />

@@ -165,7 +165,6 @@ export default class AnalysisStore {
     hoverTactic = (id, hover) => {
         if (hover) this.hoveredTactic = id;
         else if (this.hoveredTactic === id) this.hoveredTactic = null;
-        console.log(this.hoveredTactic);
     }
     clearOldData = () => {
         this.selectedTactics = [];
@@ -287,6 +286,10 @@ export default class AnalysisStore {
                 this.hoveredTactic = d.hoveredTactic;
                 this.sortType = d.sortType;
             })
+    }
+    useDemo = () => {
+        load()
+            .then(d => api.useData(d.history))
     }
 
     constructor() {
