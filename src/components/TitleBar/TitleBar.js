@@ -7,6 +7,7 @@ import TitleBarSelect from "./TitleBarSelect";
 import {Check, Close, Menu} from "@mui/icons-material";
 import Store from "../../store/store";
 import {playerColors} from "../../static/theme";
+import SystemMenu from "./SystemMenu";
 
 function TitleBar({data, analysis}) {
     const {t} = useTranslation();
@@ -88,11 +89,7 @@ function TitleBar({data, analysis}) {
 
     return <AppBar sx={{height: 40, boxShadow: 'none'}}>
         <Toolbar sx={{height: 40, minHeight: '0 !important'}}>
-            <IconButton size={"small"} sx={{verticalAlign: 'top', color: 'white'}}
-                        onClick={analysis.saveProject}
-                        onContextMenu={e => {e.stopPropagation(); e.preventDefault(); analysis.loadProject();}}>
-                <Menu/>
-            </IconButton>
+            <SystemMenu/>
             <Typography variant={'h5'}
                         sx={{flexGrow: 1}}>
                 {t(strings.SystemName)}

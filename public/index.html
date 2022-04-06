@@ -25,12 +25,31 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <style>
+      @media only print {
+        #root, html, body {
+          margin: 0;
+          padding: 0;
+          overflow: visible;
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+        }
+      }
       #root, html, body {
+        /*margin: 0;*/
+        /*padding: 0;*/
+        /*width: 100vw;*/
+        /*height: 100vh;*/
+        /*overflow: hidden;*/
+        /*user-select: none;*/
+        /*-webkit-user-select: none;*/
+        /*-moz-user-select: none;*/
+        /*-ms-user-select: none;*/
+
         margin: 0;
         padding: 0;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
+        overflow: visible;
         user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;

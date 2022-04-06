@@ -1,7 +1,7 @@
 const bs = val => 40 * val;
 const r2xy = (r, l) => [l * Math.cos(r), l * Math.sin(r)];
 
-const symbolSets = {
+export const symbolSets = {
     'Badminton': {
         'Ball Height': {
             pos: (size, asGlyph) => asGlyph ?
@@ -290,12 +290,6 @@ const symbolSets = {
                 </text>;
             }
         },
-    },
-    'Table Tennis': {
-        'Hitting Tech': {},
-        'Player Pos': {},
-        'Ball Pos': {},
-        'Spin': {},
     },
 }
 
