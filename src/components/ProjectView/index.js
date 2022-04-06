@@ -40,32 +40,35 @@ const ProjectView = inject('analysis')(observer(({analysis, minSize = 5, maxSize
              width={'100%'} height={'100%'}
              overflow={'hidden'} position={'relative'}>
             <Axis/>
-            {isPreviewing ?
-                previewTactics.map((t, tId) => {
-                    const isSelected = analysis.selectedTactics.includes(t.fixId);
-                    const r = scaleSize(sizeEncoding === 'freq' ? t.usage_count : t.stat.importance);
-                    const dir = t.x * Math.PI * 2, dis = Math.pow(t.y, 0.5) / 2 * 0.8;
-                    const cx = width / 2 + dis * width * Math.cos(dir),
-                        cy = height / 2 + dis * height * Math.sin(dir);
-                    return [
-                        (tId < indexOfDeleteTactics) ? 1 : ((tId < indexOfNewTactics) ? 0 : 2),
-                        tId,
-                        <Point key={t.id}
-                                  id={(t.newSortedIndex === -1 ? t.sortedIndex : t.newSortedIndex) + 1}
-                                  fixId={t.fixId}
-                                  t={t}
-                                  cx={cx}
-                                  cy={cy}
-                                  r={r}
-                                  color={winRate2color(t.stat.winRate0)}
-                                  isHovered={analysis.hoveredTactic === t.fixId}
-                                  onHover={analysis.hoverTactic}
-                                  isSelected={isSelected}
-                                  isDeleting={tId < indexOfDeleteTactics}
-                                  isCache={tId >= indexOfDeleteTactics && tId < indexOfNewTactics}
-                                  isFavorite={analysis.favoriteTactics.includes(t.fixId)}/>
-                    ]
-                }).sort(([a0, a1], [b0, b1]) => (a0 === b0) ? (a1 - b1) : (a0 - b0)).map(x => x[2]) :
+            {isPreviewing ? (() => {
+                    const tactics = previewTactics.map((t, tId) => {
+                        const isSelected = analysis.selectedTactics.includes(t.fixId);
+                        const r = scaleSize(sizeEncoding === 'freq' ? t.usage_count : t.stat.importance);
+                        const dir = t.x * Math.PI * 2, dis = Math.pow(t.y, 0.5) / 2 * 0.8;
+                        const cx = width / 2 + dis * width * Math.cos(dir),
+                            cy = height / 2 + dis * height * Math.sin(dir);
+                        return [
+                            (tId < indexOfDeleteTactics) ? 1 : ((tId < indexOfNewTactics) ? 2 : 0),
+                            tId,
+                            <Point key={t.id}
+                                   id={(t.newSortedIndex === -1 ? t.sortedIndex : t.newSortedIndex) + 1}
+                                   fixId={t.fixId}
+                                   t={t}
+                                   cx={cx}
+                                   cy={cy}
+                                   r={r}
+                                   color={winRate2color(t.stat.winRate0)}
+                                   isHovered={analysis.hoveredTactic === t.fixId}
+                                   onHover={analysis.hoverTactic}
+                                   isSelected={isSelected}
+                                   isDeleting={tId < indexOfDeleteTactics}
+                                   isCache={tId >= indexOfDeleteTactics && tId < indexOfNewTactics}
+                                   isFavorite={analysis.favoriteTactics.includes(t.fixId)}/>
+                        ]
+                    });
+                    tactics.sort(([a0, a1], [b0, b1]) => (a0 === b0) ? (a1 - b1) : (a0 - b0));
+                    return tactics.map(x => x[2]);
+                })() :
                 sortedTactics.map(t => {
                     const isSelected = analysis.selectedTactics.includes(t.fixId);
                     const r = scaleSize(sizeEncoding === 'freq' ? t.usage_count : t.stat.importance);

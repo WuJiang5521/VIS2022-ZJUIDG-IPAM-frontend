@@ -18,6 +18,8 @@ export function mergeStat(globalStat, stat) {
     Object.keys(globalStat)
         .forEach(key => {
             if (key === 'minImp') globalStat[key] = Math.min(globalStat[key], stat.importance);
+            else if (key === 'usage') globalStat[key] = 53;
+            else if (key === 'importance') globalStat[key] = 318;
             else globalStat[key] = Math.max(globalStat[key], stat[key])
         });
 }
