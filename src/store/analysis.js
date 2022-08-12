@@ -41,6 +41,7 @@ export default class AnalysisStore {
         }
         this.initCacheState();
         this.clearOldData();
+        Store.getStores().system.startWait();
         api.setDataset(this.dataset, this.player, this.opponents)
             .then(api.runAlg)
             .then(res => {
@@ -54,6 +55,7 @@ export default class AnalysisStore {
                     res[tid].map(r => rallyTransformer(r, t.id)),
                 ]));
                 this.initHistory(history);
+                Store.getStores().system.endWait();
             });
     }
 
@@ -100,7 +102,8 @@ export default class AnalysisStore {
             tactics: [],
             sequences: {}
         }
-        api.modify(...constraintTransformer(query.type, query.params))
+        Store.getStores().system.startWait();
+        return api.modify(...constraintTransformer(query.type, query.params))
             .then(res => {
                 state.desc_len = res.desc_len;
                 state.tactics = res.tactics.map(tacticTransformer);
@@ -112,9 +115,17 @@ export default class AnalysisStore {
                     res[tid].map(r => rallyTransformer(r, t.id)),
                 ]))
                 this.setCacheState(state);
-            })
+                Store.getStores().system.endWait();
+                return new Promise(resolve => resolve([
+                    'LimitIndex',
+                    'LimitLength',
+                    'SetExistence',
+                    'SetImportance',
+                ].includes(state.query.type)))
+            });
     }
     applyChange = () => {
+        this.selectedTactics = [];
         this.pushHistory({
             lastUpdate: new Date(),
             ...this.cacheState,
@@ -211,6 +222,7 @@ export default class AnalysisStore {
         const tactics = this.state.tactics;
         const sequences = this.state.sequences;
         this.selectedTactics.forEach(id => {
+            console.log(id);
             const tactic = tactics[id];
             const seqs = sequences[tactic.id] || [];
             rallies.push(...seqs.map(seq => ({

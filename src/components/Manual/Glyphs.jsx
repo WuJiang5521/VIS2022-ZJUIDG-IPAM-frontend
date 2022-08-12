@@ -6,7 +6,7 @@ import figure3 from './fig2.png';
 const desc = {
     Badminton: {
         'Ball Height': {
-            desc: 'The position where after the player hit the ball,the ball fell on the opposite field or hit by the opponent before it dropped, except StartingTee value. Starting Tee value describes where the player served the ball.',
+            desc: 'The height of the shuttle when it was hit by the player.',
             values: {
                 'Very low': "The height of the shuttle was lower than 0.55m.",
                 'Low': "The height of the shuttle was lower than 1.25m and higher than 0.55m.",
@@ -15,7 +15,7 @@ const desc = {
             }
         },
         'Ball Position': {
-            desc: 'The pose that the player used to hit the ball. It is related to the position where the player was and the technique that the player used.',
+            desc: 'The horizontal position of the shuttle when it was hit by the player.',
             images: [
                 {src: figure1, caption: 'Figure 1. Badminton Ball Position on the court.'},
             ],
@@ -50,13 +50,17 @@ const desc = {
     },
     Tennis: {
         'Ball Position': {
-            desc: 'The height of the shuttle when it was hit by the player.',
+            desc: 'The position where the ball bounced on the court after the player hit the ball,the ball fell on the opposite field or hit by the opponent before it dropped, except StartingTee value. Starting Tee value describes where the player served the ball.',
             images: [
                 {src: figure2, caption: 'Figure 2. Tennis Serving Ball Position on the court.'},
                 {src: figure3, caption: 'Figure 3. Tennis Ball Position on the court.'}
             ],
             values: {
-                'Starting Tee 1': 'Player served the ball in the right half of the middle area.',
+                'Starting Tee 1': [
+                    'Player served the ball in the right half of the middle area.',
+                    <br/>,
+                    <span style={{fontStyle: 'italic', color: 'rgb(80, 80, 80)'}}>Note: For the first hit, the ball position parameter records where the player stands on the court to serve the ball, which is strongly related to the hitting pose. To remove the duplicate and redundant encodings, we only preserve the unique glyph for the hitting pose because there exist too many optional values for the ball position, reducing the complexity of the glyph design for the ball position.</span>
+                ],
                 'Starting Tee 2': 'Player served the ball in the right half area.',
                 'Starting Tee 3': 'Player served the ball in the left half of the middle area.',
                 'Starting Tee 4': 'Player served the ball in the left half area.',
@@ -90,7 +94,7 @@ const desc = {
             }
         },
         'Hitting Pose': {
-            desc: 'The horizontal position of the shuttle when it washit by the player.',
+            desc: 'The pose that the player used to hit the ball. It is related to the position where the player was and the technique that the player used.',
             values: {
                 'Starting Tee 1': "Player served the ball in the midright zone.",
                 'Starting Tee 2': "Player served the ball in the right zone.",

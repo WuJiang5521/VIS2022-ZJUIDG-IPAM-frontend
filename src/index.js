@@ -9,6 +9,7 @@ import DataStore from "./store/data";
 import SystemStore from "./store/system";
 import Store from "./store/store";
 import AnalysisStore from "./store/analysis";
+import Glyphs from "./components/Manual/Glyphs";
 
 const systemStore = new SystemStore();
 const dataStore = new DataStore();
@@ -35,3 +36,12 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// ReactDOM.render(
+//     <React.StrictMode>
+//         <Provider data={dataStore} system={systemStore} analysis={analysisStore}>
+//             <Glyphs/>
+//         </Provider>
+//     </React.StrictMode>,
+//     document.getElementById('root')
+// );

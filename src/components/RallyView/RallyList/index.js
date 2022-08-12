@@ -26,7 +26,7 @@ function RallyList({rallies, title, onPlay, currentPlay, analysis}) {
         <Box flex={1} overflow={'hidden'}>
             <div ref={containerRef} style={{height: '100%', overflow: 'hidden auto'}}>
                 <div ref={wrapperRef}>
-                    {list.map(({index, data: rally}) => <Rally key={rally.id}
+                    {list.map(({index, data: rally}) => <Rally key={index}
                                                                rally={rally}
                                                                isExpand={currentExpand === rally.id}
                                                                onExpand={handleExpand}

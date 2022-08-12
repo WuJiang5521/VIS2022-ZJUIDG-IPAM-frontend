@@ -14,6 +14,10 @@ export default class SystemStore {
         return null;
     }
 
+    wait = false;
+    startWait = () => this.wait = true;
+    endWait = () => this.wait = false;
+
     constructor() {
         makeAutoObservable(this);
         Store.register('system', this);

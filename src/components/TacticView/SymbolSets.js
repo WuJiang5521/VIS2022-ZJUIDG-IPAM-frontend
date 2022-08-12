@@ -129,10 +129,10 @@ export const symbolSets = {
                 'Left zone midfront': [1, [3, 2]],
                 'Left zone midback': [1, [3, 1]],
                 'Left zone back': [1, [3, 0]],
-                'RF RMF MRF MRMF no drop point': [2, [0, 0]],
+                'RF RMF MRF MRMF no drop point': [2, [0, 1]],
                 'RB RMB MRB MRMB no drop point': [2, [0, 0]],
-                'LF LMF MLF MLMF no drop point': [2, [0, 0]],
-                'LB LMB MLB MLMB no drop point': [2, [0, 0]],
+                'LF LMF MLF MLMF no drop point': [2, [1, 1]],
+                'LB LMB MLB MLMB no drop point': [2, [1, 0]],
                 'Unexpected ball': null,
             },
             template: valParam => {
@@ -269,7 +269,7 @@ export const symbolSets = {
             params: {
                 'Overhand serving': 'O.S.',
                 'Underhand serving': 'U.S.',
-                'Drive': 'Dri',
+                'Drive': 'Drive',
                 'Drive in the air': 'Air',
                 'Smash': 'Sma',
                 'Ground smash': 'Grd',

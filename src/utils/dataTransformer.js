@@ -19,12 +19,27 @@ export function tacticTransformer(t, tId) {
         fix: false,
     }
 }
+export function tacticTransformerR(t) {
+    return {
+        ...t,
+        tactic_surrounding: [null, ...t.tactic_surrounding, null],
+    }
+}
 
 export function rallyTransformer(r, tId) {
     return {
         ...r,
         rally: r.rally.map(ht),
         index: r.index[tId][0],
+    }
+}
+
+export function rallyTransformerR(r, tId) {
+    return {
+        ...r,
+        index: {
+            [tId]: [r.index]
+        },
     }
 }
 

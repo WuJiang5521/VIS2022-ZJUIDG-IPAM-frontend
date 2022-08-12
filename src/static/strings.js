@@ -5,14 +5,13 @@ const dict = {
     Opponents: {cn: '对手', en: 'Opponents'},
     SeqCount: {cn: '回合数', en: 'Sequence Count'},
 
-    QueryView: {cn: '查询视图', en: 'Query View'},
+    QueryView: {cn: '查询视图', en: 'Suggestion Panel'},
     PreviewChange: {cn: '预览', en: 'Preview'},
     Undo: {cn: '撤销', en: 'Undo'},
     ApplyChange: {cn: '确认', en: 'Apply'},
     CancelChange: {cn: '取消', en: 'Cancel'},
     EmptyType: {cn: '选择修改类型', en: 'Select Query Type'},
 
-    PreviewView: {cn: '预览视图', en: 'Preview View'},
     TacticView: {cn: '战术视图', en: 'Tactic View'},
 
     RallyView: {cn: '回合视图', en: 'Rally View'},
@@ -24,7 +23,7 @@ const dict = {
     videoHintError: {cn: '视频资源错误，请联系网站维护者', en: 'The video resource cannot be played'},
     videoHintLoading: {cn: '视频正在加载', en: 'The video is loading ... Please wait ...'},
 
-    ProjectView: {cn: '投影视图', en: 'Project View'},
+    ProjectView: {cn: '投影视图', en: 'Projection View'},
 
     Error: {cn: '错误', en: 'Error'},
 }

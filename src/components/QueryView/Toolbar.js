@@ -29,7 +29,12 @@ const QueryViewToolbar = inject('analysis')(observer(({
                                                         startIcon={<Visibility/>}
                                                         disabled={disabled}
                                                         sx={style}
-                                                        onClick={() => analysis.preview(queryParams.queryParams)}>
+                                                        onClick={() => analysis.preview(queryParams.queryParams)
+                                                            .then(directApply => {
+                                                                if (!directApply) return;
+                                                                analysis.applyChange();
+                                                                queryParams.clearQueryParams();
+                                                            })}>
             {t(strings.PreviewChange)}
         </Button>,
         analysis.isPreviewing && <Button size={"small"}

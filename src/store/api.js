@@ -1,5 +1,6 @@
 import Store from "./store";
 import VirtualData, {values, virtualRally} from "../utils/virtualData";
+import {rallyTransformerR, tacticTransformer, tacticTransformerR} from "../utils/dataTransformer";
 
 const url = uri => `http://127.0.0.1:8000${uri}`;
 
@@ -45,6 +46,32 @@ class BaseAPI {
 
     _data = null;
     useData = d => this._data = d;
+    cursor = 0;
+    getCursorData = (type, params) => this._data && new Promise(resolve => {
+        this.cursor += (type === 1);
+
+        const cursor = this._data[this.cursor];
+        let data, timeout;
+        if (type === 0) {
+            data = {
+                tactics: cursor.tactics.map(tacticTransformerR),
+                desc_len: cursor.desc_len,
+            };
+            timeout = (!cursor.query || [
+                'LimitIndex',
+                'LimitLength',
+                'SetExistence',
+                'SetImportance',
+            ].includes(cursor.query.type)) ? (Math.random() * 5 + 5) : (Math.random() * 0.1);
+        } else if (type === 1) {
+            data = cursor.query;
+            timeout = 0;
+        } else if (type === 2) {
+            data = cursor.sequences[params].map(r => rallyTransformerR(r, params));
+            timeout = 0;
+        }
+        setTimeout(() => resolve(data), timeout * 1000);
+    })
 }
 
 class API extends BaseAPI {
@@ -60,27 +87,27 @@ class API extends BaseAPI {
         })
         .then(res => res.json())}
 
-    runAlg = () => this.fetch(
+    runAlg = () => this.getCursorData(0) || this.fetch(
         url('/tactic'),
         {method: 'POST'}
     ).then(res => res.json())
 
-    getTacticSequences = tac_id => this.fetch(
+    getTacticSequences = tac_id => this.getCursorData(2, tac_id) || this.fetch(
         url(`/rally/${tac_id}`)
     ).then(res => res.json())
 
-    processText = text => this.fetch(
+    processText = text => this.getCursorData(1) || this.fetch(
         url(`/text/${text}`)
+    ).then(res => res.json())
+
+    modify = (type, params) => this.getCursorData(0) || this.fetch(
+        url('/modification'),
+        {method: 'POST', body: JSON.stringify({type, params})}
     ).then(res => res.json())
 
     processAudio = audio => new Promise(resolve => {
         resolve('');
     })
-
-    modify = (type, params) => this.fetch(
-        url('/modification'),
-        {method: 'POST', body: JSON.stringify({type, params})}
-    ).then(res => res.json())
 
     undo = () => this.fetch(
         url('/modification'),
